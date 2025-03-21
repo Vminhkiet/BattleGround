@@ -1,0 +1,72 @@
+# Ignore user-specific and temporary files
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Ignore binary and intermediate files
+Binaries/
+Intermediate/
+Saved/
+DerivedDataCache/
+Build/
+
+# Ignore compiled source files
+*.dll
+*.exe
+*.lib
+*.app
+*.so
+*.dylib
+*.pdb
+
+# Ignore logs
+*.log
+*.temp
+*.obj
+*.o
+*.idb
+*.sdf
+*.tlog
+*.VC.db
+*.vscode
+
+# Ignore Unreal Engine auto-generated files
+*.opensdf
+*.VC.opendb
+*.VC.db-wal
+*.VC.db-shm
+*.uproject.sln
+
+# Ignore plugin-specific builds
+Plugins/*/Intermediate/
+Plugins/*/Binaries/
+Plugins/*/Saved/
+Plugins/*/DerivedDataCache/
+
+# Ignore content that should be rebuilt
+DerivedDataCache/
+Build/
+Config/DefaultEditorPerProjectUserSettings.ini
+
+# Ignore generated asset files
+*.uasset
+*.umap
+
+# Ignore Mac-specific files
+.DS_Store
+._*
+.Spotlight-V100
+.Trashes
+
+# Ignore Windows-specific files
+Thumbs.db
+Desktop.ini
+
+# Ignore Linux-specific files
+*.swp
+*.swo
+
+# Ignore Git submodules
+.git/modules/
+.gitignore~
