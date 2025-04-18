@@ -1,29 +1,58 @@
-using Assets.TutorialInfo.Scripts.Login;
-using Assets.TutorialInfo.Scripts.Login.ImplementLogin;
-using System.Collections;
-using System.Collections.Generic;
+using System;
 using UnityEngine;
-using UnityEngine.UI;
+using Firebase;
+using Firebase.Auth;
+using Firebase.Extensions;
 
 public class LoginManager : MonoBehaviour
 {
-    public Button googleLogin;
-    private LoginContext _loginContext;
+    FirebaseAuth auth;
+    FirebaseUser user;
 
-    // Start is called before the first frame update
     void Start()
     {
-        _loginContext = new LoginContext();
-        googleLogin.onClick.AddListener(() =>
+        FirebaseApp.CheckAndFixDependenciesAsync().ContinueWithOnMainThread(task =>
         {
-            _loginContext.SetLoginStrategy(new GoogleLogin());
-            _loginContext.ExecuteLogin();
+            var status = task.Result;
+            if (status == DependencyStatus.Available)
+            {
+                auth = FirebaseAuth.DefaultInstance;
+                Debug.Log("Firebase Auth ready.");
+            }
+            else
+            {
+                Debug.LogError("Could not resolve Firebase dependencies: " + status);
+            }
         });
     }
 
-    // Update is called once per frame
-    void Update()
+    public void Register(string email, string password)
     {
-        
+        auth.CreateUserWithEmailAndPasswordAsync(email, password).ContinueWithOnMainThread(task =>
+        {
+            if (task.IsCanceled || task.IsFaulted)
+            {
+                Debug.LogError("Registration Failed: " + task.Exception);
+                return;
+            }
+
+            user = task.Result.User;
+            Debug.Log("User registered: " + user.Email);
+        });
+    }
+
+    public void Login(string email, string password)
+    {
+        auth.SignInWithEmailAndPasswordAsync(email, password).ContinueWithOnMainThread(task =>
+        {
+            if (task.IsCanceled || task.IsFaulted)
+            {
+                Debug.LogError("Login Failed: " + task.Exception);
+                return;
+            }
+
+            user = task.Result.User;
+            Debug.Log("User logged in: " + user.Email);
+        });
     }
 }
