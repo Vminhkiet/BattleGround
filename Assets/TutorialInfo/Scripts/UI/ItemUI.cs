@@ -14,13 +14,13 @@ class ItemUI : MonoBehaviour
     [SerializeField] Color itemNotSelectedColor;
     [SerializeField] Color itemSelectedColor;
 
-    [SerializeField] Image itemItemImage;
     [SerializeField] TMP_Text itemNameText;
     [SerializeField] TMP_Text itemPriceText;
     [SerializeField] Button itemPurchaseButton;
 
     [Space(20f)]
     [SerializeField] Button itemButton;
+    [SerializeField] Image freeBanner;
     [SerializeField] Image itemImage;
     [SerializeField] Outline itemOutline;
 
@@ -39,16 +39,17 @@ class ItemUI : MonoBehaviour
         itemNameText.text = name;
     }
 
-    public void SetItemrPrice(int price)
+    public void SetItemPrice(int price)
     {
         itemPriceText.text = price.ToString();
+        if(price > 0)
+            freeBanner.gameObject.SetActive(false);
     }
     public void SetItemAsPurchase()
     {
-        itemPurchaseButton.gameObject.SetActive(false);
-
         itemButton.interactable = true;
         itemImage.color = itemNotSelectedColor;
+        itemPriceText.text = "USE";
     }
 
     public void OnItemPurchase(int itemIndex, UnityAction<int> action)
@@ -72,6 +73,7 @@ class ItemUI : MonoBehaviour
         itemOutline.enabled = true;
         itemImage.color = itemSelectedColor;
         itemButton.interactable = false;
+        
     }
 
     public void DeselectItem()

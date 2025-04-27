@@ -82,6 +82,7 @@ public class CharacterShopUI : MonoBehaviour
     {
         openShopButton.onClick.RemoveAllListeners();
         openShopButton.onClick.AddListener(OpenShop);
+        closeShopButton.onClick.AddListener(CloseShop);
     }
     void OpenShop()
     {

@@ -38,31 +38,32 @@ class ItemShopUI : MonoBehaviour
         for (int i = 0; i < itemDB.ItemCount; i++)
         {
             Item item = itemDB.GetItem(i);
-            CharacterItemUI uiItem = Instantiate(itemPrefab, ShopItemsContainer).GetComponent<CharacterItemUI>();
+            ItemUI uiItem = Instantiate(itemPrefab, ShopItemsContainer).GetComponent<ItemUI>();
 
             if ((i & 1) == 1)
-                uiItem.SetItemPosition(Vector2.down * (i - 1) / 2 * (itemHeight + itemSpacingRow) + Vector2.right * (1.5f * itemSpacingCol + itemWidth));
+                uiItem.SetItemPosition(Vector2.right * (i - 1) / 2 * (itemHeight + itemSpacingRow) + Vector2.down * (1.5f * itemSpacingCol + itemWidth));
             else
-                uiItem.SetItemPosition(Vector2.down * (i / 2) * (itemHeight + itemSpacingRow) + Vector2.right * (itemSpacingCol / 2));
+                uiItem.SetItemPosition(Vector2.right * (i / 2) * (itemHeight + itemSpacingRow) + Vector2.down * (itemSpacingCol / 2));
 
             uiItem.gameObject.name = "Item" + i + "-" + item.name;
 
             uiItem.SetCharacterName(item.name);
-            uiItem.SetCharacterImage(item.image);
-            uiItem.SetCharacterPrice(item.price);
+            uiItem.SetItemImage(item.image);
+            uiItem.SetItemPrice(item.price);
 
             if (item.isPurchased)
             {
-                uiItem.SetCharacterAsPurchase();
+                uiItem.SetItemAsPurchase();
+                uiItem.OnItemSelect(i, OnItemSelected);
                 uiItem.OnItemSelect(i, OnItemSelected);
             }
             else
             {
-                uiItem.SetCharacterPrice(item.price);
+                uiItem.SetItemPrice(item.price);
                 uiItem.OnItemPurchase(i, OnItemPurchased);
             }
             if ((i & 1) == 0)
-                ShopItemsContainer.GetComponent<RectTransform>().sizeDelta = Vector2.up * (itemHeight + itemSpacingRow);
+                ShopItemsContainer.GetComponent<RectTransform>().sizeDelta = Vector2.left * (itemWidth + itemSpacingRow);
         }
 
     }
@@ -78,6 +79,7 @@ class ItemShopUI : MonoBehaviour
     {
         openShopButton.onClick.RemoveAllListeners();
         openShopButton.onClick.AddListener(OpenShop);
+        closeShopButton.onClick.AddListener(CloseShop);
     }
     void OpenShop()
     {
