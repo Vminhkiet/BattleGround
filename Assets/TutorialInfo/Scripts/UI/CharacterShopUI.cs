@@ -19,6 +19,7 @@ public class CharacterShopUI : MonoBehaviour
 
     [Space(20)]
     [SerializeField] CharacterShopDatabase characterDB;
+  
 
     [Header("Shop Events")]
     [SerializeField] GameObject shopUI;
@@ -59,12 +60,12 @@ public class CharacterShopUI : MonoBehaviour
             if (character.isPurchased)
             {
                 uiItem.SetCharacterAsPurchase();
-                uiItem.OnItemSelect(i, OnItemSelected);
+                uiItem.OnItemSelect(i, character.type, OnItemSelected);
             }
             else
             {
                 uiItem.SetCharacterPrice(character.price);
-                uiItem.OnItemPurchase(i, OnItemPurchased);
+                uiItem.OnItemPurchase(i, character.price, character.type, OnItemPurchased);
             }
             if ((i & 1) == 0)
                 ShopItemsContainer.GetComponent<RectTransform>().sizeDelta = Vector2.up * (itemHeight + itemSpacingRow);
@@ -72,11 +73,11 @@ public class CharacterShopUI : MonoBehaviour
         
     }
     void OnItemSelected(int index) {
-        Debug.Log("select " + index);
+        CloseShop();
     }
     void OnItemPurchased(int index)
     {
-        Debug.Log("Purchase " + index);
+
     }
     void AddShopEvents()
     {

@@ -5,6 +5,7 @@ using UnityEngine;
 [System.Serializable]
 public struct Character
 {
+    public CharacterType type;
     public Sprite image;
     public string name;
     [Range(0, 5000)] public float health;

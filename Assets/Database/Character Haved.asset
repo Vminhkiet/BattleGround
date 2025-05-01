@@ -10,31 +10,35 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f2c01f8451e561d4eac973a5f020ce34, type: 3}
-  m_Name: CharacterShopDatabase
+  m_Name: Character Haved
   m_EditorClassIdentifier: 
   characters:
-  - image: {fileID: -1661302557, guid: 6d3960474b2ba344690e2046711ad2f0, type: 3}
+  - type: 0
+    image: {fileID: -1661302557, guid: 6d3960474b2ba344690e2046711ad2f0, type: 3}
     name: ARAST
     health: 3000
     speed: 60
     power: 600
-    price: 0
-    isPurchased: 1
-  - image: {fileID: -1676863914, guid: 6d3960474b2ba344690e2046711ad2f0, type: 3}
+    price: 8000
+    isPurchased: 0
+  - type: 1
+    image: {fileID: -1676863914, guid: 6d3960474b2ba344690e2046711ad2f0, type: 3}
     name: KAVENT
     health: 4000
     speed: 50
     power: 800
     price: 6000
-    isPurchased: 0
-  - image: {fileID: -351660486, guid: 6d3960474b2ba344690e2046711ad2f0, type: 3}
+    isPurchased: 1
+  - type: 2
+    image: {fileID: -351660486, guid: 6d3960474b2ba344690e2046711ad2f0, type: 3}
     name: XEPHISY
     health: 2000
     speed: 80
     power: 800
     price: 7500
-    isPurchased: 0
-  - image: {fileID: -325314648, guid: 6d3960474b2ba344690e2046711ad2f0, type: 3}
+    isPurchased: 1
+  - type: 3
+    image: {fileID: -325314648, guid: 6d3960474b2ba344690e2046711ad2f0, type: 3}
     name: ALIA
     health: 2500
     speed: 70
