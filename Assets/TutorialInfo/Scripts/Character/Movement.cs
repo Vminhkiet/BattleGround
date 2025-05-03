@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class Movement : MonoBehaviour
 {
@@ -18,8 +19,11 @@ public class Movement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        input = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
         input.Normalize();
+    }
+    public void InputPlayer(InputAction.CallbackContext callbackContext)
+    {
+        input = callbackContext.ReadValue<Vector2>();
     }
     private void FixedUpdate()
     {

@@ -67,18 +67,30 @@ public class CharacterItemUI : MonoBehaviour
         itemImage.color = itemNotSelectedColor;
     }
 
-    public void OnItemPurchase(int itemIndex, UnityAction<int> action)
+    public void OnItemPurchase(int itemIndex, int sale, CharacterType type, UnityAction<int> action)
     {
         characterPurchaseButton.onClick.RemoveAllListeners();
-        characterPurchaseButton.onClick.AddListener(() => action.Invoke(itemIndex));
+        characterPurchaseButton.onClick.AddListener(() => { 
+            int i = CalculatorController.instance.getInstance().CalCoin(-1 * sale);
+            if (i > 0)
+            {
+                SpawnController.instance.getInstance().AddCharacter(type);
+                SetCharacterAsPurchase();
+                action.Invoke(itemIndex);
+            }
+        });
 
         itemImage.color = itemNotSelectedColor;
     }
-    public void OnItemSelect(int itemIndex, UnityAction<int> action)
+    public void OnItemSelect(int itemIndex, CharacterType type, UnityAction<int> action)
     {
         itemButton.interactable = true;
         itemButton.onClick.RemoveAllListeners();
-        itemButton.onClick.AddListener(() => action.Invoke(itemIndex));
+        itemButton.onClick.AddListener(() => 
+        {
+            SpawnController.instance.getInstance().SpawnPlayer(type);
+            action.Invoke(itemIndex);
+        });
 
         itemImage.color = itemNotSelectedColor;
     }
