@@ -55,7 +55,6 @@ class ItemShopUI : MonoBehaviour
             {
                 uiItem.SetItemAsPurchase();
                 uiItem.OnItemSelect(i, OnItemSelected);
-                uiItem.OnItemSelect(i, OnItemSelected);
             }
             else
             {

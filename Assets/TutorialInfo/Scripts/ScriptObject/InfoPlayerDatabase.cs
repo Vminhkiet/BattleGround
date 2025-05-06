@@ -9,7 +9,7 @@ public class InfoPlayerDatabase : ScriptableObject
     public int Score;
     public int Money;
     public CharacterType characterType = CharacterType.ARAST;
-    private List<string> items;
+    public string selectedItem { get; set; } = "SnailPotion";
 
     public void setMoney(int money)
     {
@@ -45,4 +45,6 @@ public class InfoPlayerDatabase : ScriptableObject
     {
         return characterType;
     }
+
+
 }

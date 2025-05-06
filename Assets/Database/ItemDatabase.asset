@@ -16,9 +16,9 @@ MonoBehaviour:
   - image: {fileID: 21300000, guid: e119018a5a6e2e646817037f48cca925, type: 3}
     name: SnailPotion
     price: 0
-    isPurchased: 0
+    isPurchased: 1
   - image: {fileID: 21300000, guid: e119018a5a6e2e646817037f48cca925, type: 3}
-    name: Methaphetamin
+    name: Methamphetamine
     price: 4444
     isPurchased: 0
   - image: {fileID: 21300000, guid: e119018a5a6e2e646817037f48cca925, type: 3}

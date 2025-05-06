@@ -25,6 +25,8 @@ class ItemUI : MonoBehaviour
     [SerializeField] Image itemImage;
     [SerializeField] Outline itemOutline;
 
+    private bool isItemPurchased;
+
     public void SetItemPosition(Vector2 pos)
     {
         GetComponent<RectTransform>().anchoredPosition += pos;
@@ -74,11 +76,15 @@ class ItemUI : MonoBehaviour
     {
         itemButton.onClick.RemoveAllListeners();
         itemButton.onClick.AddListener(() => action.Invoke(itemIndex));
+        itemPurchaseButton.onClick.AddListener(SelectItem);
+        CalculatorController.instance.infoplayer.selectedItem = itemNameText.text;
+      
     }
 
     public void SelectItem()
     {
-        itemOutline.enabled = true;      
+        itemOutline.enabled = true;
+        itemPriceText.text = "Using";
     }
 
     public void DeselectItem()
