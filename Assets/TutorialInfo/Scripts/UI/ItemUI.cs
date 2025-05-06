@@ -11,8 +11,8 @@ using UnityEngine;
 class ItemUI : MonoBehaviour
 {
 
-    [SerializeField] Color itemNotSelectedColor;
-    [SerializeField] Color itemSelectedColor;
+    [SerializeField] Color useBtnColor;
+    [SerializeField] Color purchaseBtnColor;
 
     [SerializeField] TMP_Text itemNameText;
     [SerializeField] TMP_Text itemPriceText;
@@ -21,6 +21,7 @@ class ItemUI : MonoBehaviour
     [Space(20f)]
     [SerializeField] Button itemButton;
     [SerializeField] Image freeBanner;
+    [SerializeField] Image coinImage;
     [SerializeField] Image itemImage;
     [SerializeField] Outline itemOutline;
 
@@ -42,44 +43,46 @@ class ItemUI : MonoBehaviour
     public void SetItemPrice(int price)
     {
         itemPriceText.text = price.ToString();
-        if(price > 0)
+        ColorBlock cb = itemPurchaseButton.colors;
+        if (price > 0)
+        {
             freeBanner.gameObject.SetActive(false);
+            cb.normalColor = purchaseBtnColor;
+            itemPurchaseButton.colors = cb;
+        }
+        else
+        {
+            itemPriceText.text = "USE";
+            SetItemAsPurchase();
+        }
     }
     public void SetItemAsPurchase()
     {
-        itemButton.interactable = true;
-        itemImage.color = itemNotSelectedColor;
         itemPriceText.text = "USE";
+        ColorBlock cb = itemPurchaseButton.colors;
+        cb.normalColor = useBtnColor;
+        itemPurchaseButton.colors = cb;
+        coinImage.gameObject.SetActive(false);
     }
 
     public void OnItemPurchase(int itemIndex, UnityAction<int> action)
     {
         itemPurchaseButton.onClick.RemoveAllListeners();
         itemPurchaseButton.onClick.AddListener(() => action.Invoke(itemIndex));
-
-        itemImage.color = itemNotSelectedColor;
     }
     public void OnItemSelect(int itemIndex, UnityAction<int> action)
     {
-        itemButton.interactable = true;
         itemButton.onClick.RemoveAllListeners();
         itemButton.onClick.AddListener(() => action.Invoke(itemIndex));
-
-        itemImage.color = itemNotSelectedColor;
     }
 
     public void SelectItem()
     {
-        itemOutline.enabled = true;
-        itemImage.color = itemSelectedColor;
-        itemButton.interactable = false;
-        
+        itemOutline.enabled = true;      
     }
 
     public void DeselectItem()
     {
         itemOutline.enabled = false;
-        itemImage.color = itemNotSelectedColor;
-        itemButton.interactable = true;
     }
 }
