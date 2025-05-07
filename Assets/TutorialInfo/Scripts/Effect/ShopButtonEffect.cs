@@ -7,8 +7,8 @@ using UnityEngine;
 public class NewBehaviourScript : MonoBehaviour
 {
     public RectTransform shopImage;
-    private float boundStrength = 10f;
-    private float boundDuration = 0.5f;
+   // private float boundStrength = 10f;
+   // private float boundDuration = 0.5f;
 
     // Start is called before the first frame update
     void Start()
