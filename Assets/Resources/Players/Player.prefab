@@ -17,7 +17,7 @@ GameObject:
   - component: {fileID: 6617219341096061938}
   - component: {fileID: 8300697699153291931}
   - component: {fileID: 2117703865289138559}
-  - component: {fileID: 325189941950916256}
+  - component: {fileID: 4871543661651016028}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -152,7 +152,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ObservedComponentsFoldoutOpen: 1
+  ObservedComponentsFoldoutOpen: 0
   Group: 0
   prefixField: -1
   Synchronization: 3
@@ -210,7 +210,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   walkSpeed: 4
   maxVelocityChange: 10
---- !u!114 &325189941950916256
+--- !u!114 &4871543661651016028
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -240,7 +240,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 2117703865289138559}
         m_TargetAssemblyTypeName: Movement, Assembly-CSharp
-        m_MethodName: InputPlayer
+        m_MethodName: OnMove
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -251,7 +251,7 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
     m_ActionId: 7277d714-b959-4e44-acf8-eabefe9c0410
-    m_ActionName: Player/Move[/Gamepad/leftStick]
+    m_ActionName: Player/Move
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player

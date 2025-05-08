@@ -7,6 +7,7 @@ public class GameManager : MonoBehaviourPunCallbacks
     public GameObject player;
     [Space]
     public Transform spawnPoint;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -33,6 +34,7 @@ public class GameManager : MonoBehaviourPunCallbacks
         base.OnJoinedRoom();
         Debug.Log("We 're connected and in a room");
 
-        GameObject _player = PhotonNetwork.Instantiate(player.name, spawnPoint.position, Quaternion.identity);
+        string path = "Players/" + player.name;
+        GameObject _player = PhotonNetwork.Instantiate(path, spawnPoint.position, Quaternion.identity);
     }
 }
