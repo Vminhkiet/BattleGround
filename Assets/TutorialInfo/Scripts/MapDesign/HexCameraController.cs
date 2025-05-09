@@ -35,14 +35,16 @@ public class HexCameraController : MonoBehaviour
             float rotationY = Input.GetAxis("Mouse Y") * rotationSpeed * Time.deltaTime;
             transform.Rotate(-rotationY, rotationX, 0f);
         }
+
     }
 
     void HandleMovement()
     {
-        float x = Input.GetAxis("Horizontal");
-        float z = Input.GetAxis("Vertical");
-
-        Vector3 direction = new Vector3(x, 0, z).normalized;
-        transform.Translate(direction * moveSpeed * Time.deltaTime, Space.Self);
+        if (Input.GetMouseButton(2))
+        {
+            float rotationX = Input.GetAxis("Mouse X") * rotationSpeed * Time.deltaTime;
+            float rotationY = Input.GetAxis("Mouse Y") * rotationSpeed * Time.deltaTime;
+            transform.position+= new Vector3(rotationX, rotationY, 0f);
+        }
     }
 }
