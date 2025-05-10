@@ -1,10 +1,12 @@
 ﻿using UnityEngine;
 using UnityEngine.UI; // Required for UI elements like Toggle, ScrollRect, Image
 using UnityEngine.EventSystems;
-using System.Collections.Generic; // Required for List
+using System.Collections.Generic;
+using UnityEngine.UIElements.Experimental; // Required for List
 
 public class HexMapEditor : MonoBehaviour
 {
+    private MapSaveLoadManager mapSaveLoadManager;
     public GameObject[] tilePrefabs;    // Your prefab palette (assigned in inspector)
     public HexGrid hexGrid;             // Your grid reference
     private GameObject activePrefab;    // The current selected prefab
@@ -34,6 +36,8 @@ public class HexMapEditor : MonoBehaviour
 
     void Awake()
     {
+
+        mapSaveLoadManager= GetComponent<MapSaveLoadManager>();
         if (tilePrefabs == null || tilePrefabs.Length == 0)
         {
             Debug.LogError("HexMapEditor: No tilePrefabs assigned in the inspector!");
@@ -129,6 +133,23 @@ public class HexMapEditor : MonoBehaviour
         currentMode = EditorMode.Tile;
     }
 
+    public int GetTilePrefabIndex(GameObject instance)
+    {
+        for (int i = 0; i < tilePrefabs.Length; i++)
+            if (instance.name.Contains(tilePrefabs[i].name)) return i;
+
+        return -1;
+    }
+
+    public int GetObjectPrefabIndex(GameObject instance)
+    {
+        for (int i = 0; i < objectPrefabs.Length; i++)
+            if (instance != null && instance.name.Contains(objectPrefabs[i].name)) return i;
+
+        return -1;
+    }
+
+
     void Update()
     {
         HandleInput();
@@ -155,6 +176,8 @@ public class HexMapEditor : MonoBehaviour
                     }
                 }
             }
+        if (Input.GetKeyDown(KeyCode.F5)) mapSaveLoadManager.SaveMap("Assets/Maps/hexmap.json");
+        if (Input.GetKeyDown(KeyCode.F9)) mapSaveLoadManager.LoadMap("Assets/Maps/hexmap.json");
     }
 
 }

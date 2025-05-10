@@ -1,10 +1,11 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
+[ExecuteInEditMode]
 public class HexGrid : MonoBehaviour
 {
-    public int width = 20;
-    public int height = 20;
+    public int width = 1000;
+    public int height = 1000;
 
     public HexCell cellPrefab;
     public Text cellLabelPrefab; // Keep if you might use it later
@@ -17,6 +18,30 @@ public class HexGrid : MonoBehaviour
     void Awake()
     {
         gridCanvas = GetComponentInChildren<Canvas>();
+        cells = new HexCell[height * width];
+
+        for (int z = 0, i = 0; z < height; z++)
+        {
+            for (int x = 0; x < width; x++)
+            {
+                CreateCell(x, z, i++);
+            }
+        }
+    }
+
+    public void BuildGrid()
+    {
+#if UNITY_EDITOR
+        // Clear previous cells
+        foreach (Transform child in transform)
+        {
+            if (Application.isEditor)
+                DestroyImmediate(child.gameObject);
+            else
+                Destroy(child.gameObject);
+        }
+#endif
+
         cells = new HexCell[height * width];
 
         for (int z = 0, i = 0; z < height; z++)
@@ -50,19 +75,9 @@ public class HexGrid : MonoBehaviour
             tile.transform.SetParent(cell.transform); // Parent to the cell's transform
             cell.currentTile = tile;
         }
-
-        // Create coordinate label (optional)
-        /* Text label = Instantiate<Text>(cellLabelPrefab);
-            if (gridCanvas != null && label != null) // Add null checks
-            {
-                label.rectTransform.SetParent(gridCanvas.transform, false);
-                label.rectTransform.anchoredPosition = new Vector2(position.x, position.z);
-                label.text = cell.coordinates.ToStringOnSeparateLines();
-            }
-        */
     }
 
-    public void ReplaceCellPrefab(Vector3 worldHitPosition, GameObject newPrefab)
+    public GameObject ReplaceCellPrefab(Vector3 worldHitPosition, GameObject newPrefab)
     {
         // Convert the world hit position to local grid space to find coordinates
         Vector3 localHitPosition = transform.InverseTransformPoint(worldHitPosition);
@@ -75,7 +90,7 @@ public class HexGrid : MonoBehaviour
         if (cell == null)
         {
             Debug.LogWarning($"ReplaceCellPrefab: Cell at index {index} is null.");
-            return;
+            return null;
         }
 
         // Remove current tile GameObject
@@ -104,10 +119,12 @@ public class HexGrid : MonoBehaviour
             GameObject newTile = Instantiate(newPrefab, cell.transform.position, Quaternion.identity);
             newTile.transform.SetParent(cell.transform); // Parent to the cell's transform
             cell.currentTile = newTile;
+            return newTile;
         }
         else
         {
             cell.currentTile = null; // Ensure currentTile is null if newPrefab is null
+            return null;
         }
     }
 
@@ -145,15 +162,15 @@ public class HexGrid : MonoBehaviour
         {
             Debug.Log($"RotateCellTileY60: Cell at {coordinates} has no current tile to rotate.");
         }
-    }
-
-    public void PlaceObjectOnTile(Vector3 position, GameObject objectPrefab)
+    }       
+        
+    public GameObject PlaceObjectOnTile(Vector3 position, GameObject objectPrefab)
     {
         position = transform.InverseTransformPoint(position);
         HexCoordinates coordinates = HexCoordinates.FromPosition(position);
         int index = coordinates.X + coordinates.Z * width + coordinates.Z / 2;
 
-        if (index < 0 || index >= cells.Length) return;
+        if (index < 0 || index >= cells.Length) return null;
 
         HexCell cell = cells[index];
 
@@ -165,5 +182,28 @@ public class HexGrid : MonoBehaviour
 
         Vector3 spawnPos = cell.transform.position + new Vector3(0, 0.5f, 0);
         cell.decorationObject = Instantiate(objectPrefab, spawnPos, Quaternion.identity, cell.transform);
+        return cell.decorationObject;
+    }
+
+    public Vector3 GetWorldPositionFromCoordinates(int x, int z)
+    {
+        Vector3 position;
+        position.x = (x + z * 0.5f - z / 2) * (HexMetrics.innerRadius * 2f);
+        position.y = 0f;
+        position.z = z * (HexMetrics.outerRadius * 1.5f);
+
+        return transform.TransformPoint(position); // Convert local to world position
+    }
+
+    public HexCell[] GetAllCells()
+    {
+        return cells;
+    }
+    public HexCell GetCellAtCoordinates(int x, int z)
+    {
+        int index = x + z * width + z / 2;
+        if (index < 0 || index >= cells.Length)
+            return null;
+        return cells[index];
     }
 }
