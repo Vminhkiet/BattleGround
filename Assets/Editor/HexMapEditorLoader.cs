@@ -60,7 +60,7 @@ public class HexMapEditorLoader
             else
             {
                 EditorUtility.DisplayDialog("Lỗi", "MapIOManager thiếu tham chiếu HexGrid, và không tìm thấy HexGrid trong scene.", "OK");
-                Debug.LogError("MapIOManager thiếu tham chiếu HexGrid, và không tìm thấy HexGrid trong scene.");
+                Debug.LogError("Build Grid trước!");
                 return;
             }
         }
@@ -82,12 +82,18 @@ public class HexMapEditorLoader
             }
         }
 
-        Debug.Log($"Đang thử tải map: {mapName} bằng MapIOManager.");
-
         // Gọi hàm trong MapIOManager để tải tất cả các chunk cho editor
         // Hàm này giờ đã xử lý việc dùng PrefabUtility và DestroyImmediate
         mapIOManager.LoadAllMapChunksForEditor(mapName);
-
-        Debug.Log($"Map chunk '{mapName}' đã được tải vào scene ở Edit Mode thông qua MapIOManager.");
+    }
+    [MenuItem("Hex Editor/Clear Map")]
+    public static void ClearLoadedMap()
+    {
+        MapSaveLoadManager mapIOManager = GameObject.FindObjectOfType<MapSaveLoadManager>();
+        for (int i = mapIOManager.transform.childCount - 1; i >= 0; i--)
+        {
+            Transform child = mapIOManager.transform.GetChild(i);
+            GameObject.DestroyImmediate(child.gameObject);
+        }
     }
 }

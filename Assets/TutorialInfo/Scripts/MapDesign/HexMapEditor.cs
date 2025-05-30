@@ -216,6 +216,20 @@ public class HexMapEditor : MonoBehaviour
                     }
                 }
             }
+            else if (Input.GetKeyDown(KeyCode.Backspace))
+            {
+                if (hit.collider != null && hit.collider.gameObject.CompareTag("DecorationObject"))
+                {
+                    GameObject decorationObject = hit.collider.gameObject;
+                    Destroy(decorationObject);
+
+                }
+                else
+                {
+
+                    Debug.Log("R pressed in Object mode, but no 'DecorationObject' was hit directly.");
+                }
+            }
         }
 
     }

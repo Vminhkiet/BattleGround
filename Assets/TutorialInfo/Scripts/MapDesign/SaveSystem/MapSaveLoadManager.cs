@@ -168,6 +168,11 @@ public class MapSaveLoadManager : MonoBehaviour
         if (grid != null) EditorUtility.SetDirty(grid);
         EditorUtility.SetDirty(this); // Đánh dấu MapIOManager là dirty để lưu các thay đổi (nếu có) vào scene
 #endif
+        for (int i = grid.transform.childCount - 1; i >= 0; i--)
+        {
+            Transform child = grid.transform.GetChild(i);
+            GameObject.DestroyImmediate(child.gameObject);
+        }
     }
 
 
