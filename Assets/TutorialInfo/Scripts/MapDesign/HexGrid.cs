@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using UnityEditor;
+using UnityEngine;
 using UnityEngine.UI;
 
 [ExecuteInEditMode]
@@ -19,6 +20,11 @@ public class HexGrid : MonoBehaviour
     {
         gridCanvas = GetComponentInChildren<Canvas>();
         cells = new HexCell[height * width];
+        for (int i = transform.childCount - 1; i >= 0; i--)
+        {
+            Transform child = transform.GetChild(i);
+            GameObject.DestroyImmediate(child.gameObject);
+        }
 
         for (int z = 0, i = 0; z < height; z++)
         {
@@ -180,7 +186,7 @@ public class HexGrid : MonoBehaviour
             DestroyImmediate(cell.decorationObject);
         }
 
-        Vector3 spawnPos = cell.transform.position + new Vector3(0, 0.5f, 0);
+        Vector3 spawnPos = cell.transform.position+new Vector3(0,-0.1f,0);
         cell.decorationObject = Instantiate(objectPrefab, spawnPos, Quaternion.identity, cell.transform);
         return cell.decorationObject;
     }
@@ -205,5 +211,34 @@ public class HexGrid : MonoBehaviour
         if (index < 0 || index >= cells.Length)
             return null;
         return cells[index];
+    }
+
+    public void ClearAllCells(bool isEditorMode = false)
+    {
+        if (cells == null) // 'cells' là mảng/list chứa tất cả HexCell của bạn
+        {
+            Debug.LogWarning("Mảng 'cells' trong HexGrid chưa được khởi tạo hoặc null.");
+            return;
+        }
+
+        foreach (HexCell cell in cells) // cells là nơi bạn lưu trữ tất cả các HexCell
+        {
+            if (cell == null) continue;
+            if (cell.currentTile != null)
+            {
+                if (isEditorMode) DestroyImmediate(cell.currentTile); else Destroy(cell.currentTile);
+                cell.currentTile = null;
+            }
+            if (cell.decorationObject != null)
+            {
+                if (isEditorMode) DestroyImmediate(cell.decorationObject); else Destroy(cell.decorationObject);
+                cell.decorationObject = null;
+            }
+            // Reset các thuộc tính khác của cell nếu cần
+        }
+        Debug.Log("Tất cả các ô đã được dọn dẹp.");
+#if UNITY_EDITOR
+        if (isEditorMode) EditorUtility.SetDirty(this); // Đánh dấu HexGrid là dirty
+#endif
     }
 }

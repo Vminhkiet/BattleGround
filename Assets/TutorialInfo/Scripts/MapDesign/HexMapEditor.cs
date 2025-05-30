@@ -2,7 +2,8 @@
 using UnityEngine.UI; // Required for UI elements like Toggle, ScrollRect, Image
 using UnityEngine.EventSystems;
 using System.Collections.Generic;
-using UnityEngine.UIElements.Experimental; // Required for List
+using UnityEngine.UIElements.Experimental;
+using UnityEditorInternal; // Required for List
 
 public class HexMapEditor : MonoBehaviour
 {
@@ -36,7 +37,6 @@ public class HexMapEditor : MonoBehaviour
 
     void Awake()
     {
-
         mapSaveLoadManager= GetComponent<MapSaveLoadManager>();
         if (tilePrefabs == null || tilePrefabs.Length == 0)
         {
@@ -157,27 +157,67 @@ public class HexMapEditor : MonoBehaviour
 
     void HandleInput()
     {
-            if (!EventSystem.current.IsPointerOverGameObject())
+        if (EventSystem.current != null && EventSystem.current.IsPointerOverGameObject())
+        {
+            return;
+        }
+
+        Ray inputRay = Camera.main.ScreenPointToRay(Input.mousePosition);
+        RaycastHit hit;
+
+        if (Physics.Raycast(inputRay, out hit)) // Raycast một lần và sử dụng kết quả 'hit'
+        {
+            // Đặt Tile
+            if (Input.GetMouseButton(0) && currentMode == EditorMode.Tile)
             {
-                Ray inputRay = Camera.main.ScreenPointToRay(Input.mousePosition);
-                RaycastHit hit;
-                if (Physics.Raycast(inputRay, out hit))
+                if (activePrefab != null)
                 {
-                    if (Input.GetMouseButton(0))
-                    {
-                        if(currentMode == EditorMode.Tile)
-                            hexGrid.ReplaceCellPrefab(hit.point, activePrefab);
-                        else
-                            hexGrid.PlaceObjectOnTile(hit.point, activeObjectPrefab);
+                    hexGrid.ReplaceCellPrefab(hit.point, activePrefab);
                 }
-                    else if (Input.GetKeyDown(KeyCode.C))
+                else
+                {
+                    Debug.LogWarning("No active tile prefab selected.");
+                }
+            }
+            // Đặt Object
+            else if (Input.GetMouseButtonDown(0) && currentMode == EditorMode.Object)
+            {
+                if (objectPrefabs != null && objectPrefabs.Length > activeObjectIndex && activeObjectIndex >= 0)
+                {
+                    // Vẫn sử dụng hit.point để xác định cell sẽ đặt object lên
+                    hexGrid.PlaceObjectOnTile(hit.point, objectPrefabs[activeObjectIndex]);
+                }
+                else
+                {
+                    Debug.LogWarning("No active object prefab selected or index out of bounds.");
+                }
+            }
+            // Xoay (Tile hoặc Object)
+            else if (Input.GetKeyDown(KeyCode.R))
+            {
+                if (currentMode == EditorMode.Tile)
+                {
+                    // Xoay tile dựa trên cell mà raycast trúng (hit.point)
+                    hexGrid.RotateCellTileY60(hit.point);
+                }
+                else if (currentMode == EditorMode.Object)
+                {
+                    // Kiểm tra xem raycast có trúng một GameObject với tag "DecorationObject" không
+                    if (hit.collider != null && hit.collider.gameObject.CompareTag("DecorationObject"))
                     {
-                        hexGrid.RotateCellTileY60(hit.point);
+                        GameObject objectToRotate = hit.collider.gameObject;
+                        objectToRotate.transform.Rotate(0f, 60f, 0f, Space.Self);
+
+                    }
+                    else
+                    {
+
+                        Debug.Log("R pressed in Object mode, but no 'DecorationObject' was hit directly.");
                     }
                 }
             }
-        if (Input.GetKeyDown(KeyCode.F5)) mapSaveLoadManager.SaveMap("Assets/Maps/hexmap.json");
-        if (Input.GetKeyDown(KeyCode.F9)) mapSaveLoadManager.LoadMap("Assets/Maps/hexmap.json");
+        }
+
     }
 
 }

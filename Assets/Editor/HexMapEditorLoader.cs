@@ -1,63 +1,93 @@
 ﻿using UnityEngine;
 using UnityEditor;
 using System.IO;
+using UnityEditor.UI;
 
 public class HexMapEditorLoader
 {
-    [MenuItem("Hex Editor/Load Map From JSON")]
-    public static void LoadMapFromJson()
+    [MenuItem("Hex Editor/Load Chunked Map To Scene")]
+    public static void LoadChunkedMap()
     {
-        string path = EditorUtility.OpenFilePanel("Select Map JSON", "Assets/Maps", "json");
+        // Mở dialog để người dùng chọn file "master_map_data.json"
+        // Các map được lưu trong Application.persistentDataPath
+        string initialPath = Application.persistentDataPath;
+        string path = EditorUtility.OpenFilePanel("Select Master Map Data File (master_map_data.json)", initialPath, "json");
+
         if (string.IsNullOrEmpty(path))
         {
-            Debug.Log("Load cancelled.");
+            Debug.Log("Hủy tải map.");
             return;
         }
 
-        HexGrid grid = GameObject.FindObjectOfType<HexGrid>();
-        HexMapEditor editor = GameObject.FindObjectOfType<HexMapEditor>();
-
-        if (grid == null || editor == null)
+        // Kiểm tra xem file được chọn có phải là "master_map_data.json" không
+        if (!Path.GetFileName(path).Equals("master_map_data.json", System.StringComparison.OrdinalIgnoreCase))
         {
-            Debug.LogError("HexGrid or HexMapEditor not found in the scene!");
+            EditorUtility.DisplayDialog("Sai File", "Vui lòng chọn file 'master_map_data.json'.", "OK");
+            Debug.LogWarning("File được chọn không đúng. Vui lòng chọn file 'master_map_data.json'.");
             return;
         }
 
-        string json = File.ReadAllText(path);
-        HexMapSaveData saveData = JsonUtility.FromJson<HexMapSaveData>(json);
+        // Trích xuất tên map từ cấu trúc thư mục
+        // Đường dẫn sẽ có dạng: .../PersistentDataPath/TenMapCuaBan/master_map_data.json
+        // Chúng ta cần "TenMapCuaBan"
+        string mapDirectory = Path.GetDirectoryName(path);
+        string mapName = Path.GetFileName(mapDirectory);
 
-        foreach (HexTileData tile in saveData.tiles)
+        if (string.IsNullOrEmpty(mapName))
         {
-            Vector3 position = grid.GetWorldPositionFromCoordinates(tile.x, tile.z);
+            Debug.LogError("Không thể xác định tên map từ đường dẫn file đã chọn.");
+            return;
+        }
 
-            // Instantiate tile prefab
-            GameObject tilePrefab = editor.tilePrefabs[tile.tilePrefabIndex];
-            GameObject tileObj = (GameObject)PrefabUtility.InstantiatePrefab(tilePrefab, grid.transform);
-            tileObj.transform.position = position;
-            tileObj.transform.rotation = Quaternion.Euler(tile.tileRotX, tile.tileRotY, tile.tileRotZ);
+        // Tìm instance của MapIOManager trong scene
+        MapSaveLoadManager mapIOManager = GameObject.FindObjectOfType<MapSaveLoadManager>();
+        if (mapIOManager == null)
+        {
+            EditorUtility.DisplayDialog("Lỗi", "Không tìm thấy MapIOManager trong scene. Vui lòng thêm và cấu hình MapIOManager.", "OK");
+            Debug.LogError("Không tìm thấy MapIOManager trong scene. Vui lòng thêm MapIOManager vào scene và gán các tham chiếu HexGrid, MapEditor.");
+            return;
+        }
 
-            // Attach to a HexCell manually if needed
-            HexCell cell = grid.GetCellAtCoordinates(tile.x, tile.z);
-            if (cell != null)
+        // Đảm bảo MapIOManager có các tham chiếu cần thiết
+        if (mapIOManager.grid == null)
+        {
+            HexGrid gridInScene = GameObject.FindObjectOfType<HexGrid>();
+            if (gridInScene != null)
             {
-                cell.currentTile = tileObj;
+                mapIOManager.grid = gridInScene;
+                EditorUtility.SetDirty(mapIOManager); // Lưu thay đổi vào MapIOManager
             }
-
-            // Instantiate decoration object
-            if (tile.objectPrefabIndex >= 0)
+            else
             {
-                GameObject objectPrefab = editor.objectPrefabs[tile.objectPrefabIndex];
-                GameObject obj = (GameObject)PrefabUtility.InstantiatePrefab(objectPrefab, tileObj.transform);
-                obj.transform.position = position + new Vector3(0, 0.5f, 0);
-                obj.transform.rotation = Quaternion.Euler(tile.objRotX, tile.objRotY, tile.objRotZ);
-
-                if (cell != null)
-                {
-                    cell.decorationObject = obj;
-                }
+                EditorUtility.DisplayDialog("Lỗi", "MapIOManager thiếu tham chiếu HexGrid, và không tìm thấy HexGrid trong scene.", "OK");
+                Debug.LogError("MapIOManager thiếu tham chiếu HexGrid, và không tìm thấy HexGrid trong scene.");
+                return;
+            }
+        }
+        // Tên class editor của bạn có thể là HexMapEditor hoặc MapEditor
+        // Chỉnh sửa "MapEditor" thành tên class chính xác nếu cần
+        if (mapIOManager.editor == null)
+        {
+            HexMapEditor editorInScene = GameObject.FindObjectOfType<HexMapEditor>();
+            if (editorInScene != null)
+            {
+                mapIOManager.editor = editorInScene;
+                EditorUtility.SetDirty(mapIOManager); // Lưu thay đổi vào MapIOManager
+            }
+            else
+            {
+                EditorUtility.DisplayDialog("Lỗi", "MapIOManager thiếu tham chiếu MapEditor (hoặc tên tương tự), và không tìm thấy đối tượng này trong scene.", "OK");
+                Debug.LogError("MapIOManager thiếu tham chiếu MapEditor (hoặc tên tương tự), và không tìm thấy đối tượng này trong scene.");
+                return;
             }
         }
 
-        Debug.Log("Map loaded into scene in Edit Mode.");
+        Debug.Log($"Đang thử tải map: {mapName} bằng MapIOManager.");
+
+        // Gọi hàm trong MapIOManager để tải tất cả các chunk cho editor
+        // Hàm này giờ đã xử lý việc dùng PrefabUtility và DestroyImmediate
+        mapIOManager.LoadAllMapChunksForEditor(mapName);
+
+        Debug.Log($"Map chunk '{mapName}' đã được tải vào scene ở Edit Mode thông qua MapIOManager.");
     }
 }

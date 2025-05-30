@@ -78,8 +78,45 @@ PrefabInstance:
       propertyPath: m_Name
       value: building_mine_blue
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 7bd0c6b0fa2ad6f4fb6d9b4ace9d8174,
+        type: 3}
+      propertyPath: m_TagString
+      value: DecorationObject
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 7bd0c6b0fa2ad6f4fb6d9b4ace9d8174,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: -3117906222944838761}
   m_SourcePrefab: {fileID: 100100000, guid: 7bd0c6b0fa2ad6f4fb6d9b4ace9d8174, type: 3}
+--- !u!1 &5084471820439186778 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 7bd0c6b0fa2ad6f4fb6d9b4ace9d8174,
+    type: 3}
+  m_PrefabInstance: {fileID: 5354434707940429835}
+  m_PrefabAsset: {fileID: 0}
+--- !u!64 &-3117906222944838761
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5084471820439186778}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -1670515093782540488, guid: 7bd0c6b0fa2ad6f4fb6d9b4ace9d8174, type: 3}

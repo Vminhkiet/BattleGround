@@ -27,7 +27,5 @@ public class HexGridEditor : Editor
             Transform child = parent.GetChild(i);
             GameObject.DestroyImmediate(child.gameObject);
         }
-
-        Debug.Log("Cleared all children of the grid.");
     }
 }

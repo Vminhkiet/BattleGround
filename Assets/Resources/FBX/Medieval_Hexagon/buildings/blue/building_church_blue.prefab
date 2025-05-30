@@ -78,8 +78,45 @@ PrefabInstance:
       propertyPath: m_Name
       value: building_church_blue
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 88446ba256a165341987704cd404cf21,
+        type: 3}
+      propertyPath: m_TagString
+      value: DecorationObject
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 88446ba256a165341987704cd404cf21,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: -525346993154014065}
   m_SourcePrefab: {fileID: 100100000, guid: 88446ba256a165341987704cd404cf21, type: 3}
+--- !u!1 &6163053364900981087 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 88446ba256a165341987704cd404cf21,
+    type: 3}
+  m_PrefabInstance: {fileID: 6433103652973433870}
+  m_PrefabAsset: {fileID: 0}
+--- !u!64 &-525346993154014065
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6163053364900981087}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -3205409653519114667, guid: 88446ba256a165341987704cd404cf21, type: 3}
