@@ -122,9 +122,6 @@ public class MapSaveLoadManager : MonoBehaviour
         Debug.Log($"Map '{mapName}' đã được lưu với {cellsByChunk.Count} chunks vào thư mục: {mapDirectory}");
     }
 
-    /// <summary>
-    /// Tải file master data của map.
-    /// </summary>
     public MasterMapData LoadMasterMapData(string mapName)
     {
         string mapDirectory = Path.Combine(Application.persistentDataPath, mapName);
@@ -168,18 +165,9 @@ public class MapSaveLoadManager : MonoBehaviour
         if (grid != null) EditorUtility.SetDirty(grid);
         EditorUtility.SetDirty(this); // Đánh dấu MapIOManager là dirty để lưu các thay đổi (nếu có) vào scene
 #endif
-        for (int i = grid.transform.childCount - 1; i >= 0; i--)
-        {
-            Transform child = grid.transform.GetChild(i);
-            GameObject.DestroyImmediate(child.gameObject);
-        }
     }
 
 
-
-    /// <summary>
-    /// Tải một chunk cụ thể dựa vào ID của nó (dùng cho người chơi).
-    /// </summary>
     public void LoadChunkForPlayer(string mapName, int chunkX, int chunkZ)
     {
         // Kiểm tra xem chunk đã được tải chưa thông qua chunkParentTransforms
@@ -279,11 +267,7 @@ public class MapSaveLoadManager : MonoBehaviour
             {
                 GameObject objectPrefab = editor.objectPrefabs[tileData.objectPrefabIndex];
                 GameObject obj;
-                // Vị trí gốc của object trang trí trong code cũ của bạn có offset Y.
-                // Và được parent vào tileObj.transform. Hiện tại đang parent vào chunkParent.
-                // Nếu muốn parent vào tileObj, thay chunkParent bằng cell.currentTile.transform (sau khi tileObj đã được tạo)
-                // Và đảm bảo cell.currentTile không null.
-                Transform decorationParent = chunkParent; // Hoặc cell.currentTile?.transform ?? chunkParent;
+                Transform decorationParent = chunkParent;
 
                 if (isEditorMode)
                 {
@@ -310,9 +294,6 @@ public class MapSaveLoadManager : MonoBehaviour
     }
 
 
-    /// <summary>
-    /// Dọn dẹp một chunk cụ thể khỏi scene (dùng cho người chơi khi di chuyển xa).
-    /// </summary>
     public void UnloadChunk(int chunkX, int chunkZ)
     {
         Vector2Int chunkId = new Vector2Int(chunkX, chunkZ);

@@ -26,13 +26,6 @@ public class HexGrid : MonoBehaviour
             GameObject.DestroyImmediate(child.gameObject);
         }
 
-        for (int z = 0, i = 0; z < height; z++)
-        {
-            for (int x = 0; x < width; x++)
-            {
-                CreateCell(x, z, i++);
-            }
-        }
     }
 
     public void BuildGrid()
@@ -193,10 +186,15 @@ public class HexGrid : MonoBehaviour
 
     public Vector3 GetWorldPositionFromCoordinates(int x, int z)
     {
+        // Convert cube coordinates (x, z) to offset coordinates for position calculation.
+        // The grid generation and cell positioning logic in CreateCell uses offset coordinates.
+        int offsetX = x + (z / 2);
+        int offsetZ = z;
+
         Vector3 position;
-        position.x = (x + z * 0.5f - z / 2) * (HexMetrics.innerRadius * 2f);
+        position.x = (offsetX + offsetZ * 0.5f - offsetZ / 2) * (HexMetrics.innerRadius * 2f);
         position.y = 0f;
-        position.z = z * (HexMetrics.outerRadius * 1.5f);
+        position.z = offsetZ * (HexMetrics.outerRadius * 1.5f);
 
         return transform.TransformPoint(position); // Convert local to world position
     }
