@@ -11,15 +11,16 @@ using UnityEditor;
 public class MapSaveLoadManager : MonoBehaviour
 {
     public HexGrid grid;
-    public HexMapEditor editor; // needed to get prefab lists
-    public int chunkSize = 16; // Kích thước chunk (ví dụ: 16x16 ô), có thể tùy chỉnh
+  
+    public int chunkSize = 16;
+    public MapObjectDatabase mapDatabase;
 
     private Dictionary<Vector2Int, Transform> chunkParentTransforms = new Dictionary<Vector2Int, Transform>(); // Để tổ chức scene
     public void SaveMapByChunks(string mapName)
     {
-        if (grid == null || editor == null)
+        if (grid == null)
         {
-            Debug.LogError("HexGrid hoặc MapEditor chưa được gán cho MapIOManager!");
+            Debug.LogError("HexGrid chưa có trong sence");
             return;
         }
 
@@ -81,13 +82,27 @@ public class MapSaveLoadManager : MonoBehaviour
 
             foreach (HexCell cell in cellsInChunk)
             {
-                HexTileData tileData = new HexTileData
+                HexTileData tileData;
+                if (cell.currentTile != null)
                 {
-                    x = cell.coordinates.X, // Lưu tọa độ toàn cục của ô
-                    z = cell.coordinates.Z,
-                    tilePrefabIndex = editor.GetTilePrefabIndex(cell.currentTile),
-                    objectPrefabIndex = editor.GetObjectPrefabIndex(cell.decorationObject) // Sẽ là -1 nếu không có object
-                };
+                    tileData = new HexTileData
+                    {
+                        x = cell.coordinates.X, // Lưu tọa độ toàn cục của ô
+                        z = cell.coordinates.Z,
+                        tilePrefabIndex = mapDatabase.GetTilePrefabIndex(cell.currentTile),
+                        objectPrefabIndex = mapDatabase.GetObjectPrefabIndex(cell.decorationObject)
+                    };
+                }
+                else
+                {
+                    tileData = new HexTileData
+                    {
+                        x = cell.coordinates.X,
+                        z = cell.coordinates.Z,
+                        tilePrefabIndex =-1,
+                        objectPrefabIndex =-1
+                    };
+                }
 
                 if (cell.currentTile != null)
                 {
@@ -170,10 +185,8 @@ public class MapSaveLoadManager : MonoBehaviour
 
     public void LoadChunkForPlayer(string mapName, int chunkX, int chunkZ)
     {
-        // Kiểm tra xem chunk đã được tải chưa thông qua chunkParentTransforms
         if (chunkParentTransforms.ContainsKey(new Vector2Int(chunkX, chunkZ)))
         {
-            // Debug.Log($"Chunk {chunkX},{chunkZ} của map '{mapName}' đã được tải trước đó.");
             return;
         }
 
@@ -237,9 +250,9 @@ public class MapSaveLoadManager : MonoBehaviour
             }
 
             // Tải tile (địa hình)
-            if (tileData.tilePrefabIndex >= 0 && tileData.tilePrefabIndex < editor.tilePrefabs.Length)
+            if (tileData.tilePrefabIndex >= 0 && tileData.tilePrefabIndex < mapDatabase.tileCount)
             {
-                GameObject tilePrefab = editor.tilePrefabs[tileData.tilePrefabIndex];
+                GameObject tilePrefab = mapDatabase.GetTile(tileData.tilePrefabIndex);
                 GameObject tileObj;
                 if (isEditorMode)
                 {
@@ -263,9 +276,9 @@ public class MapSaveLoadManager : MonoBehaviour
             }
 
             // Tải object trang trí
-            if (tileData.objectPrefabIndex >= 0 && tileData.objectPrefabIndex < editor.objectPrefabs.Length)
+            if (tileData.objectPrefabIndex >= 0 && tileData.objectPrefabIndex < mapDatabase.objectCount)
             {
-                GameObject objectPrefab = editor.objectPrefabs[tileData.objectPrefabIndex];
+                GameObject objectPrefab = mapDatabase.GetObject(tileData.objectPrefabIndex);
                 GameObject obj;
                 Transform decorationParent = chunkParent;
 

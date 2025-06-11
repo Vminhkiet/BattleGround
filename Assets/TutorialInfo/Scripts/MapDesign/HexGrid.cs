@@ -125,43 +125,7 @@ public class HexGrid : MonoBehaviour
             cell.currentTile = null; // Ensure currentTile is null if newPrefab is null
             return null;
         }
-    }
-
-    /// <summary>
-    /// Rotates the current tile of the cell at the given world position by 90 degrees around its local Y-axis.
-    /// </summary>
-    /// <param name="worldHitPosition">The world position to identify the cell (e.g., from a raycast hit).</param>
-    public void RotateCellTileY60(Vector3 worldHitPosition)
-    {
-        // Convert the world hit position to local grid space to find coordinates
-        Vector3 localHitPosition = transform.InverseTransformPoint(worldHitPosition);
-        HexCoordinates coordinates = HexCoordinates.FromPosition(localHitPosition); // Assuming this method exists
-
-        // This index calculation is typical for offset coordinate systems
-        int index = coordinates.X + coordinates.Z * width + coordinates.Z / 2;
-
-        if (index < 0 || index >= cells.Length)
-        {
-            Debug.LogWarning($"RotateCellTileY90: Index {index} out of bounds for coordinates {coordinates}. Position: {worldHitPosition}");
-            return;
-        }
-
-        HexCell cell = cells[index];
-        if (cell == null)
-        {
-            Debug.LogWarning($"RotateCellTileY90: Cell at index {index} (coords: {coordinates}) is null.");
-            return;
-        }
-
-        if (cell.currentTile != null)
-        {
-            cell.currentTile.transform.Rotate(0f, 60f, 0f, Space.Self);
-        }
-        else
-        {
-            Debug.Log($"RotateCellTileY60: Cell at {coordinates} has no current tile to rotate.");
-        }
-    }       
+    } 
         
     public GameObject PlaceObjectOnTile(Vector3 position, GameObject objectPrefab)
     {

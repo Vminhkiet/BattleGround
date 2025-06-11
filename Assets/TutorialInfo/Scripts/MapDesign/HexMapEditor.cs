@@ -7,28 +7,30 @@ using UnityEditorInternal; // Required for List
 
 public class HexMapEditor : MonoBehaviour
 {
-    private MapSaveLoadManager mapSaveLoadManager;
-    public GameObject[] tilePrefabs;    // Your prefab palette (assigned in inspector)
-    public HexGrid hexGrid;             // Your grid reference
-    private GameObject activePrefab;    // The current selected prefab
-    private int activePrefabIndex = 0; // Keep track of the selected index
+    public MapObjectDatabase m_MapObjectDatabase;
+    public HexGrid hexGrid;        
+    private GameObject activePrefab; 
+    private int activePrefabIndex = 0; 
 
     [Header("UI Settings")]
-    public Transform scrollViewContent;      // Assign the "Content" object of your Scroll View
-    public GameObject uiToggleButtonPrefab;  // Assign your PrefabToggleButton prefab
-    public float previewObjectScale = 0.5f;  // Scale of the 3D preview on the button
-    public Vector3 previewObjectRotation = new Vector3(0, 45, 0); // Initial rotation for the preview
-    // Distance to place the preview object in front of the button's local Z, adjust as needed
+    public Transform scrollViewContent;     
+    public GameObject uiToggleButtonPrefab;  
+    public float previewObjectScale = 0.5f;  
+    public Vector3 previewObjectRotation = new Vector3(0, 45, 0); 
     public Vector3 objectPreviewPositionOffset;
 
+    [Header("Rotation Settings")]
+    public float rotationSpeed = 180f;
+    private GameObject lastRotatedObject; 
+    private HexCell lastRotatedCell; 
+
     private List<Toggle> prefabToggles = new List<Toggle>();
-    private List<GameObject> previewInstances = new List<GameObject>(); // To manage preview objects
+    private List<GameObject> previewInstances = new List<GameObject>(); 
 
     [SerializeField]
     private EditorMode currentMode = EditorMode.Tile;
 
     [Header("Object placement")]
-    public GameObject[] objectPrefabs;
     private GameObject activeObjectPrefab;
     private int activeObjectIndex = 0;
     public Transform objectScrollViewContent;
@@ -37,13 +39,6 @@ public class HexMapEditor : MonoBehaviour
 
     void Awake()
     {
-        mapSaveLoadManager= GetComponent<MapSaveLoadManager>();
-        if (tilePrefabs == null || tilePrefabs.Length == 0)
-        {
-            Debug.LogError("HexMapEditor: No tilePrefabs assigned in the inspector!");
-            return;
-        }
-
         if (scrollViewContent == null || uiToggleButtonPrefab == null)
         {
             Debug.LogError("HexMapEditor: ScrollView Content or UI Toggle Button Prefab not assigned!");
@@ -60,13 +55,10 @@ public class HexMapEditor : MonoBehaviour
             Destroy(child.gameObject);
         }
 
-        if (tilePrefabs.Length > 0)
-        {
-            SelectPrefab(0); // Default selection (optional, can be based on UI interaction)
-        }
+        SelectPrefab(0);
 
         PrefabSelectionUIBuilder.BuildSelectionUI(
-        tilePrefabs,
+        m_MapObjectDatabase.tilePrefabs,
         scrollViewContent,
         uiToggleButtonPrefab,
         prefabToggles,
@@ -78,7 +70,7 @@ public class HexMapEditor : MonoBehaviour
         );
 
         PrefabSelectionUIBuilder.BuildSelectionUI(
-        objectPrefabs,
+         m_MapObjectDatabase.objectPrefabs,
         objectScrollViewContent,
         uiToggleButtonPrefab,
         objectToggles,
@@ -92,7 +84,7 @@ public class HexMapEditor : MonoBehaviour
 
     public void SelectObject(int index)
     {
-        if (index < 0 || index >= objectPrefabs.Length || objectPrefabs[index] == null)
+        if (index < 0 || index >= m_MapObjectDatabase.objectCount || m_MapObjectDatabase.GetObject(index) == null)
         {
             Debug.LogWarning($"HexMapEditor: Attempted to select invalid object index: {index}");
             activeObjectPrefab = null;
@@ -100,14 +92,14 @@ public class HexMapEditor : MonoBehaviour
             return;
         }
 
-        activeObjectPrefab = objectPrefabs[index];
+        activeObjectPrefab = m_MapObjectDatabase.GetObject(index);
         activeObjectIndex = index;
         currentMode = EditorMode.Object;
     }
 
     public void SelectPrefab(int index)
     {
-        if (index < 0 || index >= tilePrefabs.Length || tilePrefabs[index] == null)
+        if (index < 0 || index >= m_MapObjectDatabase.tileCount || m_MapObjectDatabase.GetTile(index) == null)
         {
             Debug.LogWarning($"HexMapEditor: Attempted to select invalid prefab index: {index}");
             // Optionally deselect or handle error
@@ -120,35 +112,14 @@ public class HexMapEditor : MonoBehaviour
             return;
         }
 
-        activePrefab = tilePrefabs[index];
+        activePrefab = m_MapObjectDatabase.GetTile(index);
         activePrefabIndex = index;
-        // Debug.Log($"Selected prefab: {activePrefab.name} at index {index}");
-
-        // Ensure the UI reflects this selection if it wasn't from a direct UI click
-        // (e.g. initial selection in Awake)
         if (index < prefabToggles.Count && !prefabToggles[index].isOn)
         {
             prefabToggles[index].isOn = true;
         }
         currentMode = EditorMode.Tile;
     }
-
-    public int GetTilePrefabIndex(GameObject instance)
-    {
-        for (int i = 0; i < tilePrefabs.Length; i++)
-            if (instance.name.Contains(tilePrefabs[i].name)) return i;
-
-        return -1;
-    }
-
-    public int GetObjectPrefabIndex(GameObject instance)
-    {
-        for (int i = 0; i < objectPrefabs.Length; i++)
-            if (instance != null && instance.name.Contains(objectPrefabs[i].name)) return i;
-
-        return -1;
-    }
-
 
     void Update()
     {
@@ -165,7 +136,7 @@ public class HexMapEditor : MonoBehaviour
         Ray inputRay = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
 
-        if (Physics.Raycast(inputRay, out hit)) // Raycast một lần và sử dụng kết quả 'hit'
+        if (Physics.Raycast(inputRay, out hit))
         {
             // Đặt Tile
             if (Input.GetMouseButton(0) && currentMode == EditorMode.Tile)
@@ -182,56 +153,92 @@ public class HexMapEditor : MonoBehaviour
             // Đặt Object
             else if (Input.GetMouseButtonDown(0) && currentMode == EditorMode.Object)
             {
-                if (objectPrefabs != null && objectPrefabs.Length > activeObjectIndex && activeObjectIndex >= 0)
+                if (m_MapObjectDatabase.objectCount > activeObjectIndex && activeObjectIndex >= 0)
                 {
-                    // Vẫn sử dụng hit.point để xác định cell sẽ đặt object lên
-                    hexGrid.PlaceObjectOnTile(hit.point, objectPrefabs[activeObjectIndex]);
+                    hexGrid.PlaceObjectOnTile(hit.point, m_MapObjectDatabase.GetObject(activeObjectIndex));
                 }
                 else
                 {
                     Debug.LogWarning("No active object prefab selected or index out of bounds.");
                 }
             }
-            // Xoay (Tile hoặc Object)
-            else if (Input.GetKeyDown(KeyCode.R))
+
+            // Handle continuous rotation while holding R
+            if (Input.GetKey(KeyCode.R))
             {
+                float rotationAmount = rotationSpeed * Time.deltaTime;
+
                 if (currentMode == EditorMode.Tile)
                 {
-                    // Xoay tile dựa trên cell mà raycast trúng (hit.point)
-                    hexGrid.RotateCellTileY60(hit.point);
+                    // Get the cell at hit point
+                    Vector3 localHitPosition = hexGrid.transform.InverseTransformPoint(hit.point);
+                    HexCoordinates coordinates = HexCoordinates.FromPosition(localHitPosition);
+                    int index = coordinates.X + coordinates.Z * hexGrid.width + coordinates.Z / 2;
+
+                    if (index >= 0 && index < hexGrid.GetAllCells().Length)
+                    {
+                        HexCell cell = hexGrid.GetAllCells()[index];
+                        if (cell != null && cell.currentTile != null)
+                        {
+                            // Only rotate if we're still hovering over the same cell
+                            if (lastRotatedCell != cell)
+                            {
+                                lastRotatedCell = cell;
+                            }
+                            cell.currentTile.transform.Rotate(0f, rotationAmount, 0f, Space.Self);
+                        }
+                    }
                 }
                 else if (currentMode == EditorMode.Object)
                 {
-                    // Kiểm tra xem raycast có trúng một GameObject với tag "DecorationObject" không
                     if (hit.collider != null && hit.collider.gameObject.CompareTag("DecorationObject"))
                     {
                         GameObject objectToRotate = hit.collider.gameObject;
-                        objectToRotate.transform.Rotate(0f, 60f, 0f, Space.Self);
-
-                    }
-                    else
-                    {
-
-                        Debug.Log("R pressed in Object mode, but no 'DecorationObject' was hit directly.");
+                        // Only rotate if we're still hovering over the same object
+                        if (lastRotatedObject != objectToRotate)
+                        {
+                            lastRotatedObject = objectToRotate;
+                        }
+                        objectToRotate.transform.Rotate(0f, rotationAmount, 0f, Space.Self);
                     }
                 }
             }
-            else if (Input.GetKeyDown(KeyCode.Backspace))
+            else
             {
-                if (hit.collider != null && hit.collider.gameObject.CompareTag("DecorationObject"))
-                {
-                    GameObject decorationObject = hit.collider.gameObject;
-                    Destroy(decorationObject);
+                // Reset tracking when R is released
+                lastRotatedObject = null;
+                lastRotatedCell = null;
+            }
 
-                }
-                else
+            // Handle deletion
+            if (Input.GetKey(KeyCode.Backspace))
+            {
+                if (hit.collider != null)
                 {
+                    if (currentMode == EditorMode.Object && hit.collider.gameObject.CompareTag("DecorationObject"))
+                    {
+                        GameObject decorationObject = hit.collider.gameObject;
+                        Destroy(decorationObject);
+                    }
+                    else if (currentMode == EditorMode.Tile)
+                    {
 
-                    Debug.Log("R pressed in Object mode, but no 'DecorationObject' was hit directly.");
+                        Vector3 localHitPosition = hexGrid.transform.InverseTransformPoint(hit.point);
+                        HexCoordinates coordinates = HexCoordinates.FromPosition(localHitPosition);
+                        int index = coordinates.X + coordinates.Z * hexGrid.width + coordinates.Z / 2;
+
+                        if (index >= 0 && index < hexGrid.GetAllCells().Length)
+                        {
+                            HexCell cell = hexGrid.GetAllCells()[index];
+                            if (cell != null && cell.currentTile != null)
+                            {
+                                hexGrid.ReplaceCellPrefab(hit.point, null);
+                            }
+                        }
+                    }
                 }
             }
         }
-
     }
 
 }
