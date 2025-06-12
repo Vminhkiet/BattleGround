@@ -1,4 +1,5 @@
-﻿using UnityEditor;
+﻿#if UNITY_EDITOR
+using UnityEditor;
 using UnityEngine;
 
 [CustomEditor(typeof(HexGrid))]
@@ -29,3 +30,4 @@ public class HexGridEditor : Editor
         }
     }
 }
+#endif

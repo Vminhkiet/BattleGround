@@ -9,9 +9,13 @@ public class HexMapEditorLoader
     public static void LoadChunkedMap()
     {
         // Mở dialog để người dùng chọn file "master_map_data.json"
-        // Các map được lưu trong Application.persistentDataPath
-        string initialPath = Application.persistentDataPath;
-        string path = EditorUtility.OpenFilePanel("Select Master Map Data File (master_map_data.json)", initialPath, "json");
+        // Các map được lưu trong Application.streamingAssetsPath/Maps
+        string mapsPath = Path.Combine(Application.streamingAssetsPath, "Maps");
+        if (!Directory.Exists(mapsPath))
+        {
+            Directory.CreateDirectory(mapsPath);
+        }
+        string path = EditorUtility.OpenFilePanel("Select Master Map Data File (master_map_data.json)", mapsPath, "json");
 
         if (string.IsNullOrEmpty(path))
         {

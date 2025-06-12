@@ -1,6 +1,8 @@
 ﻿using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
+using System.Collections.Generic;
+using System.Linq;
 
 [ExecuteInEditMode]
 public class HexGrid : MonoBehaviour
@@ -13,13 +15,13 @@ public class HexGrid : MonoBehaviour
 
     public GameObject defaultTilePrefab; // Tile prefab placed on each cell when first created
 
-    HexCell[] cells;
+    Dictionary<Vector2Int, HexCell> cells;
     Canvas gridCanvas;
 
     void Awake()
     {
         gridCanvas = GetComponentInChildren<Canvas>();
-        cells = new HexCell[height * width];
+        cells = new Dictionary<Vector2Int, HexCell>();
         for (int i = transform.childCount - 1; i >= 0; i--)
         {
             Transform child = transform.GetChild(i);
@@ -41,18 +43,18 @@ public class HexGrid : MonoBehaviour
         }
 #endif
 
-        cells = new HexCell[height * width];
+        cells = new Dictionary<Vector2Int, HexCell>();
 
-        for (int z = 0, i = 0; z < height; z++)
+        for (int z = 0; z < height; z++)
         {
             for (int x = 0; x < width; x++)
             {
-                CreateCell(x, z, i++);
+                CreateCell(x, z);
             }
         }
     }
 
-    void CreateCell(int x, int z, int i)
+    void CreateCell(int x, int z)
     {
         Vector3 position;
         // Assuming HexMetrics.innerRadius and HexMetrics.outerRadius are defined elsewhere
@@ -61,10 +63,11 @@ public class HexGrid : MonoBehaviour
         position.y = 0f;
         position.z = z * (HexMetrics.outerRadius * 1.5f);
 
-        HexCell cell = cells[i] = Instantiate<HexCell>(cellPrefab);
+        HexCell cell = Instantiate<HexCell>(cellPrefab);
         cell.transform.SetParent(transform, false);
         cell.transform.localPosition = position;
         cell.coordinates = HexCoordinates.FromOffsetCoordinates(x, z); // Assuming HexCoordinates is defined
+        cells[new Vector2Int(x, z)] = cell;
 
         // Instantiate the default tile prefab and parent it to the cell
         if (defaultTilePrefab != null)
@@ -83,12 +86,11 @@ public class HexGrid : MonoBehaviour
         HexCoordinates coordinates = HexCoordinates.FromPosition(localHitPosition); // Assuming this method exists
 
         // This index calculation is typical for offset coordinate systems (like in Catlike Coding's tutorials)
-        int index = coordinates.X + coordinates.Z * width + coordinates.Z / 2;
+        Vector2Int key = new Vector2Int(coordinates.X, coordinates.Z);
 
-        HexCell cell = cells[index];
-        if (cell == null)
+        if (!cells.TryGetValue(key, out HexCell cell))
         {
-            Debug.LogWarning($"ReplaceCellPrefab: Cell at index {index} is null.");
+            Debug.LogWarning($"ReplaceCellPrefab: Cell at coordinates {key.x},{key.y} does not exist.");
             return null;
         }
 
@@ -131,11 +133,12 @@ public class HexGrid : MonoBehaviour
     {
         position = transform.InverseTransformPoint(position);
         HexCoordinates coordinates = HexCoordinates.FromPosition(position);
-        int index = coordinates.X + coordinates.Z * width + coordinates.Z / 2;
+        Vector2Int key = new Vector2Int(coordinates.X, coordinates.Z);
 
-        if (index < 0 || index >= cells.Length) return null;
-
-        HexCell cell = cells[index];
+        if (!cells.TryGetValue(key, out HexCell cell))
+        {
+            return null;
+        }
 
         // Optional: clear existing decoration
         if (cell.decorationObject != null)
@@ -165,25 +168,52 @@ public class HexGrid : MonoBehaviour
 
     public HexCell[] GetAllCells()
     {
-        return cells;
+        return cells.Values.ToArray();
     }
     public HexCell GetCellAtCoordinates(int x, int z)
     {
-        int index = x + z * width + z / 2;
-        if (index < 0 || index >= cells.Length)
+        cells.TryGetValue(new Vector2Int(x, z), out HexCell cell);
+        return cell;
+    }
+
+    public HexCell GetOrCreateCellAt(int x, int z)
+    {
+        Vector2Int coords = new Vector2Int(x, z);
+        if (cells.TryGetValue(coords, out HexCell cell))
+        {
+           if (cell != null)
+            return cell;
+        }
+
+        if (cellPrefab == null)
+        {
+            Debug.LogError("cellPrefab is not assigned in HexGrid.");
             return null;
-        return cells[index];
+        }
+
+        Vector3 position;
+        position.x = (x + z * 0.5f - z / 2) * (HexMetrics.innerRadius * 2f);
+        position.y = 0f;
+        position.z = z * (HexMetrics.outerRadius * 1.5f);
+
+        cell = Instantiate<HexCell>(cellPrefab);
+        cell.transform.SetParent(transform, false);
+        cell.transform.localPosition = position;
+        cell.coordinates = HexCoordinates.FromOffsetCoordinates(x, z);
+
+        cells[coords] = cell;
+
+        return cell;
     }
 
     public void ClearAllCells(bool isEditorMode = false)
     {
         if (cells == null) // 'cells' là mảng/list chứa tất cả HexCell của bạn
         {
-            Debug.LogWarning("Mảng 'cells' trong HexGrid chưa được khởi tạo hoặc null.");
             return;
         }
 
-        foreach (HexCell cell in cells) // cells là nơi bạn lưu trữ tất cả các HexCell
+        foreach (HexCell cell in cells.Values) // cells là nơi bạn lưu trữ tất cả các HexCell
         {
             if (cell == null) continue;
             if (cell.currentTile != null)
@@ -196,7 +226,6 @@ public class HexGrid : MonoBehaviour
                 if (isEditorMode) DestroyImmediate(cell.decorationObject); else Destroy(cell.decorationObject);
                 cell.decorationObject = null;
             }
-            // Reset các thuộc tính khác của cell nếu cần
         }
         Debug.Log("Tất cả các ô đã được dọn dẹp.");
 #if UNITY_EDITOR

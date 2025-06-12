@@ -69,6 +69,7 @@ public class HexMapEditorSaver
         Debug.Log($"Đang lưu map: {mapName}...");
         mapIOManager.SaveMapByChunks(mapName); // Gọi hàm lưu của MapIOManager
         lastUsedMapName = mapName; // Lưu tên map để dùng cho lần sau
-        EditorUtility.DisplayDialog("Lưu Thành Công", $"Map '{mapName}' đã được lưu vào {Application.persistentDataPath}", "OK");
+        string savePath = Path.Combine(Application.streamingAssetsPath, "Maps");
+        EditorUtility.DisplayDialog("Lưu Thành Công", $"Map '{mapName}' đã được lưu vào {savePath}", "OK");
     }
 }

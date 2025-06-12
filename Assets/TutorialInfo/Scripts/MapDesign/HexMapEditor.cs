@@ -2,8 +2,7 @@
 using UnityEngine.UI; // Required for UI elements like Toggle, ScrollRect, Image
 using UnityEngine.EventSystems;
 using System.Collections.Generic;
-using UnityEngine.UIElements.Experimental;
-using UnityEditorInternal; // Required for List
+
 
 public class HexMapEditor : MonoBehaviour
 {

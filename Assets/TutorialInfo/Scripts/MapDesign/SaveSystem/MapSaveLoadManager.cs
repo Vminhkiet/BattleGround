@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using System.Collections;
 using System.IO;
 using UnityEngine;
+using UnityEngine.Networking;
 using UnityEditor;
 
 public class MapSaveLoadManager : MonoBehaviour
@@ -25,7 +26,16 @@ public class MapSaveLoadManager : MonoBehaviour
         }
 
         // Tạo thư mục cho map này nếu chưa tồn tại
+#if UNITY_EDITOR
+        string rootPath = Path.Combine(Application.streamingAssetsPath, "Maps");
+        if (!Directory.Exists(rootPath))
+        {
+            Directory.CreateDirectory(rootPath);
+        }
+        string mapDirectory = Path.Combine(rootPath, mapName);
+#else
         string mapDirectory = Path.Combine(Application.persistentDataPath, mapName);
+#endif
         Directory.CreateDirectory(mapDirectory);
 
         // Phân nhóm các ô theo chunk ID
@@ -139,22 +149,66 @@ public class MapSaveLoadManager : MonoBehaviour
 
     public MasterMapData LoadMasterMapData(string mapName)
     {
-        string mapDirectory = Path.Combine(Application.persistentDataPath, mapName);
-        string masterFilePath = Path.Combine(mapDirectory, "master_map_data.json");
+        string masterFilePath = Path.Combine(Application.persistentDataPath, mapName, "master_map_data.json");
+        string json = null;
 
-        if (!File.Exists(masterFilePath))
+        if (File.Exists(masterFilePath))
         {
-            Debug.LogWarning($"Không tìm thấy file master map data: {masterFilePath}");
+            json = File.ReadAllText(masterFilePath);
+        }
+        else
+        {
+            // Fallback for editor-only sync read from StreamingAssets
+            masterFilePath = Path.Combine(Application.streamingAssetsPath, "Maps", mapName, "master_map_data.json");
+             if (File.Exists(masterFilePath))
+            {
+                json = File.ReadAllText(masterFilePath);
+            }
+        }
+    
+        if (string.IsNullOrEmpty(json))
+        {
+            Debug.LogWarning($"Không tìm thấy file master map data cho '{mapName}' ở cả persistentDataPath và StreamingAssets/Maps.");
             return null;
         }
 
-        string masterJson = File.ReadAllText(masterFilePath);
-        MasterMapData masterData = JsonUtility.FromJson<MasterMapData>(masterJson);
+        MasterMapData masterData = JsonUtility.FromJson<MasterMapData>(json);
         if (masterData != null)
         {
-            this.chunkSize = masterData.chunkSize; // Cập nhật chunkSize từ file đã lưu
+            this.chunkSize = masterData.chunkSize;
         }
         return masterData;
+    }
+
+    public IEnumerator LoadMasterMapDataAsync(string mapName, Action<MasterMapData> onCompleted)
+    {
+        string masterFilePath = Path.Combine(Application.persistentDataPath, mapName, "master_map_data.json");
+        string json = null;
+
+        if (File.Exists(masterFilePath))
+        {
+            json = File.ReadAllText(masterFilePath);
+        }
+        else
+        {
+            // Fallback to StreamingAssets
+            masterFilePath = Path.Combine(Application.streamingAssetsPath, "Maps", mapName, "master_map_data.json");
+            yield return StartCoroutine(ReadAllTextAsync(masterFilePath, result => json = result));
+        }
+    
+        if (string.IsNullOrEmpty(json))
+        {
+            Debug.LogWarning($"Không tìm thấy file master map data cho '{mapName}' ở cả persistentDataPath và StreamingAssets/Maps.");
+            onCompleted?.Invoke(null);
+            yield break;
+        }
+
+        MasterMapData masterData = JsonUtility.FromJson<MasterMapData>(json);
+        if (masterData != null)
+        {
+            this.chunkSize = masterData.chunkSize;
+        }
+        onCompleted?.Invoke(masterData);
     }
 
     /// <summary>
@@ -166,6 +220,12 @@ public class MapSaveLoadManager : MonoBehaviour
         if (masterData == null) return;
 
         string mapDirectory = Path.Combine(Application.persistentDataPath, mapName);
+        // Check both paths for editor loading
+        if (!Directory.Exists(mapDirectory))
+        {
+            mapDirectory = Path.Combine(Application.streamingAssetsPath, "Maps", mapName);
+        }
+
         ClearAndResetMap(true); // isEditorMode = true
 
         Debug.Log($"Đang tải map '{mapName}' cho editor...");
@@ -182,27 +242,30 @@ public class MapSaveLoadManager : MonoBehaviour
 #endif
     }
 
-
-    public void LoadChunkForPlayer(string mapName, int chunkX, int chunkZ)
+    public IEnumerator LoadChunkForPlayer(string mapName, int chunkX, int chunkZ)
     {
         if (chunkParentTransforms.ContainsKey(new Vector2Int(chunkX, chunkZ)))
         {
-            return;
+            yield break; // Already loaded
         }
 
-
-        string mapDirectory = Path.Combine(Application.persistentDataPath, mapName);
         string chunkFileName = $"chunk_{chunkX}_{chunkZ}.json";
-        string chunkFilePath = Path.Combine(mapDirectory, chunkFileName);
+        string chunkFilePath = Path.Combine(Application.persistentDataPath, mapName, chunkFileName);
+        string json = null;
 
         if (File.Exists(chunkFilePath))
         {
-            Debug.Log($"Đang tải chunk {chunkX},{chunkZ} cho map '{mapName}'...");
-            LoadChunkFromFile(chunkFilePath, mapName);
+            json = File.ReadAllText(chunkFilePath);
         }
         else
         {
-            Debug.LogWarning($"Không tìm thấy file chunk: {chunkFilePath}. Chunk này có thể không tồn tại.");
+            chunkFilePath = Path.Combine(Application.streamingAssetsPath, "Maps", mapName, chunkFileName);
+            yield return StartCoroutine(ReadAllTextAsync(chunkFilePath, result => json = result));
+        }
+
+        if (!string.IsNullOrEmpty(json))
+        {
+            LoadChunkFromJson(json, mapName, false);
         }
     }
 
@@ -213,13 +276,17 @@ public class MapSaveLoadManager : MonoBehaviour
             Debug.LogWarning($"Không tìm thấy file chunk: {chunkFilePath}");
             return;
         }
-
         string json = File.ReadAllText(chunkFilePath);
+        LoadChunkFromJson(json, mapName, isEditorMode);
+    }
+
+    private void LoadChunkFromJson(string json, string mapName, bool isEditorMode)
+    {
         HexChunkData chunkData = JsonUtility.FromJson<HexChunkData>(json);
 
         if (chunkData == null)
         {
-            Debug.LogError($"Không thể phân tích dữ liệu chunk từ: {chunkFilePath}");
+            Debug.LogError($"Không thể phân tích dữ liệu chunk từ JSON.");
             return;
         }
 
@@ -227,7 +294,7 @@ public class MapSaveLoadManager : MonoBehaviour
 
         foreach (HexTileData tileData in chunkData.tiles)
         {
-            HexCell cell = grid.GetCellAtCoordinates(tileData.x, tileData.z);
+            HexCell cell = grid.GetOrCreateCellAt(tileData.x, tileData.z);
 
             if (cell == null)
             {
@@ -259,7 +326,7 @@ public class MapSaveLoadManager : MonoBehaviour
 #if UNITY_EDITOR
                     tileObj = (GameObject)PrefabUtility.InstantiatePrefab(tilePrefab, chunkParent);
 #else
-                    tileObj = Instantiate(tilePrefab, chunkParent); // Fallback cho non-editor
+                    tileObj = Instantiate(tilePrefab, chunkParent); 
 #endif
                 }
                 else
@@ -306,7 +373,6 @@ public class MapSaveLoadManager : MonoBehaviour
         }
     }
 
-
     public void UnloadChunk(int chunkX, int chunkZ)
     {
         Vector2Int chunkId = new Vector2Int(chunkX, chunkZ);
@@ -345,11 +411,6 @@ public class MapSaveLoadManager : MonoBehaviour
                 Destroy(chunkParent.gameObject); // Hủy GameObject cha của chunk
             }
             chunkParentTransforms.Remove(chunkId); // Xóa khỏi dictionary
-            Debug.Log($"Chunk {chunkX},{chunkZ} đã được dọn dẹp.");
-        }
-        else
-        {
-            Debug.LogWarning($"Không thể dọn dẹp chunk {chunkX},{chunkZ}: không tìm thấy trong danh sách đã tải.");
         }
     }
 
@@ -407,5 +468,37 @@ public class MapSaveLoadManager : MonoBehaviour
             grid.ClearAllCells(isEditorMode);
         }
         Debug.Log("Map đã được dọn dẹp và trạng thái quản lý chunk đã được reset.");
+    }
+
+    private IEnumerator ReadAllTextAsync(string filePath, Action<string> onCompleted)
+    {
+        if (filePath.Contains("://") || filePath.Contains(":///"))
+        {
+            using (UnityWebRequest www = UnityWebRequest.Get(filePath))
+            {
+                yield return www.SendWebRequest();
+                if (www.result != UnityWebRequest.Result.Success)
+                {
+                    // Don't log error if file not found, it's an expected case
+                    // Debug.LogWarning($"Failed to load file at {filePath}: {www.error}");
+                    onCompleted?.Invoke(null);
+                }
+                else
+                {
+                    onCompleted?.Invoke(www.downloadHandler.text);
+                }
+            }
+        }
+        else
+        {
+            if (File.Exists(filePath))
+            {
+                onCompleted?.Invoke(File.ReadAllText(filePath));
+            }
+            else
+            {
+                onCompleted?.Invoke(null);
+            }
+        }
     }
 }
