@@ -4,118 +4,126 @@ using UnityEngine;
 
 public class BushTransparency : MonoBehaviour
 {
-    [Range(0f, 1f)] public float targetAlpha = 0.4f;
-    public float fadeDuration = 0.3f;
+    [Tooltip("Chọn layer của các bụi rậm.")]
+    [SerializeField] private LayerMask bushLayer;
 
-    private List<Material> allMaterials = new List<Material>();
-    private List<Color> originalColors = new List<Color>();
-    private Coroutine fadeRoutine;
+    [Tooltip("Mức alpha khi nhân vật ở trong bụi rậm.")]
+    [SerializeField][Range(0, 1)] private float transparentAlpha = 0.7f;
 
-    private void Start()
+    private List<Material> characterMeshMaterials;
+    private List<Material> characterSkinnedMeshMaterials;
+
+    private int overlappingBushCount = 0;
+
+    void Awake()
     {
-        Renderer[] renderers = GetComponentsInChildren<Renderer>();
+        characterSkinnedMeshMaterials = new List<Material>();
+        characterMeshMaterials = new List<Material>();
 
-        foreach (Renderer rend in renderers)
+        MeshRenderer[] meshRenderers = GetComponentsInChildren<MeshRenderer>();
+        foreach (var rend in meshRenderers)
         {
-            // Lấy một bản sao của các material để không thay đổi file gốc
-            Material[] instanceMats = rend.materials;
+            characterMeshMaterials.AddRange(rend.materials);
+        }
 
-            for (int i = 0; i < instanceMats.Length; i++)
-            {
-                Material mat = instanceMats[i];
-
-                // Đảm bảo không xử lý trùng lặp nếu nhiều renderer dùng chung 1 material instance
-                if (!allMaterials.Contains(mat))
-                {
-                    SetupURPMaterialForTransparency(mat);
-                    allMaterials.Add(mat);
-
-                    Color c = mat.HasProperty("_BaseColor") ? mat.GetColor("_BaseColor") : mat.color;
-                    originalColors.Add(c);
-
-                    // Bạn có thể không cần set alpha về 0 ở đây nếu muốn nhân vật hiện rõ lúc bắt đầu
-                    // c.a = 0f; 
-                    // SetMaterialAlpha(mat, c);
-                }
-            }
+        SkinnedMeshRenderer[] skinnedRenderers = GetComponentsInChildren<SkinnedMeshRenderer>();
+        foreach (var rend in skinnedRenderers)
+        {
+            characterSkinnedMeshMaterials.AddRange(rend.materials);
         }
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        // Giả sử player của bạn có layer là "Player" và nó va chạm với "Bush"
-        if (other.gameObject.layer == LayerMask.NameToLayer("Bush")) // Thay "Player" bằng tag của player
+        if ((bushLayer.value & (1 << other.gameObject.layer)) > 0)
         {
-            if (fadeRoutine != null) StopCoroutine(fadeRoutine);
-            fadeRoutine = StartCoroutine(FadeAlphaTo(targetAlpha));
+            overlappingBushCount++;
+            UpdateCharacterAlpha();
         }
     }
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.gameObject.layer == LayerMask.NameToLayer("Bush")) 
+        if ((bushLayer.value & (1 << other.gameObject.layer)) > 0)
         {
-            if (fadeRoutine != null) StopCoroutine(fadeRoutine);
-            fadeRoutine = StartCoroutine(FadeAlphaTo(0f));
-        }
-    }
-
-    private IEnumerator FadeAlphaTo(float target)
-    {
-        float t = 0f;
-        float duration = Mathf.Max(0.01f, fadeDuration);
-
-        List<float> startAlphas = new List<float>();
-        foreach (var mat in allMaterials)
-        {
-            Color current = mat.HasProperty("_BaseColor") ? mat.GetColor("_BaseColor") : mat.color;
-            startAlphas.Add(current.a);
-        }
-
-        while (t < 1f)
-        {
-            t += Time.deltaTime / duration;
-            for (int i = 0; i < allMaterials.Count; i++)
+            overlappingBushCount--;
+            if (overlappingBushCount < 0)
             {
-                Color baseColor = originalColors[i];
-                float a = Mathf.Lerp(startAlphas[i], target, t);
-                baseColor.a = a;
-                SetMaterialAlpha(allMaterials[i], baseColor);
+                overlappingBushCount = 0;
             }
-            yield return null;
-        }
-
-        // Đảm bảo giá trị cuối cùng được đặt chính xác
-        for (int i = 0; i < allMaterials.Count; i++)
-        {
-            Color final = originalColors[i];
-            final.a = target;
-            SetMaterialAlpha(allMaterials[i], final);
+            UpdateCharacterAlpha();
         }
     }
 
-    private void SetMaterialAlpha(Material mat, Color color)
+    private void UpdateCharacterAlpha()
     {
-        if (mat.HasProperty("_BaseColor"))
+        if (overlappingBushCount > 0)
         {
-            mat.SetColor("_BaseColor", color);
+            SetMeshMaterialsAlpha(transparentAlpha);
+            SetSkinnedMeshMaterialsAlpha(0f);
         }
         else
         {
-            mat.color = color;
+            SetMeshMaterialsAlpha(1.0f);
+            SetSkinnedMeshMaterialsAlpha(1.0f);
         }
     }
 
-    private void SetupURPMaterialForTransparency(Material mat)
+    private void SetMeshMaterialsAlpha(float alpha)
     {
-        if (!mat.shader.name.Contains("Universal Render Pipeline"))
+        foreach (var mat in characterMeshMaterials)
         {
-            Debug.LogWarning($"Material '{mat.name}' is not using a URP shader. Transparency may not work.");
-            return;
-        }
+            if (alpha < 1.0f)
+            {
+                mat.SetFloat("_Surface", 1);
+                mat.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.SrcAlpha);
+                mat.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
+                mat.SetInt("_ZWrite", 0);
+                mat.EnableKeyword("_SURFACE_TYPE_TRANSPARENT");
+                mat.renderQueue = (int)UnityEngine.Rendering.RenderQueue.Transparent;
+            }
+            else
+            {
+                mat.SetFloat("_Surface", 0);
+                mat.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.One);
+                mat.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.Zero);
+                mat.SetInt("_ZWrite", 1);
+                mat.DisableKeyword("_SURFACE_TYPE_TRANSPARENT");
+                mat.renderQueue = (int)UnityEngine.Rendering.RenderQueue.Geometry;
+            }
 
-        mat.SetFloat("_Surface", 1); 
-        mat.SetFloat("_Blend", 0); 
-        mat.EnableKeyword("_SURFACE_TYPE_TRANSPARENT");
+            Color color = mat.GetColor("_BaseColor");
+            color.a = alpha;
+            mat.SetColor("_BaseColor", color);
+        }
+    }
+
+    private void SetSkinnedMeshMaterialsAlpha(float alpha)
+    {
+        foreach (var mat in characterSkinnedMeshMaterials)
+        {
+            if (alpha < 1.0f)
+            {
+                mat.SetFloat("_Surface", 1);
+                mat.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.SrcAlpha);
+                mat.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
+                mat.SetInt("_ZWrite", 0);
+                mat.EnableKeyword("_SURFACE_TYPE_TRANSPARENT");
+                mat.renderQueue = (int)UnityEngine.Rendering.RenderQueue.Transparent;
+            }
+            else
+            {
+                mat.SetFloat("_Surface", 0);
+                mat.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.One);
+                mat.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.Zero);
+                mat.SetInt("_ZWrite", 1);
+                mat.DisableKeyword("_SURFACE_TYPE_TRANSPARENT");
+                mat.renderQueue = (int)UnityEngine.Rendering.RenderQueue.Geometry;
+            }
+
+            Color color = mat.GetColor("_BaseColor");
+            color.a = alpha;
+            mat.SetColor("_BaseColor", color);
+        }
     }
 }

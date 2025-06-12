@@ -17,7 +17,7 @@
         {
             "x": 161,
             "z": 48,
-            "tilePrefabIndex": 3,
+            "tilePrefabIndex": 8,
             "objectPrefabIndex": -1,
             "tileRotX": 0.0,
             "tileRotY": 0.0,
@@ -29,7 +29,7 @@
         {
             "x": 162,
             "z": 48,
-            "tilePrefabIndex": 3,
+            "tilePrefabIndex": 8,
             "objectPrefabIndex": -1,
             "tileRotX": 0.0,
             "tileRotY": 0.0,
@@ -209,7 +209,7 @@
         {
             "x": 161,
             "z": 49,
-            "tilePrefabIndex": 3,
+            "tilePrefabIndex": 8,
             "objectPrefabIndex": -1,
             "tileRotX": 0.0,
             "tileRotY": 0.0,
@@ -221,7 +221,7 @@
         {
             "x": 162,
             "z": 49,
-            "tilePrefabIndex": 3,
+            "tilePrefabIndex": 8,
             "objectPrefabIndex": -1,
             "tileRotX": 0.0,
             "tileRotY": 0.0,
@@ -401,7 +401,7 @@
         {
             "x": 161,
             "z": 50,
-            "tilePrefabIndex": 3,
+            "tilePrefabIndex": 8,
             "objectPrefabIndex": -1,
             "tileRotX": 0.0,
             "tileRotY": 0.0,
@@ -413,7 +413,7 @@
         {
             "x": 162,
             "z": 50,
-            "tilePrefabIndex": -1,
+            "tilePrefabIndex": 8,
             "objectPrefabIndex": -1,
             "tileRotX": 0.0,
             "tileRotY": 0.0,
@@ -581,7 +581,7 @@
         {
             "x": 161,
             "z": 51,
-            "tilePrefabIndex": 3,
+            "tilePrefabIndex": 8,
             "objectPrefabIndex": -1,
             "tileRotX": 0.0,
             "tileRotY": 0.0,
@@ -749,7 +749,7 @@
         {
             "x": 160,
             "z": 52,
-            "tilePrefabIndex": 3,
+            "tilePrefabIndex": 8,
             "objectPrefabIndex": -1,
             "tileRotX": 0.0,
             "tileRotY": 0.0,
@@ -917,7 +917,7 @@
         {
             "x": 160,
             "z": 53,
-            "tilePrefabIndex": 3,
+            "tilePrefabIndex": 8,
             "objectPrefabIndex": -1,
             "tileRotX": 0.0,
             "tileRotY": 0.0,

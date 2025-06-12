@@ -1145,7 +1145,7 @@
         {
             "x": 159,
             "z": 53,
-            "tilePrefabIndex": 3,
+            "tilePrefabIndex": 8,
             "objectPrefabIndex": -1,
             "tileRotX": 0.0,
             "tileRotY": 0.0,
@@ -1337,7 +1337,7 @@
         {
             "x": 159,
             "z": 54,
-            "tilePrefabIndex": 3,
+            "tilePrefabIndex": 8,
             "objectPrefabIndex": -1,
             "tileRotX": 0.0,
             "tileRotY": 0.0,
@@ -1517,7 +1517,7 @@
         {
             "x": 158,
             "z": 55,
-            "tilePrefabIndex": 3,
+            "tilePrefabIndex": 8,
             "objectPrefabIndex": -1,
             "tileRotX": 0.0,
             "tileRotY": 0.0,
@@ -1709,7 +1709,7 @@
         {
             "x": 158,
             "z": 56,
-            "tilePrefabIndex": -1,
+            "tilePrefabIndex": 8,
             "objectPrefabIndex": -1,
             "tileRotX": 0.0,
             "tileRotY": 0.0,
@@ -1889,7 +1889,7 @@
         {
             "x": 157,
             "z": 57,
-            "tilePrefabIndex": 3,
+            "tilePrefabIndex": 8,
             "objectPrefabIndex": -1,
             "tileRotX": 0.0,
             "tileRotY": 0.0,
@@ -1901,7 +1901,7 @@
         {
             "x": 158,
             "z": 57,
-            "tilePrefabIndex": 3,
+            "tilePrefabIndex": 8,
             "objectPrefabIndex": -1,
             "tileRotX": 0.0,
             "tileRotY": 0.0,
@@ -2069,7 +2069,7 @@
         {
             "x": 156,
             "z": 58,
-            "tilePrefabIndex": 3,
+            "tilePrefabIndex": 8,
             "objectPrefabIndex": -1,
             "tileRotX": 0.0,
             "tileRotY": 0.0,
@@ -2249,7 +2249,7 @@
         {
             "x": 155,
             "z": 59,
-            "tilePrefabIndex": 3,
+            "tilePrefabIndex": 8,
             "objectPrefabIndex": -1,
             "tileRotX": 0.0,
             "tileRotY": 0.0,
@@ -2261,7 +2261,7 @@
         {
             "x": 156,
             "z": 59,
-            "tilePrefabIndex": 3,
+            "tilePrefabIndex": 8,
             "objectPrefabIndex": -1,
             "tileRotX": 0.0,
             "tileRotY": 0.0,
@@ -2441,7 +2441,7 @@
         {
             "x": 155,
             "z": 60,
-            "tilePrefabIndex": 3,
+            "tilePrefabIndex": 8,
             "objectPrefabIndex": -1,
             "tileRotX": 0.0,
             "tileRotY": 0.0,
@@ -2453,7 +2453,7 @@
         {
             "x": 156,
             "z": 60,
-            "tilePrefabIndex": 3,
+            "tilePrefabIndex": 8,
             "objectPrefabIndex": -1,
             "tileRotX": 0.0,
             "tileRotY": 0.0,
@@ -2465,7 +2465,7 @@
         {
             "x": 157,
             "z": 60,
-            "tilePrefabIndex": -1,
+            "tilePrefabIndex": 8,
             "objectPrefabIndex": -1,
             "tileRotX": 0.0,
             "tileRotY": 0.0,
@@ -2609,7 +2609,7 @@
         {
             "x": 153,
             "z": 61,
-            "tilePrefabIndex": 3,
+            "tilePrefabIndex": 8,
             "objectPrefabIndex": -1,
             "tileRotX": 0.0,
             "tileRotY": 0.0,
@@ -2621,7 +2621,7 @@
         {
             "x": 154,
             "z": 61,
-            "tilePrefabIndex": 3,
+            "tilePrefabIndex": 8,
             "objectPrefabIndex": -1,
             "tileRotX": 0.0,
             "tileRotY": 0.0,
@@ -2633,7 +2633,7 @@
         {
             "x": 155,
             "z": 61,
-            "tilePrefabIndex": 3,
+            "tilePrefabIndex": 8,
             "objectPrefabIndex": -1,
             "tileRotX": 0.0,
             "tileRotY": 0.0,
@@ -2801,7 +2801,7 @@
         {
             "x": 153,
             "z": 62,
-            "tilePrefabIndex": 3,
+            "tilePrefabIndex": 8,
             "objectPrefabIndex": -1,
             "tileRotX": 0.0,
             "tileRotY": 0.0,
@@ -2813,7 +2813,7 @@
         {
             "x": 154,
             "z": 62,
-            "tilePrefabIndex": 3,
+            "tilePrefabIndex": 8,
             "objectPrefabIndex": -1,
             "tileRotX": 0.0,
             "tileRotY": 0.0,
@@ -2981,7 +2981,7 @@
         {
             "x": 152,
             "z": 63,
-            "tilePrefabIndex": 3,
+            "tilePrefabIndex": 8,
             "objectPrefabIndex": -1,
             "tileRotX": 0.0,
             "tileRotY": 0.0,
@@ -2993,7 +2993,7 @@
         {
             "x": 153,
             "z": 63,
-            "tilePrefabIndex": 3,
+            "tilePrefabIndex": 8,
             "objectPrefabIndex": -1,
             "tileRotX": 0.0,
             "tileRotY": 0.0,
