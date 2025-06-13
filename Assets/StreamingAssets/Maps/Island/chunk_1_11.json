@@ -1818,7 +1818,7 @@
             "x": 23,
             "z": 185,
             "tilePrefabIndex": 3,
-            "objectPrefabIndex": -1,
+            "objectPrefabIndex": 17,
             "tileRotX": 0.0,
             "tileRotY": 0.0,
             "tileRotZ": 0.0,
@@ -2502,12 +2502,12 @@
             "x": 16,
             "z": 189,
             "tilePrefabIndex": 3,
-            "objectPrefabIndex": -1,
+            "objectPrefabIndex": 41,
             "tileRotX": 0.0,
             "tileRotY": 0.0,
             "tileRotZ": 0.0,
             "objRotX": 0.0,
-            "objRotY": 0.0,
+            "objRotY": 196.86236572265626,
             "objRotZ": 0.0
         },
         {

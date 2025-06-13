@@ -678,12 +678,12 @@
             "x": 24,
             "z": 83,
             "tilePrefabIndex": 3,
-            "objectPrefabIndex": -1,
+            "objectPrefabIndex": 39,
             "tileRotX": 0.0,
             "tileRotY": 0.0,
             "tileRotZ": 0.0,
             "objRotX": 0.0,
-            "objRotY": 0.0,
+            "objRotY": 99.63733673095703,
             "objRotZ": 0.0
         },
         {

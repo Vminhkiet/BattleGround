@@ -172,20 +172,15 @@ public class HexMapEditor : MonoBehaviour
                     // Get the cell at hit point
                     Vector3 localHitPosition = hexGrid.transform.InverseTransformPoint(hit.point);
                     HexCoordinates coordinates = HexCoordinates.FromPosition(localHitPosition);
-                    int index = coordinates.X + coordinates.Z * hexGrid.width + coordinates.Z / 2;
 
-                    if (index >= 0 && index < hexGrid.GetAllCells().Length)
+                    HexCell cell = hexGrid.GetCellAtCoordinates(coordinates.X, coordinates.Z);
+                    if (cell != null && cell.currentTile != null)
                     {
-                        HexCell cell = hexGrid.GetAllCells()[index];
-                        if (cell != null && cell.currentTile != null)
+                        if (lastRotatedCell != cell)
                         {
-                            // Only rotate if we're still hovering over the same cell
-                            if (lastRotatedCell != cell)
-                            {
-                                lastRotatedCell = cell;
-                            }
-                            cell.currentTile.transform.Rotate(0f, rotationAmount, 0f, Space.Self);
+                            lastRotatedCell = cell;
                         }
+                        cell.currentTile.transform.Rotate(0f, rotationAmount, 0f, Space.Self);
                     }
                 }
                 else if (currentMode == EditorMode.Object)
