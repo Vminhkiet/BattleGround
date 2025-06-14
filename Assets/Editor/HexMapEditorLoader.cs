@@ -9,9 +9,13 @@ public class HexMapEditorLoader
     public static void LoadChunkedMap()
     {
         // Mở dialog để người dùng chọn file "master_map_data.json"
-        // Các map được lưu trong Application.persistentDataPath
-        string initialPath = Application.persistentDataPath;
-        string path = EditorUtility.OpenFilePanel("Select Master Map Data File (master_map_data.json)", initialPath, "json");
+        // Các map được lưu trong Application.streamingAssetsPath/Maps
+        string mapsPath = Path.Combine(Application.streamingAssetsPath, "Maps");
+        if (!Directory.Exists(mapsPath))
+        {
+            Directory.CreateDirectory(mapsPath);
+        }
+        string path = EditorUtility.OpenFilePanel("Select Master Map Data File (master_map_data.json)", mapsPath, "json");
 
         if (string.IsNullOrEmpty(path))
         {
@@ -64,36 +68,27 @@ public class HexMapEditorLoader
                 return;
             }
         }
-        // Tên class editor của bạn có thể là HexMapEditor hoặc MapEditor
-        // Chỉnh sửa "MapEditor" thành tên class chính xác nếu cần
-        if (mapIOManager.editor == null)
-        {
-            HexMapEditor editorInScene = GameObject.FindObjectOfType<HexMapEditor>();
-            if (editorInScene != null)
-            {
-                mapIOManager.editor = editorInScene;
-                EditorUtility.SetDirty(mapIOManager); // Lưu thay đổi vào MapIOManager
-            }
-            else
-            {
-                EditorUtility.DisplayDialog("Lỗi", "MapIOManager thiếu tham chiếu MapEditor (hoặc tên tương tự), và không tìm thấy đối tượng này trong scene.", "OK");
-                Debug.LogError("MapIOManager thiếu tham chiếu MapEditor (hoặc tên tương tự), và không tìm thấy đối tượng này trong scene.");
-                return;
-            }
-        }
 
-        // Gọi hàm trong MapIOManager để tải tất cả các chunk cho editor
-        // Hàm này giờ đã xử lý việc dùng PrefabUtility và DestroyImmediate
+        EditorUtility.SetDirty(mapIOManager);
+
         mapIOManager.LoadAllMapChunksForEditor(mapName);
     }
     [MenuItem("Hex Editor/Clear Map")]
     public static void ClearLoadedMap()
     {
         MapSaveLoadManager mapIOManager = GameObject.FindObjectOfType<MapSaveLoadManager>();
+        HexGrid gridInScene = GameObject.FindObjectOfType<HexGrid>();
+
         for (int i = mapIOManager.transform.childCount - 1; i >= 0; i--)
         {
             Transform child = mapIOManager.transform.GetChild(i);
             GameObject.DestroyImmediate(child.gameObject);
         }
+        for (int i = gridInScene.transform.childCount - 1; i >= 0; i--)
+        {
+            Transform child = gridInScene.transform.GetChild(i);
+            GameObject.DestroyImmediate(child.gameObject);
+        }
+
     }
 }

@@ -1,0 +1,150 @@
+{
+    "chunkX": -7,
+    "chunkZ": 12,
+    "tiles": [
+        {
+            "x": -97,
+            "z": 194,
+            "tilePrefabIndex": 3,
+            "objectPrefabIndex": -1,
+            "tileRotX": 0.0,
+            "tileRotY": 0.0,
+            "tileRotZ": 0.0,
+            "objRotX": 0.0,
+            "objRotY": 0.0,
+            "objRotZ": 0.0
+        },
+        {
+            "x": -97,
+            "z": 195,
+            "tilePrefabIndex": 3,
+            "objectPrefabIndex": -1,
+            "tileRotX": 0.0,
+            "tileRotY": 0.0,
+            "tileRotZ": 0.0,
+            "objRotX": 0.0,
+            "objRotY": 0.0,
+            "objRotZ": 0.0
+        },
+        {
+            "x": -98,
+            "z": 196,
+            "tilePrefabIndex": 3,
+            "objectPrefabIndex": -1,
+            "tileRotX": 0.0,
+            "tileRotY": 0.0,
+            "tileRotZ": 0.0,
+            "objRotX": 0.0,
+            "objRotY": 0.0,
+            "objRotZ": 0.0
+        },
+        {
+            "x": -97,
+            "z": 196,
+            "tilePrefabIndex": 3,
+            "objectPrefabIndex": 14,
+            "tileRotX": 0.0,
+            "tileRotY": 0.0,
+            "tileRotZ": 0.0,
+            "objRotX": 0.0,
+            "objRotY": 0.0,
+            "objRotZ": 0.0
+        },
+        {
+            "x": -98,
+            "z": 197,
+            "tilePrefabIndex": 3,
+            "objectPrefabIndex": -1,
+            "tileRotX": 0.0,
+            "tileRotY": 0.0,
+            "tileRotZ": 0.0,
+            "objRotX": 0.0,
+            "objRotY": 0.0,
+            "objRotZ": 0.0
+        },
+        {
+            "x": -97,
+            "z": 197,
+            "tilePrefabIndex": 3,
+            "objectPrefabIndex": -1,
+            "tileRotX": 0.0,
+            "tileRotY": 0.0,
+            "tileRotZ": 0.0,
+            "objRotX": 0.0,
+            "objRotY": 0.0,
+            "objRotZ": 0.0
+        },
+        {
+            "x": -99,
+            "z": 198,
+            "tilePrefabIndex": 3,
+            "objectPrefabIndex": -1,
+            "tileRotX": 0.0,
+            "tileRotY": 0.0,
+            "tileRotZ": 0.0,
+            "objRotX": 0.0,
+            "objRotY": 0.0,
+            "objRotZ": 0.0
+        },
+        {
+            "x": -98,
+            "z": 198,
+            "tilePrefabIndex": 3,
+            "objectPrefabIndex": -1,
+            "tileRotX": 0.0,
+            "tileRotY": 0.0,
+            "tileRotZ": 0.0,
+            "objRotX": 0.0,
+            "objRotY": 0.0,
+            "objRotZ": 0.0
+        },
+        {
+            "x": -97,
+            "z": 198,
+            "tilePrefabIndex": 3,
+            "objectPrefabIndex": -1,
+            "tileRotX": 0.0,
+            "tileRotY": 0.0,
+            "tileRotZ": 0.0,
+            "objRotX": 0.0,
+            "objRotY": 0.0,
+            "objRotZ": 0.0
+        },
+        {
+            "x": -99,
+            "z": 199,
+            "tilePrefabIndex": 3,
+            "objectPrefabIndex": -1,
+            "tileRotX": 0.0,
+            "tileRotY": 0.0,
+            "tileRotZ": 0.0,
+            "objRotX": 0.0,
+            "objRotY": 0.0,
+            "objRotZ": 0.0
+        },
+        {
+            "x": -98,
+            "z": 199,
+            "tilePrefabIndex": 3,
+            "objectPrefabIndex": -1,
+            "tileRotX": 0.0,
+            "tileRotY": 0.0,
+            "tileRotZ": 0.0,
+            "objRotX": 0.0,
+            "objRotY": 0.0,
+            "objRotZ": 0.0
+        },
+        {
+            "x": -97,
+            "z": 199,
+            "tilePrefabIndex": 3,
+            "objectPrefabIndex": -1,
+            "tileRotX": 0.0,
+            "tileRotY": 0.0,
+            "tileRotZ": 0.0,
+            "objRotX": 0.0,
+            "objRotY": 0.0,
+            "objRotZ": 0.0
+        }
+    ]
+}
