@@ -14,12 +14,14 @@ public class Movement : MonoBehaviour
     private Vector2 rightStickInput;
     private float lastRightStickMagnitude;
     private Rigidbody rb;
-    private bool isAttacking; // Tr?ng thái t?n công (cho combo Attack)
-    private bool useSkill;    // Tr?ng thái tung k? n?ng
+    private bool isAttacking; 
+    private bool useSkill;
+    private ICharacterSkill characterSkill;
 
     void Start()
     {
         rb = GetComponent<Rigidbody>();
+        characterSkill=GetComponent<ICharacterSkill>();
     }
 
     void Update()
@@ -41,7 +43,7 @@ public class Movement : MonoBehaviour
         if (callbackContext.performed && !isAttacking) // Ch? tung k? n?ng khi không trong combo t?n công
         {
             useSkill = true;
-            TriggerSkill(); // X? lý logic k? n?ng
+            characterSkill.UseSkill();
         }
         else
         {
@@ -95,20 +97,6 @@ public class Movement : MonoBehaviour
         velocityChange.y = 0;
 
         return velocityChange;
-    }
-
-    private void TriggerSkill()
-    {
-        // Logic x? lý k? n?ng: ví d? gây sát th??ng, spawn VFX
-        Debug.Log("Tung k? n?ng ??c bi?t!");
-        Collider[] enemies = Physics.OverlapSphere(transform.position, 5f); // Bán kính 5
-        foreach (Collider enemy in enemies)
-        {
-            if (enemy.CompareTag("Enemy"))
-            {
-                Debug.Log("Gây sát th??ng cho: " + enemy.name);
-            }
-        }
     }
 
     private void UpdateAnimationState()

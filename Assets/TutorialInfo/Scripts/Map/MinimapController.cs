@@ -9,10 +9,16 @@ public class MinimapController : MonoBehaviour
     public float minimapHeight = 50f;
     public float minimapSize = 200f;
     public float zoomLevel = 20f;
-    
+    [Range(0f, 1f)]
+    public float alpha=0.6f;
+    private bool minimapVisible = true;
+
     [Header("References")]
     public Transform playerTransform;
     public HexGrid hexGrid;
+    public GameObject panel;
+    public RectTransform eyeOpen;
+    public RectTransform eyeClose;
 
     private RenderTexture minimapTexture;
     private Vector3 lastPlayerPosition;
@@ -31,6 +37,7 @@ public class MinimapController : MonoBehaviour
             enabled = false;
             return;
         }
+
         minimapCamera.clearFlags = CameraClearFlags.SolidColor;
 
         // Create render texture for minimap
@@ -42,6 +49,9 @@ public class MinimapController : MonoBehaviour
         minimapCamera.orthographic = true;
         minimapCamera.orthographicSize = zoomLevel;
         minimapDisplay.texture = minimapTexture;
+        Color c = minimapDisplay.color;
+        c.a = alpha;
+        minimapDisplay.color = c;
 
         // Position camera above the map
         if (playerTransform != null)
@@ -59,6 +69,33 @@ public class MinimapController : MonoBehaviour
 
     void LateUpdate()
     {
+#if UNITY_EDITOR
+        if (Input.GetMouseButtonDown(0))
+        {
+            Vector2 pos = Input.mousePosition;
+            if (RectTransformUtility.RectangleContainsScreenPoint(eyeOpen, pos))
+            {
+                ToggleMinimapVisibility();
+            }
+        }
+#else
+     for (int i = 0; i < Input.touchCount; i++)
+    {
+        Touch touch = Input.GetTouch(i);
+
+        if (touch.phase == TouchPhase.Began)
+        {
+            Vector2 pos = touch.position;
+
+            if (RectTransformUtility.RectangleContainsScreenPoint(eyeOpen, pos))
+            {
+                ToggleMinimapVisibility();
+                break;
+            }
+        }
+    }
+#endif      
+
         if (playerTransform == null) return;
 
         // Only update if player has moved significantly
@@ -85,6 +122,20 @@ public class MinimapController : MonoBehaviour
 
     }
 
+    void ToggleMinimapVisibility()
+    {
+        minimapVisible = !minimapVisible;
+
+        minimapDisplay.enabled = minimapVisible;
+        panel.SetActive(minimapVisible);
+        eyeClose.gameObject.SetActive(minimapVisible==false);
+        eyeOpen.gameObject.SetActive(minimapVisible==true);
+
+        if (minimapDotInstance != null)
+            minimapDotInstance.SetActive(minimapVisible);
+
+        minimapCamera.enabled = minimapVisible;
+    }
     void UpdateMinimapCameraPosition()
     {
         if (playerTransform == null) return;
