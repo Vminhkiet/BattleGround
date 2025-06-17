@@ -10,6 +10,7 @@ public class Movement : MonoBehaviour
     public float rotationSpeed = 10f;
     public float attackThreshold = 0.3f;
 
+
     private Vector2 input;
     private Vector2 rightStickInput;
     private float lastRightStickMagnitude;
@@ -17,9 +18,11 @@ public class Movement : MonoBehaviour
     private bool isAttacking; 
     private bool useSkill;
     private ICharacterSkill characterSkill;
+    private PlayerAnimationController animationController;
 
     void Start()
     {
+        animationController = GetComponent<PlayerAnimationController>();
         rb = GetComponent<Rigidbody>();
         characterSkill=GetComponent<ICharacterSkill>();
     }
@@ -34,7 +37,8 @@ public class Movement : MonoBehaviour
     // Input x? lý di chuy?n
     public void OnMove(InputAction.CallbackContext callbackContext)
     {
-        input = callbackContext.ReadValue<Vector2>();
+        if (!isAttacking)
+            input = callbackContext.ReadValue<Vector2>();
     }
 
     // Input x? lý k? n?ng
@@ -64,7 +68,7 @@ public class Movement : MonoBehaviour
             if (lastRightStickMagnitude > attackThreshold && !isAttacking)
             {
                 isAttacking = true;
-                UpdateAnimationState();
+                characterSkill.NormalAttack();
             }
             rightStickInput = Vector2.zero;
         }
@@ -72,7 +76,7 @@ public class Movement : MonoBehaviour
 
     void RotateCharacter()
     {
-        if (input.magnitude > 0.1f)
+        if (input.magnitude > 0.1f&&!isAttacking)
         {
             float targetAngle = Mathf.Atan2(input.x, input.y) * Mathf.Rad2Deg;
             Quaternion targetRotation = Quaternion.Euler(0, targetAngle, 0);
@@ -101,14 +105,11 @@ public class Movement : MonoBehaviour
 
     private void UpdateAnimationState()
     {
-        PlayerAnimationController animationController = GetComponent<PlayerAnimationController>();
         if (animationController != null)
         {
             animationController.SetMovementState(input.magnitude > 0.1f);
             animationController.SetAttackState(isAttacking);
             animationController.SetSkillState(useSkill);
         }
-
-        isAttacking = false;
     }
 }

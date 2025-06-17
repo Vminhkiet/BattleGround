@@ -17,9 +17,7 @@ public class PlayerAnimationController : MonoBehaviour
 
     void Update()
     {
-        // C?p nh?t tr?ng thái animation
         animator.SetBool("IsMoving", isMoving);
-        animator.SetBool("IsAttacking", isAttacking);
         animator.SetBool("UseSkill", useSkill);
 
         AnimatorStateInfo currentState = animator.GetCurrentAnimatorStateInfo(0);
