@@ -1,60 +1,42 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class PlayerAnimationController : MonoBehaviour
 {
-    private Animator animator;
-    private float stayTime;
-    private bool isAttacking;
-    private bool isMoving;
-    private bool useSkill;
+    protected Animator animator;
+    protected float speed = 0;
 
-    void Start()
+    protected virtual void Awake()
     {
+
         animator = GetComponent<Animator>();
+        if(animator == null)
+        {
+            Debug.LogError("DONT HAVE ANIMATOR");
+        }
     }
 
-    void Update()
+    public void SetAnimatorParameters(bool isAttackingState, int attackPhaseValue)
     {
-        animator.SetBool("IsMoving", isMoving);
-        animator.SetBool("UseSkill", useSkill);
-
-        AnimatorStateInfo currentState = animator.GetCurrentAnimatorStateInfo(0);
-        bool isInAttackState = currentState.IsName("Attack");
-
-        if (isInAttackState)
+        if (animator == null)
         {
-            stayTime += Time.deltaTime;
-            if (stayTime >= 3f && isAttacking)
-            {
-                animator.SetBool("StayTimeExceeded", true);
-            }
-            if (currentState.normalizedTime >= 1.0f)
-            {
-                isAttacking = false;
-                stayTime = 0f;
-                animator.SetBool("StayTimeExceeded", false);
-            }
+            Debug.LogError("Animator is null when setting parameters in PlayerAnimationController!");
+            return;
         }
-        else
-        {
-            stayTime = 0f;
-            if (isAttacking)
-            {
-                isAttacking = false;
-            }
-        }
-
-        // Reset UseSkill sau khi animation k? n?ng hoàn thành
-        if (animator.GetCurrentAnimatorStateInfo(0).IsName("SpecialSkill") &&
-            animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1f)
-        {
-            useSkill = false;
-        }
+        animator.SetBool("IsAttacking", isAttackingState);
+        animator.SetInteger("AttackPhase", attackPhaseValue);
     }
 
-    public void SetMovementState(bool moving) => isMoving = moving;
-    public void SetAttackState(bool attacking) => isAttacking = attacking;
-    public void SetSkillState(bool skill) => useSkill = skill;
+    public void SetAnimatorMovement(float speed)
+    {
+        if (animator == null)
+        {
+            Debug.LogError("Animator is null when setting parameters in PlayerAnimationController!");
+            return;
+        }
+        animator.SetFloat("speed", speed);
+        this.speed = speed;
+    }
 }

@@ -5,78 +5,33 @@ using UnityEngine.InputSystem;
 
 public class Movement : MonoBehaviour
 {
-    public float walkSpeed = 4f;
+    public float walkSpeed = 2f;
     public float maxVelocityChange = 10f;
     public float rotationSpeed = 10f;
-    public float attackThreshold = 0.3f;
 
 
-    private Vector2 input;
-    private Vector2 rightStickInput;
-    private float lastRightStickMagnitude;
+    protected Vector2 input = Vector2.zero;
     private Rigidbody rb;
-    private bool isAttacking; 
-    private bool useSkill;
-    private ICharacterSkill characterSkill;
-    private PlayerAnimationController animationController;
 
-    void Start()
+    void Awake()
     {
-        animationController = GetComponent<PlayerAnimationController>();
         rb = GetComponent<Rigidbody>();
-        characterSkill=GetComponent<ICharacterSkill>();
     }
 
     void Update()
     {
         input.Normalize();
         RotateCharacter();
-        UpdateAnimationState();
     }
 
-    // Input x? lý di chuy?n
-    public void OnMove(InputAction.CallbackContext callbackContext)
+    public void SetInputLeft(Vector2 inputleft)
     {
-        if (!isAttacking)
-            input = callbackContext.ReadValue<Vector2>();
-    }
-
-    // Input x? lý k? n?ng
-    public void OnSkill(InputAction.CallbackContext callbackContext)
-    {
-        if (callbackContext.performed && !isAttacking) // Ch? tung k? n?ng khi không trong combo t?n công
-        {
-            useSkill = true;
-            characterSkill.UseSkill();
-        }
-        else
-        {
-            useSkill = false;
-        }
-    }
-
-    // Input x? lý t?n công (cho combo Attack)
-    public void OnAttack(InputAction.CallbackContext context)
-    {
-        rightStickInput = context.ReadValue<Vector2>();
-        if (context.performed)
-        {
-            lastRightStickMagnitude = rightStickInput.magnitude;
-        }
-        else if (context.canceled) 
-        {
-            if (lastRightStickMagnitude > attackThreshold && !isAttacking)
-            {
-                isAttacking = true;
-                characterSkill.NormalAttack();
-            }
-            rightStickInput = Vector2.zero;
-        }
+        this.input = inputleft;
     }
 
     void RotateCharacter()
     {
-        if (input.magnitude > 0.1f&&!isAttacking)
+        if (input.magnitude > 0.1f)
         {
             float targetAngle = Mathf.Atan2(input.x, input.y) * Mathf.Rad2Deg;
             Quaternion targetRotation = Quaternion.Euler(0, targetAngle, 0);
@@ -103,13 +58,4 @@ public class Movement : MonoBehaviour
         return velocityChange;
     }
 
-    private void UpdateAnimationState()
-    {
-        if (animationController != null)
-        {
-            animationController.SetMovementState(input.magnitude > 0.1f);
-            animationController.SetAttackState(isAttacking);
-            animationController.SetSkillState(useSkill);
-        }
-    }
 }
