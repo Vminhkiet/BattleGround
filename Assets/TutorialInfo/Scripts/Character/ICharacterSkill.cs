@@ -8,5 +8,4 @@ interface ICharacterSkill
 {
     void NormalAttack();
     void UseSkill();
-    void UseSpell();
 }

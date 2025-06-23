@@ -24,8 +24,4 @@ public class MageScript : MonoBehaviour, ICharacterSkill
         
     }
 
-    public void UseSpell()
-    {
-       
-    }
 }
