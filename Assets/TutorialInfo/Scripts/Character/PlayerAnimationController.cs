@@ -18,7 +18,7 @@ public class PlayerAnimationController : MonoBehaviour
         }
     }
 
-    public void SetAnimatorParameters(bool isAttackingState, int attackPhaseValue)
+    public void SetIsAttacking(bool isAttackingState)
     {
         if (animator == null)
         {
@@ -26,6 +26,25 @@ public class PlayerAnimationController : MonoBehaviour
             return;
         }
         animator.SetBool("IsAttacking", isAttackingState);
+    }
+    public void SetStopIsAttacking()
+    {
+        if (animator == null)
+        {
+            Debug.LogError("Animator is null when setting parameters in PlayerAnimationController!");
+            return;
+        }
+        animator.SetBool("IsAttacking", false);
+        animator.SetInteger("AttackPhase", 1);
+    }
+
+    public void SetAttackPhase(int attackPhaseValue)
+    {
+        if (animator == null)
+        {
+            Debug.LogError("Animator is null when setting parameters in PlayerAnimationController!");
+            return;
+        }
         animator.SetInteger("AttackPhase", attackPhaseValue);
     }
 

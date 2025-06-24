@@ -154,10 +154,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 97dc40fbf0026ab4eb2aebc2120c99fc,
         type: 3}
       insertIndex: -1
-      addedObject: {fileID: 5552078177803849441}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 97dc40fbf0026ab4eb2aebc2120c99fc,
-        type: 3}
-      insertIndex: -1
       addedObject: {fileID: 6206789423381940121}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 97dc40fbf0026ab4eb2aebc2120c99fc,
         type: 3}
@@ -355,18 +351,6 @@ MonoBehaviour:
   m_DefaultActionMap: Player
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
---- !u!114 &5552078177803849441
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7892989927749182300}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c539c657bb862384cbff364073455bff, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &6206789423381940121
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -419,7 +403,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 904d2576b10c79941a8259547b59ab90, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  comboResetTime: 2
 --- !u!114 &2608101366039573249
 MonoBehaviour:
   m_ObjectHideFlags: 0

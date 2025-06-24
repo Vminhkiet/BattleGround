@@ -3,35 +3,52 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Windows;
+using static UnityEngine.Rendering.DebugUI;
 public class KaventInputHandler : APlayerInputHandler
 {
 
     private ICharacterSkill characterSkill;
     private Movement movementComponent;
-
-    [Header("Attack Combo Settings")]
-    [SerializeField] private float comboResetTime = 2.0f;
-    private Coroutine comboResetCoroutine;
+    private Vector2 lastValidRightStickInput;
+    private bool nextAttack = false;
+    private Vector2 nextAttackinput;
 
     private void Awake()
     {
-        //characterSkill
-        base.Awake();
         characterSkill = GetComponent<KaventScript>();
         movementComponent = GetComponent<KaventMovement>();
+    }
+
+    private void Update()
+    {
+        if (nextAttack)
+        {
+            bool canNewAttack = !GetIsAttacking();
+
+            if (canNewAttack)
+            {
+                SetAttackPhase(GetAttackPhase() % 3 + 1);
+
+                SetIsAttacking(true);
+
+
+                if (characterSkill != null)
+                {
+                    characterSkill.NormalAttack(GetInputRight());
+                }
+
+            }
+            nextAttackinput = Vector2.zero;
+            nextAttack = !nextAttack;
+        }
     }
 
     public override void OnMove(InputAction.CallbackContext callbackContext)
     {
         Vector2 currentMoveInputValue = callbackContext.ReadValue<Vector2>();
-        if (GetIsAttacking())
-        {
-            SetMoveInputInternal(Vector2.zero);
-        }
-        else
-        {
-            SetMoveInputInternal(currentMoveInputValue);
-        }
+
+        SetMoveInputInternal(currentMoveInputValue);
+
 
         if (movementComponent != null)
         {
@@ -45,63 +62,42 @@ public class KaventInputHandler : APlayerInputHandler
         SetRightStickInputInternal(context.ReadValue<Vector2>());
         if (context.performed)
         {
-            lastRightStickMagnitude = GetInputRight().magnitude;
+            lastValidRightStickInput = GetInputRight();
+            lastRightStickMagnitude = lastValidRightStickInput.magnitude;
         }
         else if (context.canceled)
         {
             bool canNewAttack = !GetIsAttacking() && (lastRightStickMagnitude - attackThreshold >= 0);
-            bool canContinueCombo = GetIsAttacking() && GetAttackPhase() < 3 && (Time.time - _lastAttackActivatedTime <= comboResetTime);
 
-            if(canNewAttack || canContinueCombo)
+            if(canNewAttack)
             {
-                if (canNewAttack)
-                {
-                    SetAttackPhase(1);
-                }
-                else if (GetAttackPhase() == 3 || (Time.time - _lastAttackActivatedTime > comboResetTime && GetIsAttacking()))
-                {
-                    SetAttackPhase(1);
-                }
-                else
-                {
-                    SetAttackPhase(GetAttackPhase() + 1);
-                }
+                SetAttackPhase(GetAttackPhase() % 3 + 1);
 
                 SetIsAttacking(true);
-                _lastAttackActivatedTime = Time.time;
 
-                if(comboResetCoroutine != null)
+
+                if (characterSkill != null)
                 {
-                    StopCoroutine(comboResetCoroutine);
+                    characterSkill.NormalAttack(GetInputRight());
                 }
 
-                comboResetCoroutine = StartCoroutine(ComboResetTimer());
+            }
+            else if (GetIsAttacking() && (lastRightStickMagnitude - attackThreshold >= 0))
+            {
+                nextAttackinput = lastValidRightStickInput;
+                nextAttack = true;
             }
 
-            if (characterSkill != null)
-            {
-                characterSkill.NormalAttack(GetInputRight());
-            }
+            SetRightStickInputInternal(Vector2.zero);
+            lastRightStickMagnitude = 0f;
+            lastValidRightStickInput = Vector2.zero;
 
         }
-    }
-
-    private IEnumerator ComboResetTimer()
-    {
-        yield return new WaitForSeconds(comboResetTime);
-        ResetAttackState();
     }
 
     public void ResetAttackState()
     {
         SetIsAttacking(false);
-        SetAttackPhase(0);
-
-        if(comboResetCoroutine != null)
-        {
-            StopCoroutine(comboResetCoroutine);
-            comboResetCoroutine = null;
-        }
     }
 }
 

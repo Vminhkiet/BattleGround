@@ -11,8 +11,7 @@ public abstract class APlayerInputHandler : MonoBehaviour
     protected bool isAttacking = false;
     protected int attackPhase = 0;
     protected float lastRightStickMagnitude;
-    protected float _lastAttackActivatedTime;
-    protected float attackThreshold = 0.3f;
+    protected float attackThreshold = 0.05f;
 
     public event Action<bool> OnAttackStateChanged;
     public event Action<int> OnAttackPhaseChanged;
@@ -33,6 +32,7 @@ public abstract class APlayerInputHandler : MonoBehaviour
     public void SetAttackPhase(int attackPhase)
     {
         this.attackPhase = attackPhase;
+        Debug.Log(attackPhase);
         OnAttackPhaseChanged?.Invoke(this.attackPhase);
     }
 
@@ -66,8 +66,4 @@ public abstract class APlayerInputHandler : MonoBehaviour
         return rightStickInput;
     }
 
-    protected virtual void Awake()
-    {
-        _lastAttackActivatedTime = -Mathf.Infinity;
-    }
 }
