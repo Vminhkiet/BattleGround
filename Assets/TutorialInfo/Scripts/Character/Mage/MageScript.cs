@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -53,7 +53,35 @@ public class MageScript : MonoBehaviour, ICharacterSkill
 
     public void UseSkill()
     {
-        
+        StartCoroutine(SpawnSkillProjectiles());
+    }
+
+    private IEnumerator SpawnSkillProjectiles()
+    {
+        int amount = 8;
+        float duration = 2f;
+        float interval = duration / amount;
+
+        for (int i = 0; i < amount; i++)
+        {
+            Vector3 randomOffset = new Vector3(
+                Random.Range(-3f, 3f),
+                5f,
+                Random.Range(-3f, 3f)
+            );
+
+            Vector3 spawnPosition = transform.position + randomOffset;
+
+            GameObject cube = ObjectPooler.Instance.GetCube();
+            cube.transform.position = spawnPosition;
+            cube.transform.rotation = Quaternion.identity;
+
+            HomingCube hc = cube.GetComponent<HomingCube>();
+            hc.isHoming = false;  
+            hc.SetTarget(null);   
+
+            yield return new WaitForSeconds(interval);
+        }
     }
 
 }
