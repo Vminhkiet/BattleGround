@@ -15,7 +15,7 @@ public class MageScript : MonoBehaviour, ICharacterSkill
         
     }
 
-    public void NormalAttack()
+    public void NormalAttack(Vector2 inputright)
     {
     }
 
@@ -24,8 +24,4 @@ public class MageScript : MonoBehaviour, ICharacterSkill
         
     }
 
-    public void UseSpell()
-    {
-       
-    }
 }

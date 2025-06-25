@@ -1,12 +1,9 @@
-﻿using System;
+﻿using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using UnityEngine;
 
-interface ICharacterSkill
+public interface ICharacterSkill
 {
-    void NormalAttack();
+    void NormalAttack(Vector2 inputright);
     void UseSkill();
-    void UseSpell();
 }
