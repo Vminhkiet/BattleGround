@@ -15,7 +15,7 @@ public class KaventInputHandler : APlayerInputHandler
 
     private void Awake()
     {
-        characterSkill = GetComponent<KaventScript>();
+        characterSkill = GetComponent<ICharacterSkill>();
         movementComponent = GetComponent<KaventMovement>();
     }
 

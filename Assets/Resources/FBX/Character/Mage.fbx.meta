@@ -926,7 +926,15 @@ ModelImporter:
       mirror: 0
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
-      events: []
+      events:
+      - time: 0.8476821
+        functionName: ResetAttackState
+        data: 
+        objectReferenceParameter: {fileID: 11500000, guid: 5fce38e830e1b56498917a6441e1fda0,
+          type: 3}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
       transformMask: []
       maskType: 3
       maskSource: {instanceID: 0}
@@ -984,7 +992,15 @@ ModelImporter:
       mirror: 0
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
-      events: []
+      events:
+      - time: 0.8543046
+        functionName: ResetAttackState
+        data: 
+        objectReferenceParameter: {fileID: 11500000, guid: 904d2576b10c79941a8259547b59ab90,
+          type: 3}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
       transformMask: []
       maskType: 3
       maskSource: {instanceID: 0}
@@ -1593,7 +1609,15 @@ ModelImporter:
       mirror: 0
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
-      events: []
+      events:
+      - time: 0.9139073
+        functionName: ResetAttackState
+        data: 
+        objectReferenceParameter: {fileID: 11500000, guid: 904d2576b10c79941a8259547b59ab90,
+          type: 3}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
       transformMask: []
       maskType: 3
       maskSource: {instanceID: 0}
