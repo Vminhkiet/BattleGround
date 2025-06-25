@@ -46,7 +46,6 @@ public class PlayerAnimationController : MonoBehaviour
             }
         }
 
-        // Reset UseSkill sau khi animation k? n?ng hoàn thành
         if (animator.GetCurrentAnimatorStateInfo(0).IsName("SpecialSkill") &&
             animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1f)
         {
