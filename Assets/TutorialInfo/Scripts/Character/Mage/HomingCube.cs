@@ -5,8 +5,13 @@ using UnityEngine;
 public class HomingCube : MonoBehaviour
 {
     public float speed = 10f;
+    public float lifetime = 5f;
+    public float homingDelay = 0.2f;
+
     private Transform target;
     private float lifeTimer;
+    private float delayTimer;
+    public bool isHoming = true;
 
     public void SetTarget(Transform enemy)
     {
@@ -15,7 +20,8 @@ public class HomingCube : MonoBehaviour
 
     void OnEnable()
     {
-        lifeTimer = 5f;
+        lifeTimer = lifetime;
+        delayTimer = homingDelay;
     }
 
     void Update()
@@ -28,14 +34,36 @@ public class HomingCube : MonoBehaviour
             return;
         }
 
+        if (!isHoming)
+        {
+            transform.position += Vector3.down * speed * Time.deltaTime;
+            return;
+        }
+
+        if (delayTimer > 0f)
+        {
+            delayTimer -= Time.deltaTime;
+            transform.position += transform.forward * speed * Time.deltaTime;
+            return;
+        }
+
         if (target != null)
         {
             Vector3 direction = (target.position - transform.position).normalized;
-            transform.position += direction * speed * Time.deltaTime;
+            transform.forward = Vector3.Lerp(transform.forward, direction, Time.deltaTime * 6f);
+            transform.position += transform.forward * speed * Time.deltaTime;
         }
         else
         {
             transform.position += transform.forward * speed * Time.deltaTime;
+        }
+    }
+
+    void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Enemy"))
+        {
+            ReturnToPool();
         }
     }
 
