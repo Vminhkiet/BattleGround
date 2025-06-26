@@ -6,4 +6,6 @@ public interface ICharacterSkill
 {
     void NormalAttack(Vector2 inputright);
     void UseSkill(Vector2 inputright);
+
+    void UseSpell(Vector2 inputright);
 }

@@ -66,38 +66,57 @@ public class KaventInputHandler : APlayerInputHandler
         if (!playerStats.isEnergyFull())
             return;
 
-        SetRightStickInputInternal(context.ReadValue<Vector2>());
+        SetUltiInputInternal(context.ReadValue<Vector2>());
         if (context.performed)
         {
-            lastValidUltiStickInput = GetInputRight();
-            lastRightStickMagnitude = lastValidUltiStickInput.magnitude;
+            lastValidUltiStickInput = GetInputUlti();
+            lastUltiStickMagnitude = lastValidUltiStickInput.magnitude;
         }
         else if (context.canceled)
         {
-            bool canNewAttack = !GetIsAttacking() && (lastRightStickMagnitude - attackThreshold >= 0);
+            bool canUlti = !GetIsAttacking() && lastUltiStickMagnitude - attackThreshold > 0;
 
-            if (canNewAttack)
+            if(canUlti)
             {
-                SetAttackPhase(GetAttackPhase() % 3 + 1);
+                SetIsUlti(true);
 
-                SetIsAttacking(true);
+                if(characterSkill != null)
+                    characterSkill.UseSkill(GetInputUlti());
+            }
 
+            SetUltiInputInternal(Vector2.zero);
+            lastUltiStickMagnitude = 0f;
+            lastValidUltiStickInput = Vector2.zero;
+
+        }
+    }
+
+    public override void OnSpell(InputAction.CallbackContext context)
+    {
+        if (!playerStats.isSpellFull())
+            return;
+
+        SetSpellInputInternal(context.ReadValue<Vector2>());
+        if (context.performed)
+        {
+            lastValidSpellStickInput = GetInputUlti();
+            lastSpellStickMagnitude = lastValidSpellStickInput.magnitude;
+        }
+        else if (context.canceled)
+        {
+            bool canSpell = lastUltiStickMagnitude - attackThreshold > 0;
+
+            if (canSpell)
+            {
+                SetIsSpell(true);
 
                 if (characterSkill != null)
-                {
-                    characterSkill.NormalAttack(GetInputRight());
-                }
-
-            }
-            else if (GetIsAttacking() && (lastRightStickMagnitude - attackThreshold >= 0))
-            {
-                nextAttackinput = lastValidRightStickInput;
-                nextAttack = true;
+                    characterSkill.UseSpell(GetInputSpell());
             }
 
-            SetRightStickInputInternal(Vector2.zero);
-            lastRightStickMagnitude = 0f;
-            lastValidRightStickInput = Vector2.zero;
+            SetSpellInputInternal(Vector2.zero);
+            lastSpellStickMagnitude = 0f;
+            lastValidSpellStickInput = Vector2.zero;
 
         }
     }
@@ -143,6 +162,16 @@ public class KaventInputHandler : APlayerInputHandler
     public void ResetAttackState()
     {
         SetIsAttacking(false);
+    }
+
+    public void ResetUltiState()
+    {
+        SetIsUlti(false);
+    }
+
+    public void ResetSpellState()
+    {
+        SetIsSpell(false);
     }
 }
 

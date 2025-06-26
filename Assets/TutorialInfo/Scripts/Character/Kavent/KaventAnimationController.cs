@@ -15,6 +15,7 @@ public class KaventAnimationController : PlayerAnimationController
         _inputhandler.OnAttackStateChanged += HandleAttackStateChanged;
         _inputhandler.OnMoveInputChanged += HanldeMovementChanged;
         _inputhandler.OnUltiChanged += HanldeUltiChanged;
+        _inputhandler.OnSpellChanged += HanldSpellChanged;
 
     }
 
@@ -63,6 +64,11 @@ public class KaventAnimationController : PlayerAnimationController
     private void HanldeUltiChanged()
     {
         SetUtil();
+    }
+
+    private void HanldSpellChanged()
+    {
+        SetSpell();
     }
 }
 

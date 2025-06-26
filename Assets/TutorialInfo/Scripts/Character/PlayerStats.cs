@@ -21,4 +21,9 @@ class PlayerStats
     {
         return energy==maxEnergy;
     }
+
+    public bool isSpellFull()
+    {
+        return spellCoolDown==0;
+    }
 }

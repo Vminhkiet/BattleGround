@@ -68,4 +68,13 @@ public class PlayerAnimationController : MonoBehaviour
         }
         animator.SetTrigger("Ulti");
     }
+    public void SetSpell()
+    {
+        if (animator == null)
+        {
+            Debug.LogError("Animator is null when setting parameters in PlayerAnimationController!");
+            return;
+        }
+        animator.SetTrigger("Spell");
+    }
 }

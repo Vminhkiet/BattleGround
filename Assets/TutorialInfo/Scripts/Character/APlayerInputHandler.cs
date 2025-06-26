@@ -7,22 +7,31 @@ public abstract class APlayerInputHandler : MonoBehaviour
 {
     protected Vector2 input;
     protected Vector2 rightStickInput;
+    protected Vector2 ultiInput;
+    protected Vector2 spellInput;
+
 
     protected bool isAttacking = false;
     protected bool isUlti = false;
+    protected bool isSpell = false;
     protected int attackPhase = 0;
     protected float lastRightStickMagnitude;
+    protected float lastUltiStickMagnitude;
+    protected float lastSpellStickMagnitude;
     protected float attackThreshold = 0.05f;
 
     public event Action<bool> OnAttackStateChanged;
     public event Action<int> OnAttackPhaseChanged;
     public event Action<float> OnMoveInputChanged;
+    public event Action OnSpellChanged;
     public event Action OnUltiChanged;
 
 
     public abstract void OnMove(InputAction.CallbackContext callbackContext);
     public abstract void OnAttack(InputAction.CallbackContext context);
     public abstract void OnSkill(InputAction.CallbackContext context);
+
+    public abstract void OnSpell(InputAction.CallbackContext context);
 
     public void SetIsAttacking(bool isAttacking)
     {
@@ -36,6 +45,15 @@ public abstract class APlayerInputHandler : MonoBehaviour
         if (this.isUlti)
         {
             OnUltiChanged?.Invoke();
+        }
+    }
+
+    public void SetIsSpell(bool isSpell)
+    {
+        this.isSpell = isSpell;
+        if (this.isSpell)
+        {
+            OnSpellChanged?.Invoke();
         }
     }
 
@@ -54,6 +72,16 @@ public abstract class APlayerInputHandler : MonoBehaviour
     protected void SetRightStickInputInternal(Vector2 value)
     {
         rightStickInput = value;
+    }
+
+    protected void SetUltiInputInternal(Vector2 value)
+    {
+        ultiInput = value;
+    }
+
+    protected void SetSpellInputInternal(Vector2 value)
+    {
+        spellInput = value;
     }
 
     public bool GetIsAttacking()
@@ -80,6 +108,16 @@ public abstract class APlayerInputHandler : MonoBehaviour
     public Vector2 GetInputRight()
     {
         return rightStickInput;
+    }
+
+    public Vector2 GetInputUlti()
+    {
+        return ultiInput;
+    }
+
+    public Vector2 GetInputSpell()
+    {
+        return spellInput;
     }
 
 }
