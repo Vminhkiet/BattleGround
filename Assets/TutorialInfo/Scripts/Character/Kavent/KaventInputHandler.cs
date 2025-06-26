@@ -38,7 +38,7 @@ public class KaventInputHandler : APlayerInputHandler
 
                 if (characterSkill != null)
                 {
-                    characterSkill.NormalAttack(GetInputRight());
+                    characterSkill.NormalAttack(nextAttackinput);
                 }
 
             }
@@ -81,7 +81,7 @@ public class KaventInputHandler : APlayerInputHandler
                 SetIsUlti(true);
 
                 if(characterSkill != null)
-                    characterSkill.UseSkill(GetInputUlti());
+                    characterSkill.UseSkill(lastValidUltiStickInput);
             }
 
             SetUltiInputInternal(Vector2.zero);
@@ -99,7 +99,7 @@ public class KaventInputHandler : APlayerInputHandler
         SetSpellInputInternal(context.ReadValue<Vector2>());
         if (context.performed)
         {
-            lastValidSpellStickInput = GetInputUlti();
+            lastValidSpellStickInput = GetInputSpell();
             lastSpellStickMagnitude = lastValidSpellStickInput.magnitude;
         }
         else if (context.canceled)
@@ -109,9 +109,8 @@ public class KaventInputHandler : APlayerInputHandler
             if (canSpell)
             {
                 SetIsSpell(true);
-
                 if (characterSkill != null)
-                    characterSkill.UseSpell(GetInputSpell());
+                    characterSkill.UseSpell(lastValidSpellStickInput);
             }
 
             SetSpellInputInternal(Vector2.zero);
@@ -142,7 +141,7 @@ public class KaventInputHandler : APlayerInputHandler
 
                 if (characterSkill != null)
                 {
-                    characterSkill.NormalAttack(GetInputRight());
+                    characterSkill.NormalAttack(lastValidRightStickInput);
                 }
 
             }

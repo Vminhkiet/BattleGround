@@ -3,14 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
-
-class PlayerStats
+using UnityEngine;
+public class PlayerStats : MonoBehaviour
 {
-    private int maxEnergy;
-    private int health;
-    private int energy;
-    private int spellCoolDown;
+    private int maxEnergy = 100;
+    private int health = 100;
+    private int energy = 100;
+    private int spellCoolDown = 0;
 
     public void TakeDamage(int damage)
     {

@@ -1,60 +1,152 @@
-using UnityEngine;
+﻿using UnityEngine;
 using System.Collections;
 
 public class BibiAttackTrailController : MonoBehaviour
 {
     private LineRenderer lineRenderer;
-    public Transform characterPivot; // V? tr� trung t�m c?a nh�n v?t, n?i cung tr�n s? xoay quanh
-    public float attackRadius = 3f; // B�n k�nh c?a cung tr�n
-    public float attackAngle = 90f; // G�c c?a cung tr�n (v� d? 90 ?? cho 1/4 v�ng tr�n)
-    public float trailDuration = 0.2f; // Th?i gian v?t t?n t?i
-    public int segments = 30; // S? l??ng ?o?n th?ng ?? t?o cung tr�n (c�ng nhi?u c�ng m?n)
 
-    private Coroutine drawTrailCoroutine;
+    // THAY ĐỔI NÀY: 'characterRootTransform' giờ sẽ là KAVENT GameObject
+    // KAVENT là nơi mà các script di chuyển/xoay chính đang nằm.
+    public Transform characterRootTransform; // Kéo GameObject KAVENT vào đây trong Inspector
+
+    public float attackRadius = 3f;
+    public float attackAngle = 90f;
+    public int segments = 30;
+
+    public float indicatorAlpha = 0.3f;
+    public float actualTrailAlpha = 1.0f;
+    public float actualTrailDuration = 0.2f;
+
+    private Coroutine currentTrailCoroutine;
 
     void Awake()
     {
         lineRenderer = GetComponent<LineRenderer>();
-        lineRenderer.positionCount = 0; // ??m b?o kh�ng c� ?i?m n�o ban ??u
-        lineRenderer.enabled = false; // T?t Line Renderer ban ??u
-    }
+        lineRenderer.positionCount = 0;
+        lineRenderer.enabled = false;
 
-    // H�m n�y s? ???c g?i t? Animation Event
-    public void ActivateAttackTrail(float characterRotationY)
-    {
-        if (drawTrailCoroutine != null)
+        // THÊM: Đảm bảo characterRootTransform được gán
+        // Nếu script này là con của KAVENT, bạn có thể tự động lấy KAVENT bằng GetComponetInParent
+        if (characterRootTransform == null)
         {
-            StopCoroutine(drawTrailCoroutine); // D?ng coroutine c? n?u c�
+            // Tìm KAVENT (đối tượng cha gần nhất có Animator, hoặc đơn giản là cha của cha nếu nó là root)
+            // Hoặc bạn có thể kéo trực tiếp KAVENT vào ô này trong Inspector.
+            // Để đơn giản, nếu script này nằm dưới một khớp xương và khớp xương nằm dưới KAVENT, thì KAVENT là cha của cha.
+            characterRootTransform = transform.root; // Lấy root GameObject của hệ thống phân cấp
+                                                     // Hoặc một cách khác: characterRootTransform = GetComponentInParent<Animator>().transform;
+            if (characterRootTransform == null)
+            {
+                Debug.LogError("BibiAttackTrailController: Không tìm thấy Character Root Transform (KAVENT)! Vui lòng gán thủ công hoặc kiểm tra cấu trúc.", this);
+            }
         }
-        drawTrailCoroutine = StartCoroutine(DrawArcTrail(characterRotationY));
     }
 
-    IEnumerator DrawArcTrail(float characterRotationY)
+    // Hàm BẬT chỉ báo phạm vi tấn công (khi joystick đang kéo)
+    // joystickDirection: hướng kéo của joystick (Vector2)
+    public void EnableRangeIndicator(Vector2 joystickDirection)
     {
-        lineRenderer.enabled = true; // B?t Line Renderer
-        lineRenderer.positionCount = segments + 1; // S? ?i?m = s? ?o?n + 1
+        if (characterRootTransform == null) return;
 
-        // T�nh to�n g�c b?t ??u v� k?t th�c c?a cung tr�n d?a tr�n h??ng c?a nh�n v?t
-        // characterRotationY l� g�c xoay Y c?a nh�n v?t (v� d?: 0 ?? l� ph�a tr??c, 90 ?? l� b�n ph?i)
-        float startAngleRad = (characterRotationY - attackAngle / 2f) * Mathf.Deg2Rad;
-        float endAngleRad = (characterRotationY + attackAngle / 2f) * Mathf.Deg2Rad;
+        if (currentTrailCoroutine != null)
+        {
+            StopCoroutine(currentTrailCoroutine);
+        }
+        lineRenderer.enabled = true;
+        lineRenderer.positionCount = segments + 1;
+
+        // Lấy góc xoay Y từ hướng joystick
+        Vector3 worldAttackDirection = new Vector3(joystickDirection.x, 0f, joystickDirection.y).normalized;
+        float joystickAngle = Mathf.Atan2(worldAttackDirection.x, worldAttackDirection.z) * Mathf.Rad2Deg;
+
+        DrawArc(characterRootTransform.position, joystickAngle, attackRadius, attackAngle, indicatorAlpha);
+    }
+
+    // Hàm CẬP NHẬT chỉ báo phạm vi tấn công (khi joystick vẫn đang kéo và đổi hướng)
+    public void UpdateRangeIndicator(Vector2 joystickDirection)
+    {
+        if (characterRootTransform == null) return;
+
+        if (lineRenderer.enabled)
+        {
+            Vector3 worldAttackDirection = new Vector3(joystickDirection.x, 0f, joystickDirection.y).normalized;
+            float joystickAngle = Mathf.Atan2(worldAttackDirection.x, worldAttackDirection.z) * Mathf.Rad2Deg;
+            DrawArc(characterRootTransform.position, joystickAngle, attackRadius, attackAngle, indicatorAlpha);
+        }
+    }
+
+    // Hàm được gọi từ Animation Event để tạo vệt tấn công THỰC TẾ
+    public void ActivateActualAttackTrail()
+    {
+        if (characterRootTransform == null) return;
+
+        if (currentTrailCoroutine != null)
+        {
+            StopCoroutine(currentTrailCoroutine);
+        }
+        // Lấy góc xoay Y hiện tại của KAVENT (vì KAVENT giờ là gốc xoay)
+        float actualRotationY = characterRootTransform.rotation.eulerAngles.y;
+        currentTrailCoroutine = StartCoroutine(DrawAndFadeArcTrail(actualRotationY, actualTrailDuration, actualTrailAlpha));
+    }
+
+    // Hàm TẮT hoàn toàn hiển thị vệt/chỉ báo
+    public void DisableTrailVisual()
+    {
+        if (currentTrailCoroutine != null)
+        {
+            StopCoroutine(currentTrailCoroutine);
+        }
+        lineRenderer.enabled = false;
+        lineRenderer.positionCount = 0;
+    }
+
+    // Hàm vẽ cung tròn (hàm nội bộ)
+    private void DrawArc(Vector3 center, float centralAngleY, float radius, float angleExtent, float alpha)
+    {
+        // Điều chỉnh alpha của Line Renderer Material
+        // Giữ nguyên logic này
+        Color startColor = lineRenderer.startColor;
+        Color endColor = lineRenderer.endColor;
+        startColor.a = alpha;
+        endColor.a = alpha * 0.1f;
+        lineRenderer.startColor = startColor;
+        lineRenderer.endColor = endColor;
+
+        float startAngleRad = (centralAngleY - angleExtent / 2f) * Mathf.Deg2Rad;
+        float endAngleRad = (centralAngleY + angleExtent / 2f) * Mathf.Deg2Rad;
         float angleStep = (endAngleRad - startAngleRad) / segments;
 
-        // V? cung tr�n
         for (int i = 0; i <= segments; i++)
         {
             float currentAngle = startAngleRad + i * angleStep;
-            float x = characterPivot.position.x + attackRadius * Mathf.Sin(currentAngle);
-            float z = characterPivot.position.z + attackRadius * Mathf.Cos(currentAngle);
-            // Gi? s? game nh�n t? tr�n xu?ng (top-down), Y l� chi?u cao c? ??nh
-            lineRenderer.SetPosition(i, new Vector3(x, characterPivot.position.y, z));
+            float x = center.x + radius * Mathf.Sin(currentAngle);
+            float z = center.z + radius * Mathf.Cos(currentAngle);
+            lineRenderer.SetPosition(i, new Vector3(x, center.y + 0.1f, z));
+        }
+    }
+
+    // Coroutine để vẽ và làm mờ vệt tấn công thực tế
+    IEnumerator DrawAndFadeArcTrail(float characterRotationY, float duration, float startAlpha)
+    {
+        lineRenderer.enabled = true;
+        lineRenderer.positionCount = segments + 1;
+
+        DrawArc(characterRootTransform.position, characterRotationY, attackRadius, attackAngle, startAlpha);
+
+        float timer = 0f;
+        while (timer < duration)
+        {
+            timer += Time.deltaTime;
+            float currentAlpha = Mathf.Lerp(startAlpha, 0f, timer / duration);
+            Color startColor = lineRenderer.startColor;
+            Color endColor = lineRenderer.endColor;
+            startColor.a = currentAlpha;
+            endColor.a = currentAlpha * 0.1f;
+            lineRenderer.startColor = startColor;
+            lineRenderer.endColor = endColor;
+            yield return null;
         }
 
-        // ??i m?t kho?ng th?i gian (trailDuration) ?? v?t m? d?n
-        yield return new WaitForSeconds(trailDuration);
-
-        // Sau khi h?t th?i gian, t?t Line Renderer
         lineRenderer.enabled = false;
-        lineRenderer.positionCount = 0; // X�a c�c ?i?m ?? kh�ng c�n v?t
+        lineRenderer.positionCount = 0;
     }
 }
