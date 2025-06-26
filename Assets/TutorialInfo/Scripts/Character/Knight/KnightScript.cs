@@ -12,7 +12,7 @@ class KnightScript : MonoBehaviour, ICharacterSkill
        
     }
 
-    public void UseSkill()
+    public void UseSkill(Vector2 inputright)
     {
         
     }

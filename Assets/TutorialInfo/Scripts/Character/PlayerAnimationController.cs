@@ -58,4 +58,14 @@ public class PlayerAnimationController : MonoBehaviour
         animator.SetFloat("speed", speed);
         this.speed = speed;
     }
+
+    public void SetUtil()
+    {
+        if (animator == null)
+        {
+            Debug.LogError("Animator is null when setting parameters in PlayerAnimationController!");
+            return;
+        }
+        animator.SetTrigger("Ulti");
+    }
 }

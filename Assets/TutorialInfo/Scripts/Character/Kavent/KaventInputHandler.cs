@@ -10,11 +10,15 @@ public class KaventInputHandler : APlayerInputHandler
     private ICharacterSkill characterSkill;
     private Movement movementComponent;
     private Vector2 lastValidRightStickInput;
+    private Vector2 lastValidUltiStickInput;
+    private Vector2 lastValidSpellStickInput;
     private bool nextAttack = false;
     private Vector2 nextAttackinput;
+    private PlayerStats playerStats;
 
     private void Awake()
     {
+        playerStats = GetComponent<PlayerStats>();
         characterSkill = GetComponent<ICharacterSkill>();
         movementComponent = GetComponent<KaventMovement>();
     }
@@ -57,6 +61,47 @@ public class KaventInputHandler : APlayerInputHandler
 
     }
 
+    public override void OnSkill(InputAction.CallbackContext context)
+    {
+        if (!playerStats.isEnergyFull())
+            return;
+
+        SetRightStickInputInternal(context.ReadValue<Vector2>());
+        if (context.performed)
+        {
+            lastValidUltiStickInput = GetInputRight();
+            lastRightStickMagnitude = lastValidUltiStickInput.magnitude;
+        }
+        else if (context.canceled)
+        {
+            bool canNewAttack = !GetIsAttacking() && (lastRightStickMagnitude - attackThreshold >= 0);
+
+            if (canNewAttack)
+            {
+                SetAttackPhase(GetAttackPhase() % 3 + 1);
+
+                SetIsAttacking(true);
+
+
+                if (characterSkill != null)
+                {
+                    characterSkill.NormalAttack(GetInputRight());
+                }
+
+            }
+            else if (GetIsAttacking() && (lastRightStickMagnitude - attackThreshold >= 0))
+            {
+                nextAttackinput = lastValidRightStickInput;
+                nextAttack = true;
+            }
+
+            SetRightStickInputInternal(Vector2.zero);
+            lastRightStickMagnitude = 0f;
+            lastValidRightStickInput = Vector2.zero;
+
+        }
+    }
+
     public override void OnAttack(InputAction.CallbackContext context)
     {
         SetRightStickInputInternal(context.ReadValue<Vector2>());
@@ -67,7 +112,7 @@ public class KaventInputHandler : APlayerInputHandler
         }
         else if (context.canceled)
         {
-            bool canNewAttack = !GetIsAttacking() && (lastRightStickMagnitude - attackThreshold >= 0);
+            bool canNewAttack = !GetIsAttacking() && (lastRightStickMagnitude - attackThreshold >= 0) && !GetIsUlti();
 
             if(canNewAttack)
             {

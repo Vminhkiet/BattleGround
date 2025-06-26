@@ -14,6 +14,8 @@ public class KaventAnimationController : PlayerAnimationController
         _inputhandler.OnAttackPhaseChanged += HandleAttackPhaseChanged;
         _inputhandler.OnAttackStateChanged += HandleAttackStateChanged;
         _inputhandler.OnMoveInputChanged += HanldeMovementChanged;
+        _inputhandler.OnUltiChanged += HanldeUltiChanged;
+
     }
 
     private void Update()
@@ -56,6 +58,11 @@ public class KaventAnimationController : PlayerAnimationController
     private void HanldeMovementChanged(float newSpeed)
     {
         SetAnimatorMovement(newSpeed);
+    }
+
+    private void HanldeUltiChanged()
+    {
+        SetUtil();
     }
 }
 

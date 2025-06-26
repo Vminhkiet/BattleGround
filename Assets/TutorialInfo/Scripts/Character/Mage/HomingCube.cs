@@ -5,7 +5,7 @@ using UnityEngine;
 public class HomingCube : MonoBehaviour
 {
     public float speed = 10f;
-    public float lifetime = 5f;
+    public float lifetime = 3f;
     public float homingDelay = 0.2f;
 
     private Transform target;
@@ -50,7 +50,7 @@ public class HomingCube : MonoBehaviour
         if (target != null)
         {
             Vector3 direction = (target.position - transform.position).normalized;
-            transform.forward = Vector3.Lerp(transform.forward, direction, Time.deltaTime * 6f);
+            transform.forward = Vector3.Lerp(transform.forward, direction, Time.deltaTime * 7f);
             transform.position += transform.forward * speed * Time.deltaTime;
         }
         else
@@ -63,8 +63,12 @@ public class HomingCube : MonoBehaviour
     {
         if (other.CompareTag("Enemy"))
         {
+            //Ke dich mat mau
             ReturnToPool();
-        }
+        } else if (other.CompareTag("DecorationObject"))
+        {
+            ReturnToPool();
+        }    
     }
 
     void ReturnToPool()

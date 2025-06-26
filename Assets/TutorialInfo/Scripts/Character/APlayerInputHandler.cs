@@ -9,6 +9,7 @@ public abstract class APlayerInputHandler : MonoBehaviour
     protected Vector2 rightStickInput;
 
     protected bool isAttacking = false;
+    protected bool isUlti = false;
     protected int attackPhase = 0;
     protected float lastRightStickMagnitude;
     protected float attackThreshold = 0.05f;
@@ -16,17 +17,26 @@ public abstract class APlayerInputHandler : MonoBehaviour
     public event Action<bool> OnAttackStateChanged;
     public event Action<int> OnAttackPhaseChanged;
     public event Action<float> OnMoveInputChanged;
-
+    public event Action OnUltiChanged;
 
 
     public abstract void OnMove(InputAction.CallbackContext callbackContext);
     public abstract void OnAttack(InputAction.CallbackContext context);
-
+    public abstract void OnSkill(InputAction.CallbackContext context);
 
     public void SetIsAttacking(bool isAttacking)
     {
         this.isAttacking = isAttacking;
         OnAttackStateChanged?.Invoke(this.isAttacking);
+    }
+
+    public void SetIsUlti(bool isUlti)
+    {
+        this.isUlti = isUlti;
+        if (this.isUlti)
+        {
+            OnUltiChanged?.Invoke();
+        }
     }
 
     public void SetAttackPhase(int attackPhase)
@@ -55,6 +65,12 @@ public abstract class APlayerInputHandler : MonoBehaviour
     {
         return attackPhase;
     }
+
+    public bool GetIsUlti()
+    {
+        return isUlti;
+    }
+
 
     public Vector2 GetInputLeft()
     {
