@@ -51,6 +51,10 @@ public class MageScript : MonoBehaviour, ICharacterSkill
         return closestEnemy;
     }
 
+    public void UseSpell(Vector2 input)
+    {
+
+    }
     public void UseSkill(Vector2 inputright)
     {
         StartCoroutine(SpawnSkillProjectiles());

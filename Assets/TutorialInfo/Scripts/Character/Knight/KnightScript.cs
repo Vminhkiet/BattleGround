@@ -16,4 +16,9 @@ class KnightScript : MonoBehaviour, ICharacterSkill
     {
         
     }
+
+    public void UseSpell(Vector2 input)
+    {
+
+    }
 }
