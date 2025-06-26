@@ -1,14 +1,18 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Windows;
 using static UnityEngine.Rendering.DebugUI;
 public class KaventInputHandler : APlayerInputHandler
 {
+    [SerializeField]
+    private GameObject predictSlash;
 
     private ICharacterSkill characterSkill;
     private Movement movementComponent;
+    private RotationEffect rotationEffect;
     private Vector2 lastValidRightStickInput;
     private Vector2 lastValidUltiStickInput;
     private Vector2 lastValidSpellStickInput;
@@ -18,6 +22,7 @@ public class KaventInputHandler : APlayerInputHandler
 
     private void Awake()
     {
+        rotationEffect = predictSlash.GetComponent<RotationEffect>();
         playerStats = GetComponent<PlayerStats>();
         characterSkill = GetComponent<ICharacterSkill>();
         movementComponent = GetComponent<KaventMovement>();
@@ -125,11 +130,18 @@ public class KaventInputHandler : APlayerInputHandler
         SetRightStickInputInternal(context.ReadValue<Vector2>());
         if (context.performed)
         {
+            if (predictSlash != null && !predictSlash.activeSelf)
+            {
+                predictSlash.SetActive(true);
+            }
             lastValidRightStickInput = GetInputRight();
             lastRightStickMagnitude = lastValidRightStickInput.magnitude;
+            rotationEffect.RotateEffectSlash(lastValidRightStickInput);
         }
         else if (context.canceled)
         {
+            predictSlash.SetActive(false);
+
             bool canNewAttack = !GetIsAttacking() && (lastRightStickMagnitude - attackThreshold >= 0) && !GetIsUlti();
 
             if(canNewAttack)

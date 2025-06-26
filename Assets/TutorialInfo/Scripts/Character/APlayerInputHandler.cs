@@ -25,7 +25,7 @@ public abstract class APlayerInputHandler : MonoBehaviour
     public event Action<float> OnMoveInputChanged;
     public event Action OnSpellChanged;
     public event Action OnUltiChanged;
-
+    
 
     public abstract void OnMove(InputAction.CallbackContext callbackContext);
     public abstract void OnAttack(InputAction.CallbackContext context);
