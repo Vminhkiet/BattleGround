@@ -57,7 +57,6 @@ public class MageScript : MonoBehaviour, ICharacterSkill
 
     void ICharacterSkill.DrawUltiPosition(Vector2 input)
     {
-        Debug.Log("LL");
         if (input.sqrMagnitude > 0.01f)
         {
             Vector3 dir = new Vector3(input.x, 0, input.y).normalized;
@@ -115,7 +114,7 @@ public class MageScript : MonoBehaviour, ICharacterSkill
         {
             Vector3 randomOffset = new Vector3(
                 Random.Range(-3f, 3f),
-                4f,
+                 ultiRange,
                 Random.Range(-3f, 3f)
             );
 

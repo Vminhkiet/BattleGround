@@ -20,6 +20,12 @@ public abstract class APlayerInputHandler : MonoBehaviour
     protected float lastSpellStickMagnitude;
     protected float attackThreshold = 0.05f;
 
+    protected Vector2 lastValidRightStickInput;
+    protected Vector2 lastValidUltiStickInput;
+    protected Vector2 lastValidSpellStickInput;
+    protected bool nextAttack = false;
+    protected Vector2 nextAttackinput;
+
     protected ICharacterSkill characterSkill;
     protected Movement movementComponent;
     protected PlayerStats playerStats;
@@ -29,13 +35,6 @@ public abstract class APlayerInputHandler : MonoBehaviour
     public event Action<float> OnMoveInputChanged;
     public event Action OnSpellChanged;
     public event Action OnUltiChanged;
-
-
-    public abstract void OnMove(InputAction.CallbackContext callbackContext);
-    public abstract void OnAttack(InputAction.CallbackContext context);
-    public abstract void OnSkill(InputAction.CallbackContext context);
-
-    public abstract void OnSpell(InputAction.CallbackContext context);
 
 
     protected virtual void Awake()
@@ -49,6 +48,138 @@ public abstract class APlayerInputHandler : MonoBehaviour
     protected virtual void Update()
     {
         characterSkill.DrawUltiPosition(GetInputUlti());
+        if (nextAttack)
+        {
+            bool canNewAttack = !GetIsAttacking();
+
+            if (canNewAttack)
+            {
+                SetAttackPhase(GetAttackPhase() % 3 + 1);
+
+                SetIsAttacking(true);
+
+
+                if (characterSkill != null)
+                {
+                    characterSkill.NormalAttack(nextAttackinput);
+                }
+
+            }
+            nextAttackinput = Vector2.zero;
+            nextAttack = !nextAttack;
+        }
+    }
+
+    public virtual void OnMove(InputAction.CallbackContext callbackContext)
+    {
+        Vector2 currentMoveInputValue = callbackContext.ReadValue<Vector2>();
+
+        SetMoveInputInternal(currentMoveInputValue);
+
+
+        if (movementComponent != null)
+        {
+            movementComponent.SetInputLeft(GetInputLeft());
+        }
+
+    }
+
+    public virtual void OnSkill(InputAction.CallbackContext context)
+    {
+        if (!playerStats.isEnergyFull())
+            return;
+
+        SetUltiInputInternal(context.ReadValue<Vector2>());
+        if (context.performed)
+        {
+            lastValidUltiStickInput = GetInputUlti();
+            lastUltiStickMagnitude = lastValidUltiStickInput.magnitude;
+        }
+        else if (context.canceled)
+        {
+            bool canUlti = !GetIsAttacking() && lastUltiStickMagnitude - attackThreshold > 0;
+
+            if (canUlti)
+            {
+                SetIsUlti(true);
+
+                if (characterSkill != null)
+                    characterSkill.UseSkill(lastValidUltiStickInput);
+            }
+
+            SetUltiInputInternal(Vector2.zero);
+            lastUltiStickMagnitude = 0f;
+            lastValidUltiStickInput = Vector2.zero;
+
+        }
+    }
+
+    public virtual void OnSpell(InputAction.CallbackContext context)
+    {
+        if (!playerStats.isSpellFull())
+            return;
+
+        SetSpellInputInternal(context.ReadValue<Vector2>());
+        if (context.performed)
+        {
+            lastValidSpellStickInput = GetInputSpell();
+            lastSpellStickMagnitude = lastValidSpellStickInput.magnitude;
+        }
+        else if (context.canceled)
+        {
+            bool canSpell = lastUltiStickMagnitude - attackThreshold > 0;
+
+            if (canSpell)
+            {
+                SetIsSpell(true);
+                if (characterSkill != null)
+                    characterSkill.UseSpell(lastValidSpellStickInput);
+            }
+
+            SetSpellInputInternal(Vector2.zero);
+            lastSpellStickMagnitude = 0f;
+            lastValidSpellStickInput = Vector2.zero;
+
+        }
+    }
+
+
+    public virtual void OnAttack(InputAction.CallbackContext context)
+    {
+        SetRightStickInputInternal(context.ReadValue<Vector2>());
+        if (context.performed)
+        {
+            lastValidRightStickInput = GetInputRight();
+            lastRightStickMagnitude = lastValidRightStickInput.magnitude;
+        }
+        else if (context.canceled)
+        {
+            bool canNewAttack = !GetIsAttacking() && (lastRightStickMagnitude - attackThreshold >= 0) && !GetIsUlti();
+
+            if (canNewAttack)
+            {
+                SetAttackPhase(GetAttackPhase() % 3 + 1);
+
+                SetIsAttacking(true);
+
+
+                if (characterSkill != null)
+                {
+                    characterSkill.NormalAttack(lastValidRightStickInput);
+                }
+
+            }
+            else if (GetIsAttacking() && (lastRightStickMagnitude - attackThreshold >= 0))
+            {
+                nextAttackinput = lastValidRightStickInput;
+                nextAttack = true;
+            }
+
+            SetRightStickInputInternal(Vector2.zero);
+            lastRightStickMagnitude = 0f;
+            lastValidRightStickInput = Vector2.zero;
+
+        }
     }
 
     public void SetIsAttacking(bool isAttacking)
@@ -138,4 +269,18 @@ public abstract class APlayerInputHandler : MonoBehaviour
         return spellInput;
     }
 
+    public virtual void ResetAttackState()
+    {
+        SetIsAttacking(false);
+    }
+
+    public virtual void ResetUltiState()
+    {
+        SetIsUlti(false);
+    }
+
+    public virtual void ResetSpellState()
+    {
+        SetIsSpell(false);
+    }
 }

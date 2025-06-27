@@ -246,7 +246,7 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: e4907ebc97019ff4f82f2829e51e8b5b,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: e4907ebc97019ff4f82f2829e51e8b5b,
         type: 3}
@@ -391,10 +391,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: e4907ebc97019ff4f82f2829e51e8b5b,
         type: 3}
       insertIndex: -1
-      addedObject: {fileID: 7265231703500390923}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: e4907ebc97019ff4f82f2829e51e8b5b,
-        type: 3}
-      insertIndex: -1
       addedObject: {fileID: 2706448223608281763}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: e4907ebc97019ff4f82f2829e51e8b5b,
         type: 3}
@@ -408,6 +404,14 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 8414959320189736379}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: e4907ebc97019ff4f82f2829e51e8b5b,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3200927624679549418}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: e4907ebc97019ff4f82f2829e51e8b5b,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3608208570126525415}
   m_SourcePrefab: {fileID: 100100000, guid: e4907ebc97019ff4f82f2829e51e8b5b, type: 3}
 --- !u!1 &4676557276788972765 stripped
 GameObject:
@@ -569,7 +573,7 @@ MonoBehaviour:
   m_ActionEvents:
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 7265231703500390923}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: KaventInputHandler, Assembly-CSharp
         m_MethodName: OnMove
         m_Mode: 0
@@ -585,7 +589,7 @@ MonoBehaviour:
     m_ActionName: Player/Move
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 7265231703500390923}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: KaventInputHandler, Assembly-CSharp
         m_MethodName: OnAttack
         m_Mode: 0
@@ -599,6 +603,26 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: bda9b26c-4bec-4c16-a53b-3c2faba6e492
     m_ActionName: Player/Attack
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: KaventInputHandler, Assembly-CSharp
+        m_MethodName: OnSkill
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: bd45a033-3d98-43d2-9ad8-2f251c3e7d65
+    m_ActionName: Player/Ulti
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 1fa4a49c-c876-490d-ad3e-0baa3531e509
+    m_ActionName: Player/Spell[/Mouse/delta]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player
@@ -620,6 +644,9 @@ MonoBehaviour:
     type: 3}
   attackRange: 8
   shootDelay: 1
+  skillIndicatorPrefab: {fileID: 3025453216221348311, guid: f3010e3f61c6d834a8751bdc3fbbf5d2,
+    type: 3}
+  ultiRange: 4
 --- !u!114 &553615343560515279
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -633,18 +660,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   transparentAlpha: 0.7
---- !u!114 &7265231703500390923
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4676557276788972765}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 904d2576b10c79941a8259547b59ab90, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &2706448223608281763
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -800,6 +815,30 @@ MonoBehaviour:
   radius: 8
   segments: 60
   line: {fileID: 6006758786432822952}
+--- !u!114 &3200927624679549418
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4676557276788972765}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a7e005127b0b65443aa1c5e6bdf4463b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &3608208570126525415
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4676557276788972765}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a15de867bb964704eb793b7b06205c5c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &5453200250505660007 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: e4907ebc97019ff4f82f2829e51e8b5b,
