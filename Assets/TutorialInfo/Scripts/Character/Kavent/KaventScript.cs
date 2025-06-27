@@ -32,6 +32,10 @@ public class KaventScript : MonoBehaviour, ICharacterSkill
 
     }
 
+    void ICharacterSkill.DrawUltiPosition(Vector2 input)
+    {
+       
+    }
     public void UseSpell(Vector2 inputspell)
     {
 

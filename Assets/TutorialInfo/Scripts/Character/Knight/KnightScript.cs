@@ -21,4 +21,9 @@ class KnightScript : MonoBehaviour, ICharacterSkill
     {
 
     }
+
+    void ICharacterSkill.DrawUltiPosition(Vector2 input)
+    {
+        throw new NotImplementedException();
+    }
 }

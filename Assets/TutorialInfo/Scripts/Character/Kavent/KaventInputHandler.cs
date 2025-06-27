@@ -6,25 +6,17 @@ using UnityEngine.Windows;
 using static UnityEngine.Rendering.DebugUI;
 public class KaventInputHandler : APlayerInputHandler
 {
-
-    private ICharacterSkill characterSkill;
-    private Movement movementComponent;
     private Vector2 lastValidRightStickInput;
     private Vector2 lastValidUltiStickInput;
     private Vector2 lastValidSpellStickInput;
     private bool nextAttack = false;
     private Vector2 nextAttackinput;
-    private PlayerStats playerStats;
 
-    private void Awake()
-    {
-        playerStats = GetComponent<PlayerStats>();
-        characterSkill = GetComponent<ICharacterSkill>();
-        movementComponent = GetComponent<KaventMovement>();
-    }
+
 
     private void Update()
     {
+        base.Update();
         if (nextAttack)
         {
             bool canNewAttack = !GetIsAttacking();

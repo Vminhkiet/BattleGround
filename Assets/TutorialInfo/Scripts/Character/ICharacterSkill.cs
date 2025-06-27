@@ -8,4 +8,6 @@ public interface ICharacterSkill
     void UseSkill(Vector2 inputright);
 
     void UseSpell(Vector2 inputright);
+
+    void DrawUltiPosition(Vector2 input);
 }

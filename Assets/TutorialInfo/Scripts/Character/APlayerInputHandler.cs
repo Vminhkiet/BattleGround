@@ -20,6 +20,10 @@ public abstract class APlayerInputHandler : MonoBehaviour
     protected float lastSpellStickMagnitude;
     protected float attackThreshold = 0.05f;
 
+    protected ICharacterSkill characterSkill;
+    protected Movement movementComponent;
+    protected PlayerStats playerStats;
+
     public event Action<bool> OnAttackStateChanged;
     public event Action<int> OnAttackPhaseChanged;
     public event Action<float> OnMoveInputChanged;
@@ -32,6 +36,20 @@ public abstract class APlayerInputHandler : MonoBehaviour
     public abstract void OnSkill(InputAction.CallbackContext context);
 
     public abstract void OnSpell(InputAction.CallbackContext context);
+
+
+    protected virtual void Awake()
+    {
+        playerStats = GetComponent<PlayerStats>();
+        characterSkill = GetComponent<ICharacterSkill>();
+        movementComponent = GetComponent<KaventMovement>();
+    }
+
+
+    protected virtual void Update()
+    {
+        characterSkill.DrawUltiPosition(GetInputUlti());
+    }
 
     public void SetIsAttacking(bool isAttacking)
     {
