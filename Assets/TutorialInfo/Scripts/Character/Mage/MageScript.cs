@@ -68,14 +68,14 @@ public class MageScript : MonoBehaviour, ICharacterSkill
             }
 
             activeIndicator.SetActive(true);
-            activeIndicator.transform.localScale = new Vector3(1, 1, 1 )*ultiRange*2;
+            activeIndicator.transform.localScale = new Vector3(1, 1, 1 )*ultiRange;
             activeIndicator.transform.rotation = Quaternion.Euler(90, 0, 0);
             activeIndicator.transform.position = targetPos;
         }
         else
         {
-            if (activeIndicator != null)
-                activeIndicator.SetActive(false);
+           /* if (activeIndicator != null)
+                activeIndicator.SetActive(false);*/
         }
     }
 
@@ -113,12 +113,12 @@ public class MageScript : MonoBehaviour, ICharacterSkill
         for (int i = 0; i < amount; i++)
         {
             Vector3 randomOffset = new Vector3(
-                Random.Range(-3f, 3f),
-                 ultiRange,
-                Random.Range(-3f, 3f)
+                Random.Range(-2f, 2f),
+                 5f,
+                Random.Range(-2f, 2f)
             );
 
-            Vector3 spawnPosition = inputPosition+ randomOffset;
+            Vector3 spawnPosition = inputPosition + randomOffset;
 
             GameObject cube = ObjectPooler.Instance.GetCube();
             cube.transform.position = spawnPosition;
