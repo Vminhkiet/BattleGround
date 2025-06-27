@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using DG.Tweening;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -36,7 +37,7 @@ public class HomingCube : MonoBehaviour
 
         if (!isHoming)
         {
-            transform.position += Vector3.down * speed * Time.deltaTime;
+            transform.position += Vector3.down * speed* 2 * Time.deltaTime;
             return;
         }
 
@@ -61,18 +62,24 @@ public class HomingCube : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Enemy"))
+        if (other.CompareTag("Enemy")|| other.CompareTag("DecorationObject") || other.CompareTag("Tile"))
         {
-            //Ke dich mat mau
+            GameObject explosion = ExplosionPooler.Instance.Get();
+            ParticleSystem[] particleSystems = explosion.GetComponentsInChildren<ParticleSystem>();
+
+            explosion.transform.position = transform.position;
+            foreach (var ps in particleSystems)
+            {
+                ps.Clear();
+                ps.Play();
+            }
             ReturnToPool();
-        } else if (other.CompareTag("DecorationObject"))
-        {
-            ReturnToPool();
-        }    
+        } 
     }
 
     void ReturnToPool()
     {
+        isHoming = true;
         ObjectPooler.Instance.ReturnCube(gameObject);
     }
 }

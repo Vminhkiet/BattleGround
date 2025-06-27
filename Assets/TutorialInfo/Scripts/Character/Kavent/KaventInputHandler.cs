@@ -22,17 +22,44 @@ public class KaventInputHandler : APlayerInputHandler
         SetRightStickInputInternal(context.ReadValue<Vector2>());
         if (context.performed)
         {
-            if (predictSlash != null && !predictSlash.activeSelf)
-            {
-                predictSlash.SetActive(true);
-            }
-            rotationEffect.RotateEffectSlash(lastValidRightStickInput);
+            lastValidRightStickInput = GetInputRight();
+            lastRightStickMagnitude = lastValidRightStickInput.magnitude;
         }
         else if (context.canceled)
         {
+            bool canNewAttack = !GetIsAttacking() && (lastRightStickMagnitude - attackThreshold >= 0) && !GetIsUlti();
+
+            if (canNewAttack)
+            {
+                SetAttackPhase(GetAttackPhase() % 3 + 1);
+
+                SetIsAttacking(true);
+
+                if (predictSlash != null && !predictSlash.activeSelf)
+                {
+                    predictSlash.SetActive(true);
+                }
+                rotationEffect.RotateEffectSlash(lastValidRightStickInput);
+
+                if (characterSkill != null)
+                {
+                    characterSkill.NormalAttack(lastValidRightStickInput);
+                }
+
+            }
+            else if (GetIsAttacking() && (lastRightStickMagnitude - attackThreshold >= 0))
+            {
+                nextAttackinput = lastValidRightStickInput;
+                nextAttack = true;
+            }
             predictSlash.SetActive(false);
+
+            SetRightStickInputInternal(Vector2.zero);
+            lastRightStickMagnitude = 0f;
+            lastValidRightStickInput = Vector2.zero;
+
         }
-        base.OnAttack(context);
+
     }
 
 }

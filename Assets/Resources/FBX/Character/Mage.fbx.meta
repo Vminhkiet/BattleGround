@@ -1820,7 +1820,15 @@ ModelImporter:
       mirror: 0
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
-      events: []
+      events:
+      - time: 0.8443709
+        functionName: ResetUltiState
+        data: 
+        objectReferenceParameter: {fileID: 11500000, guid: a15de867bb964704eb793b7b06205c5c,
+          type: 3}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
       transformMask: []
       maskType: 3
       maskSource: {instanceID: 0}

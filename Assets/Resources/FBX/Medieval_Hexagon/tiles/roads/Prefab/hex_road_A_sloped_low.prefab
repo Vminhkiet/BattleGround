@@ -63,6 +63,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: hex_road_A_sloped_low
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 236f07ea9c035a34586420c7bc93bc8b,
+        type: 3}
+      propertyPath: m_TagString
+      value: Tile
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

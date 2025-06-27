@@ -63,6 +63,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: hex_road_K
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: f4d5c0970f85cdd44bc9ca4542ab9481,
+        type: 3}
+      propertyPath: m_TagString
+      value: Tile
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
