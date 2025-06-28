@@ -54,10 +54,10 @@ Material:
     - _Distortion_Scale: 25
     - _DstBlend: 10
     - _Glow_Length: 2.9
-    - _Height: 0.6
+    - _Height: 0.84
     - _Mask_Size: 0.693
-    - _Outer_Height: 0.57
-    - _Outer_Width: 1
+    - _Outer_Height: 1.05
+    - _Outer_Width: 0.9
     - _QueueControl: 0
     - _QueueOffset: 0
     - _Roundness: 1
@@ -67,14 +67,14 @@ Material:
     - _Surface: 1
     - _UV_Color_Lerp_Z: 1
     - _UV_Scroll_W: 1
-    - _Width: 0.5
+    - _Width: 0.55
     - _ZTest: 4
     - _ZWrite: 1
     - _ZWriteControl: 1
     m_Colors:
     - _Core_Color: {r: 5.9921575, g: 0.6814011, b: 0.5313797, a: 0}
-    - _Distortion_Speed: {r: -1, g: 0, b: 0, a: 0}
-    - _Distortion_Tilling: {r: 0.11, g: 5.17, b: 0, a: 0}
+    - _Distortion_Speed: {r: -0.5, g: 0, b: 0, a: 0}
+    - _Distortion_Tilling: {r: 2, g: 5.17, b: 0, a: 0}
     - _Outer_color: {r: 0, g: 0, b: 0, a: 0}
     - _Start_Color: {r: 7.924528, g: 0.47846162, b: 0.47846162, a: 0}
   m_BuildTextureStacks: []

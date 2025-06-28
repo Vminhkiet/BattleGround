@@ -15,6 +15,7 @@ public abstract class APlayerInputHandler : MonoBehaviour
     protected bool isUlti = false;
     protected bool isSpell = false;
     protected int attackPhase = 0;
+
     protected float lastRightStickMagnitude;
     protected float lastUltiStickMagnitude;
     protected float lastSpellStickMagnitude;
@@ -29,19 +30,21 @@ public abstract class APlayerInputHandler : MonoBehaviour
     protected ICharacterSkill characterSkill;
     protected Movement movementComponent;
     protected PlayerStats playerStats;
+    protected CharacterMeshRotation cRotation;
 
+    public event Action<float> OnMoveInputChanged;
     public event Action<bool> OnAttackStateChanged;
     public event Action<int> OnAttackPhaseChanged;
-    public event Action<float> OnMoveInputChanged;
     public event Action OnSpellChanged;
     public event Action OnUltiChanged;
-
+    public static event Action<Vector2> OnCharacterRotateChanged;
 
     protected virtual void Awake()
     {
         playerStats = GetComponent<PlayerStats>();
         characterSkill = GetComponent<ICharacterSkill>();
-        movementComponent = GetComponent<KaventMovement>();
+        movementComponent = GetComponentInParent<KaventMovement>();
+        cRotation = GetComponent<CharacterMeshRotation>();
     }
 
 
@@ -76,12 +79,18 @@ public abstract class APlayerInputHandler : MonoBehaviour
 
         SetMoveInputInternal(currentMoveInputValue);
 
-
-        if (movementComponent != null)
+        if (callbackContext.performed)
         {
+            if (movementComponent == null) return;
+            if(!GetIsAttacking())
+                cRotation.RotateTowardsDirection(GetInputLeft());
             movementComponent.SetInputLeft(GetInputLeft());
         }
-
+        else if (callbackContext.canceled)
+        {
+            SetMoveInputInternal(Vector2.zero);
+            movementComponent.SetInputLeft(GetInputLeft());
+        }
     }
 
     public virtual void OnSkill(InputAction.CallbackContext context)
@@ -165,6 +174,7 @@ public abstract class APlayerInputHandler : MonoBehaviour
 
                 if (characterSkill != null)
                 {
+                    cRotation.RotateTowardsDirection(lastValidRightStickInput);
                     characterSkill.NormalAttack(lastValidRightStickInput);
                 }
 
@@ -175,13 +185,12 @@ public abstract class APlayerInputHandler : MonoBehaviour
                 nextAttack = true;
             }
 
-            SetRightStickInputInternal(Vector2.zero);
-            lastRightStickMagnitude = 0f;
-            lastValidRightStickInput = Vector2.zero;
-
         }
     }
-
+    public void invokeRotationCharacter(Vector2 input)
+    {
+        OnCharacterRotateChanged?.Invoke(input);
+    }
     public void SetIsAttacking(bool isAttacking)
     {
         this.isAttacking = isAttacking;
@@ -282,5 +291,12 @@ public abstract class APlayerInputHandler : MonoBehaviour
     public virtual void ResetSpellState()
     {
         SetIsSpell(false);
+    }
+
+    public void ResetInputRight()
+    {
+        SetRightStickInputInternal(Vector2.zero);
+        lastRightStickMagnitude = 0f;
+        lastValidRightStickInput = Vector2.zero;
     }
 }

@@ -21,7 +21,7 @@ public class Movement : MonoBehaviour
     void Update()
     {
         input.Normalize();
-        RotateCharacter();
+        //RotateCharacter();
     }
 
     public void SetInputLeft(Vector2 inputleft)
