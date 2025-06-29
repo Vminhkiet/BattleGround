@@ -21,13 +21,20 @@ public class SafeZoneManager : MonoBehaviour
     public LayerMask visibilityLayer;
     public Vector2 emitterGridSpacing = new Vector2(0.3f, 0.3f);
     public Vector2 emitterGridOffset = new Vector2(0f, 0f);
+    public float emiiterHeight = 13;
+    public int checkPoints = 12;
+    public float edgeEmitterAngleSpacing = 10f;
 
     private GameObject[] emitters;
     private Plane[] cameraFrustum;
+    private bool isPlayingSound;
+    private AudioSource audioSource;
 
     void Start()
     {
+        isPlayingSound=false;
         emitters = new GameObject[emitterCount];
+        audioSource = GetComponent<AudioSource>();
         for (int i = 0; i < emitterCount; i++)
         {
             emitters[i] = Instantiate(emitterPrefab, transform);
@@ -43,24 +50,64 @@ public class SafeZoneManager : MonoBehaviour
 
         if (playerInsideSafeZone && !safeZoneEdgeVisible && distanceFromSafeZone < safeZoneRadius - safeZoneDeactivateThreshold)
         {
+            SetUpSound(false);
             DisableAllEmitters();
         }
         else if (!playerInsideSafeZone && !safeZoneEdgeVisible)
         {
+            SetUpSound(true);
             PlaceEmittersAroundPlayer();
         }
-        else // safe zone edge is in view
+        else
         {
+            SetUpSound(true);
             PlaceEmittersAlongSafeZoneEdge();
+        }
+    }
+
+    void SetUpSound(bool play)
+    {
+        if (play)
+        {
+            if (!isPlayingSound)
+            {
+                Debug.Log("Play");
+                audioSource.Play();
+                isPlayingSound = true;
+            }
+        }
+        else
+        {
+            if (isPlayingSound)
+            {
+                Debug.Log("Stop");
+                audioSource.Stop();
+                isPlayingSound = false;
+            }
         }
     }
 
     bool IsSafeZoneEdgeInView()
     {
         cameraFrustum = GeometryUtility.CalculateFrustumPlanes(playerCamera);
-        Vector3 samplePoint = safeZoneCenter.position + (player.position - safeZoneCenter.position).normalized * safeZoneRadius;
-        Bounds testBounds = new Bounds(samplePoint, Vector3.one * 2f);
-        return GeometryUtility.TestPlanesAABB(cameraFrustum, testBounds);
+
+        float height = emiiterHeight;
+
+        for (int i = 0; i < checkPoints; i++)
+        {
+            float angle = (i / (float)checkPoints) * Mathf.PI * 2f;
+            float x = Mathf.Cos(angle) * safeZoneRadius + safeZoneCenter.position.x;
+            float z = Mathf.Sin(angle) * safeZoneRadius + safeZoneCenter.position.z;
+            Vector3 point = new Vector3(x, height, z);
+
+            Bounds bounds = new Bounds(point, Vector3.one * 2f);
+            if (GeometryUtility.TestPlanesAABB(cameraFrustum, bounds))
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     void DisableAllEmitters()
@@ -73,7 +120,6 @@ public class SafeZoneManager : MonoBehaviour
 
     void PlaceEmittersAroundPlayer()
     {
-        float y = emitterPrefab.transform.position.y;
         int gridSize = 3;
 
         for (int row = 0; row < gridSize; row++)
@@ -88,7 +134,7 @@ public class SafeZoneManager : MonoBehaviour
                 Vector3 viewportPos = new Vector3(0.5f + x, 0.5f + z, playerCamera.nearClipPlane + 1f);
                 Vector3 worldPos = playerCamera.ViewportToWorldPoint(viewportPos);
 
-                emitters[index].transform.position = new Vector3(worldPos.x, y, worldPos.z);
+                emitters[index].transform.position = new Vector3(worldPos.x, emiiterHeight, worldPos.z);
                 emitters[index].SetActive(true);
             }
         }
@@ -96,38 +142,44 @@ public class SafeZoneManager : MonoBehaviour
 
     void PlaceEmittersAlongSafeZoneEdge()
     {
-        cameraFrustum = GeometryUtility.CalculateFrustumPlanes(playerCamera);
-        float y = emitterPrefab.transform.position.y;
+        if (emitters.Length < 8)
+        {
+            Debug.LogWarning("Bạn cần ít nhất 8 emitter cho ma trận 2x4.");
+            return;
+        }
+
+        Vector3 playerToCenter = (safeZoneCenter.position - player.position).normalized;
+        float baseAngle = Mathf.Atan2(playerToCenter.x, playerToCenter.z) * Mathf.Rad2Deg;
+
+        int perRow = 4;
+        float startAngle = baseAngle - edgeEmitterAngleSpacing * (perRow - 1) / 2f;
+
         int emitterIndex = 0;
 
-        // Place emitters in pairs: one on edge, one offset outward
-        for (int i = 0; i < 360; i += 10)
+        for (int row = 0; row < 2; row++)
         {
-            if (emitterIndex >= emitterCount - 1) break;
+            float radiusOffset = (row == 0) ? emitterEdgeDistance : emitterEdgeDistance + emitterOuterOffset;
 
-            Vector3 dir = Quaternion.Euler(0, i, 0) * Vector3.forward;
-
-            Vector3 edgePoint = safeZoneCenter.position + dir * (safeZoneRadius + emitterEdgeDistance);
-            Vector3 outerPoint = safeZoneCenter.position + dir * (safeZoneRadius + emitterEdgeDistance + emitterOuterOffset);
-
-            Bounds b = new Bounds(edgePoint, Vector3.one * 2f);
-            if (GeometryUtility.TestPlanesAABB(cameraFrustum, b))
+            for (int i = 0; i < perRow; i++)
             {
-                emitters[emitterIndex].transform.position = new Vector3(edgePoint.x, y, edgePoint.z);
-                emitters[emitterIndex].SetActive(true);
-                emitterIndex++;
+                float angle = startAngle + i * edgeEmitterAngleSpacing;
+                Vector3 dir = Quaternion.Euler(0, angle, 0) * Vector3.forward;
+                Vector3 pos = safeZoneCenter.position + dir * (safeZoneRadius + radiusOffset);
 
-                emitters[emitterIndex].transform.position = new Vector3(outerPoint.x, y, outerPoint.z);
+                emitters[emitterIndex].transform.position = new Vector3(pos.x, emiiterHeight, pos.z);
                 emitters[emitterIndex].SetActive(true);
                 emitterIndex++;
             }
         }
 
+        // Disable any unused emitters beyond the 8 used
         for (int i = emitterIndex; i < emitters.Length; i++)
         {
             emitters[i].SetActive(false);
         }
     }
+
+
 
     void OnDrawGizmos()
     {
