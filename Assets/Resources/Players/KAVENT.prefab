@@ -555,8 +555,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   skillIndicatorPrefab: {fileID: 0}
-  targetingRange: 8
   ultiRange: 4
+  targetingRange: 8
 --- !u!114 &7184291568784719351
 MonoBehaviour:
   m_ObjectHideFlags: 0

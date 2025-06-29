@@ -22,7 +22,10 @@ public class EffectAttackManager : MonoBehaviour
     private void Update()
     {
         if (_pUlti == null) return;
-        if (!_pUlti.isStopped) return;
+        if (!_pUlti.isStopped)
+        {
+            return;
+        }
         if (isTurnOnUlti) TurnOffUlti();
     }
 

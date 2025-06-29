@@ -11,9 +11,11 @@ public class KaventScript : MonoBehaviour, ICharacterSkill
     private Vector3 currentTargetPosition;
     public float targetingRange = 8f;
 
+    private EffectAttackManager effectAttackManager;
     void Start()
     {
         InputHandler = GetComponent<KaventInputHandler>();
+        effectAttackManager = GetComponent<EffectAttackManager>();
     }
 
     public void NormalAttack(Vector2 inputright)
@@ -34,7 +36,7 @@ public class KaventScript : MonoBehaviour, ICharacterSkill
 
     public void UseSkill(Vector2 inputright)
     {
-
+        effectAttackManager.PlayUlti(new Vector2(activeIndicator.transform.position.x, activeIndicator.transform.position.z)); ;
     }
 
     public void DrawUltiPosition(Vector2 input)
