@@ -27,7 +27,5 @@ public class KaventInputHandler : APlayerInputHandler
             ResetInputRight();
     }
 
-    
-
 }
 

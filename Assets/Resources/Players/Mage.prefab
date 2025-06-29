@@ -56,17 +56,17 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: e4907ebc97019ff4f82f2829e51e8b5b,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e4907ebc97019ff4f82f2829e51e8b5b,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e4907ebc97019ff4f82f2829e51e8b5b,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e4907ebc97019ff4f82f2829e51e8b5b,
         type: 3}
@@ -573,8 +573,8 @@ MonoBehaviour:
   m_ActionEvents:
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: KaventInputHandler, Assembly-CSharp
+      - m_Target: {fileID: 3608208570126525415}
+        m_TargetAssemblyTypeName: APlayerInputHandler, Assembly-CSharp
         m_MethodName: OnMove
         m_Mode: 0
         m_Arguments:
@@ -589,8 +589,8 @@ MonoBehaviour:
     m_ActionName: Player/Move
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: KaventInputHandler, Assembly-CSharp
+      - m_Target: {fileID: 3608208570126525415}
+        m_TargetAssemblyTypeName: APlayerInputHandler, Assembly-CSharp
         m_MethodName: OnAttack
         m_Mode: 0
         m_Arguments:
@@ -605,8 +605,8 @@ MonoBehaviour:
     m_ActionName: Player/Attack
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: KaventInputHandler, Assembly-CSharp
+      - m_Target: {fileID: 3608208570126525415}
+        m_TargetAssemblyTypeName: APlayerInputHandler, Assembly-CSharp
         m_MethodName: OnSkill
         m_Mode: 0
         m_Arguments:
@@ -646,7 +646,8 @@ MonoBehaviour:
   shootDelay: 1
   skillIndicatorPrefab: {fileID: 3025453216221348311, guid: f3010e3f61c6d834a8751bdc3fbbf5d2,
     type: 3}
-  ultiRange: 4
+  ultiRange: 3
+  targetingRange: 8
 --- !u!114 &553615343560515279
 MonoBehaviour:
   m_ObjectHideFlags: 0

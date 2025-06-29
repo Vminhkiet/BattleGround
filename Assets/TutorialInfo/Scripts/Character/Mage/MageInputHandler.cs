@@ -1,9 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-    class MageInputHandler : APlayerInputHandler
+using UnityEngine.InputSystem;
+class MageInputHandler : APlayerInputHandler
     {
-        
+        public override void OnAttack(InputAction.CallbackContext context)
+        {
+            base.OnAttack(context);
+            if (context.canceled)
+                ResetInputRight();
+        }
     }
