@@ -17,6 +17,15 @@ public class CharacterShopDatabase : ScriptableObject
         return characters[index];
     }
 
+    public Character? GetCharacterByName(CharacterType name)
+    {
+        foreach (Character character in characters)
+        {
+            if (character.type.Equals(name)) return character;
+        }
+        return null;
+    }
+
     public void PurchaseCharacter(int index)
     {
         characters[index].isPurchased = true;

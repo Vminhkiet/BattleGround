@@ -6,14 +6,30 @@ using System.Threading.Tasks;
 using UnityEngine;
 public class PlayerStats : MonoBehaviour
 {
+    [SerializeField]
+    private string name;
+    [SerializeField]
     private int maxEnergy = 100;
-    private int health = 100;
+    [SerializeField]
+    private float maxHealth;
+    [SerializeField]
     private int energy = 100;
+    [SerializeField]
     private int spellCoolDown = 0;
+    [SerializeField]
+    private float speed;
+    [SerializeField]
+    private float damage;
+    private Character _character;
 
+
+    private void Awake()
+    {
+        GetCharacter();
+    }
     public void TakeDamage(int damage)
     {
-        health-=damage;
+        maxHealth -= damage;
     }
 
     public bool isEnergyFull()
@@ -24,5 +40,14 @@ public class PlayerStats : MonoBehaviour
     public bool isSpellFull()
     {
         return spellCoolDown==0;
+    }
+
+    public void GetCharacter()
+    {
+        InfoPlayerDatabase db = Resources.Load<InfoPlayerDatabase>("Database/InfoPlayer");
+        _character = db.GetCharacter();
+        maxHealth = _character.health;
+        speed = _character.speed;
+        damage = _character.power;
     }
 }

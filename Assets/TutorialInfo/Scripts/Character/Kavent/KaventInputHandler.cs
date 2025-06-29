@@ -11,12 +11,12 @@ public class KaventInputHandler : APlayerInputHandler
     [SerializeField]
     private GameObject predictSlash;
     private RotationEffect rotationEffect;
-    private EffectSlashManager effectSlashManager;
+    private EffectAttackManager effectSlashManager;
     protected override void Awake()
     {
         base.Awake();
         rotationEffect = predictSlash.GetComponent<RotationEffect>();
-        effectSlashManager = GetComponent<EffectSlashManager>();
+        effectSlashManager = GetComponent<EffectAttackManager>();
 
     }
 
@@ -25,6 +25,10 @@ public class KaventInputHandler : APlayerInputHandler
         base.OnAttack(context);
         if (context.canceled)
             ResetInputRight();
+    }
+    protected override void OnSkillPerformed(Vector2 input)
+    {
+        base.OnSkillPerformed(input);
     }
 
 }

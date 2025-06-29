@@ -47,5 +47,13 @@ public class InfoPlayerDatabase : ScriptableObject
         return characterType;
     }
 
+    public Character? GetCharacter()
+    {
+        CharacterHavedDatabase characterHavedDatabase = Resources.Load<CharacterHavedDatabase>("Database/CharacterHavedDatabase");
+        if (!characterHavedDatabase.checkNameCharacter(characterType)) return null;
+        CharacterShopDatabase characterShopDatabase = Resources.Load<CharacterShopDatabase>("Database/Character Haved");
+        return characterShopDatabase.GetCharacterByName(characterType);
+    }
+
 
 }

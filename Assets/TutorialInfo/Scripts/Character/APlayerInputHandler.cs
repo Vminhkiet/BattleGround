@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using Unity.VisualScripting;
 public abstract class APlayerInputHandler : MonoBehaviour
 {
     protected Vector2 input;
@@ -38,6 +39,9 @@ public abstract class APlayerInputHandler : MonoBehaviour
     public event Action OnSpellChanged;
     public event Action OnUltiChanged;
     public static event Action<Vector2> OnCharacterRotateChanged;
+
+    private bool isStun = false;
+    private bool isSlow = false;
 
     protected virtual void Awake()
     {
@@ -116,9 +120,7 @@ public abstract class APlayerInputHandler : MonoBehaviour
                     characterSkill.UseSkill(lastValidUltiStickInput);
             }
 
-            SetUltiInputInternal(Vector2.zero);
-            lastUltiStickMagnitude = 0f;
-            lastValidUltiStickInput = Vector2.zero;
+            ResetInputUlti();
 
         }
     }
@@ -191,6 +193,14 @@ public abstract class APlayerInputHandler : MonoBehaviour
     {
         OnCharacterRotateChanged?.Invoke(input);
     }
+
+    public void SetIsSlow(bool isSlow)
+    {
+        this.isSlow = isSlow;
+    }
+
+
+
     public void SetIsAttacking(bool isAttacking)
     {
         this.isAttacking = isAttacking;
@@ -278,6 +288,16 @@ public abstract class APlayerInputHandler : MonoBehaviour
         return spellInput;
     }
 
+    public bool GetIsStun()
+    {
+        return isStun;
+    }
+
+    public bool GetIsSlow()
+    {
+        return isSlow;
+    }
+
     public virtual void ResetAttackState()
     {
         SetIsAttacking(false);
@@ -298,5 +318,18 @@ public abstract class APlayerInputHandler : MonoBehaviour
         SetRightStickInputInternal(Vector2.zero);
         lastRightStickMagnitude = 0f;
         lastValidRightStickInput = Vector2.zero;
+    }
+
+    public void ResetInputUlti()
+    {
+        SetUltiInputInternal(Vector2.zero);
+        lastUltiStickMagnitude = 0f;
+        lastValidUltiStickInput = Vector2.zero;
+    }
+
+    protected virtual void OnSkillPerformed(Vector2 input)
+    {
+        // Debug.Log("Skill performed input received.");
+        // Lớp con có thể phát âm thanh "charge" hoặc bắt đầu hiệu ứng charging
     }
 }

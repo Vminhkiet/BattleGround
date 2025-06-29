@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
-public struct Character
+public class Character
 {
     public CharacterType type;
     public Sprite image;

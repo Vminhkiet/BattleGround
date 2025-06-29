@@ -554,6 +554,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b0aaf741552df2f40961e473082afddb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  skillIndicatorPrefab: {fileID: 0}
+  targetingRange: 8
+  ultiRange: 4
 --- !u!114 &7184291568784719351
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -566,6 +569,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a7e005127b0b65443aa1c5e6bdf4463b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  name: 
+  maxEnergy: 0
+  maxHealth: 0
+  energy: 100
+  spellCoolDown: 0
+  speed: 0
+  damage: 0
 --- !u!114 &5933938818297274279
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -581,5 +591,5 @@ MonoBehaviour:
   _normalAttack1: {fileID: 3656579946810776787}
   _normalAttack2: {fileID: 0}
   _normalAttack3: {fileID: 0}
-  _ulti: {fileID: 0}
+  _ultiPrefab: {fileID: 0}
   _spell: {fileID: 0}

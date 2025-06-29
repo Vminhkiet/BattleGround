@@ -1,12 +1,30 @@
 ﻿using UnityEngine;
 
-public class EffectSlashManager : MonoBehaviour
+public class EffectAttackManager : MonoBehaviour
 {
     [SerializeField] private ParticleSystem _normalAttack1;
     [SerializeField] private ParticleSystem _normalAttack2;
     [SerializeField] private ParticleSystem _normalAttack3;
-    [SerializeField] private ParticleSystem _ulti;
+    [SerializeField] private GameObject _ultiPrefab;
+    private GameObject _ulti;
+    private ParticleSystem _pUlti;
     [SerializeField] private ParticleSystem _spell;
+
+
+    private bool isTurnOnUlti = false;
+    private void Start()
+    {
+        _ulti = Instantiate(_ultiPrefab);
+        _pUlti = _ulti.GetComponentInChildren<ParticleSystem>();
+        TurnOffUlti();
+    }
+
+    private void Update()
+    {
+        if (_pUlti == null) return;
+        if (!_pUlti.isStopped) return;
+        if (isTurnOnUlti) TurnOffUlti();
+    }
 
     public void PlayNormalAttack1() => _normalAttack1?.Play();
 
@@ -22,10 +40,10 @@ public class EffectSlashManager : MonoBehaviour
         _normalAttack3?.Play();
     }
 
-    public void PlayUlti(Vector2 direction)
+    public void PlayUlti(Vector2 position)
     {
-        RotateEffect(_ulti, direction);
-        _ulti?.Play();
+        _ulti.transform.position = new Vector3(position.x, transform.position.y, position.y);
+        TurnOnUlti();
     }
 
     public void PlaySpell(Vector2 direction)
@@ -42,13 +60,25 @@ public class EffectSlashManager : MonoBehaviour
 
         ps.transform.rotation = Quaternion.LookRotation(direction3D);
     }
+    private void TurnOnUlti()
+    {
+        _ulti?.SetActive(true);
+        _pUlti?.Play();
+        isTurnOnUlti = true;
+    }
+    private void TurnOffUlti()
+    {
+        _pUlti.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+        _pUlti?.Clear(true);
+        _ulti?.SetActive(false);
+        isTurnOnUlti = false;
 
+    }
     public void StopAllEffects()
     {
         _normalAttack1?.Stop();
         _normalAttack2?.Stop();
         _normalAttack3?.Stop();
-        _ulti?.Stop();
         _spell?.Stop();
     }
 }

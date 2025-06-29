@@ -17,4 +17,9 @@ public class CharacterHavedDatabase : ScriptableObject
     {
         characters.Add(type);
     }
+
+    public bool checkNameCharacter(CharacterType type)
+    {
+        return characters.Contains(type);
+    }
 }
