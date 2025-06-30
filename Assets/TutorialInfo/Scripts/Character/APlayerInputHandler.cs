@@ -4,8 +4,10 @@ using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Unity.VisualScripting;
+using Photon.Pun;
 public abstract class APlayerInputHandler : MonoBehaviour
 {
+ 
     protected Vector2 input;
     protected Vector2 rightStickInput;
     protected Vector2 ultiInput;
@@ -28,10 +30,12 @@ public abstract class APlayerInputHandler : MonoBehaviour
     protected bool nextAttack = false;
     protected Vector2 nextAttackinput;
 
+    private PhotonView _photonView;
     protected ICharacterSkill characterSkill;
     protected Movement movementComponent;
     protected PlayerStats playerStats;
     protected CharacterMeshRotation cRotation;
+    protected Camera playerCamera;
 
     public event Action<float> OnMoveInputChanged;
     public event Action<bool> OnAttackStateChanged;
@@ -45,15 +49,45 @@ public abstract class APlayerInputHandler : MonoBehaviour
 
     protected virtual void Awake()
     {
-        playerStats = GetComponent<PlayerStats>();
-        characterSkill = GetComponent<ICharacterSkill>();
-        movementComponent = GetComponentInParent<KaventMovement>();
-        cRotation = GetComponent<CharacterMeshRotation>();
+        _photonView = GetComponent<PhotonView>();
+        if (_photonView == null)
+        {
+            Debug.LogError("MyGenericScript requires a PhotonView component!");
+            this.enabled = false;
+            return;
+        }
+        if (!_photonView.IsMine)
+        {
+            this.enabled = false;
+            playerCamera = GetComponentInChildren<Camera>(true);
+            if (playerCamera != null)
+            {
+                playerCamera.gameObject.SetActive(false);
+            }
+            return;
+        }
+
+        playerStats = GetComponentInChildren<PlayerStats>();
+        characterSkill = GetComponentInChildren<ICharacterSkill>();
+        movementComponent = GetComponent<KaventMovement>();
+        cRotation = GetComponentInChildren<CharacterMeshRotation>();
+
+        playerCamera = GetComponentInChildren<Camera>(true);
+        if (playerCamera != null)
+        {
+            playerCamera.gameObject.SetActive(true);
+            if (Camera.main != null && Camera.main != playerCamera)
+            {
+                Camera.main.gameObject.SetActive(false);
+            }
+        }
     }
 
 
     protected virtual void Update()
     {
+        if (!_photonView.IsMine) return;
+
         characterSkill.DrawUltiPosition(GetInputUlti());
         if (nextAttack)
         {
@@ -79,6 +113,8 @@ public abstract class APlayerInputHandler : MonoBehaviour
 
     public virtual void OnMove(InputAction.CallbackContext callbackContext)
     {
+        if (!_photonView.IsMine) return;
+
         Vector2 currentMoveInputValue = callbackContext.ReadValue<Vector2>();
 
         SetMoveInputInternal(currentMoveInputValue);
@@ -99,6 +135,8 @@ public abstract class APlayerInputHandler : MonoBehaviour
 
     public virtual void OnSkill(InputAction.CallbackContext context)
     {
+        if (!_photonView.IsMine) return;
+
         if (!playerStats.isEnergyFull())
             return;
 
@@ -127,6 +165,8 @@ public abstract class APlayerInputHandler : MonoBehaviour
 
     public virtual void OnSpell(InputAction.CallbackContext context)
     {
+        if (!_photonView.IsMine) return;
+
         if (!playerStats.isSpellFull())
             return;
 
@@ -157,6 +197,8 @@ public abstract class APlayerInputHandler : MonoBehaviour
 
     public virtual void OnAttack(InputAction.CallbackContext context)
     {
+        if (!_photonView.IsMine) return;
+
         SetRightStickInputInternal(context.ReadValue<Vector2>());
         if (context.performed)
         {

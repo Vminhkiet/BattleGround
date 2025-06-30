@@ -14,8 +14,8 @@ public class KaventScript : MonoBehaviour, ICharacterSkill
     private EffectAttackManager effectAttackManager;
     void Start()
     {
-        InputHandler = GetComponent<KaventInputHandler>();
-        effectAttackManager = GetComponent<EffectAttackManager>();
+        InputHandler = GetComponentInParent<KaventInputHandler>();
+        effectAttackManager = GetComponentInParent<EffectAttackManager>();
     }
 
     public void NormalAttack(Vector2 inputright)

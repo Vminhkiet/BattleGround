@@ -10,7 +10,7 @@ public class KaventAnimationController : PlayerAnimationController
     private void Awake()
     {
         base.Awake();
-        _inputhandler = GetComponent<APlayerInputHandler>();
+        _inputhandler = GetComponentInParent<APlayerInputHandler>();
 
         _inputhandler.OnAttackPhaseChanged += HandleAttackPhaseChanged;
         _inputhandler.OnAttackStateChanged += HandleAttackStateChanged;
