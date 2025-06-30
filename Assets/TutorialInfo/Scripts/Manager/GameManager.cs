@@ -37,6 +37,6 @@ public class GameManager : MonoBehaviourPunCallbacks
 
         string path = "Players/" + player.name;
         GameObject _player = PhotonNetwork.Instantiate(path, spawnPoint.position, Quaternion.identity);
-        _player.tag = playerTag;
+      //  _player.tag = playerTag;
     }
 }

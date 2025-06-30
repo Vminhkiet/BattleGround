@@ -3,8 +3,8 @@
 [RequireComponent(typeof(LineRenderer))]
 public class SafeZoneVisualizer : MonoBehaviour
 {
-    public Transform safeZoneCenter;
-    public float radius = 30f;
+    public SafeZoneManager safeZoneManager;
+    private float radius;
     public int segments = 60;
     public float lineHeight = 0.1f;
 
@@ -13,10 +13,15 @@ public class SafeZoneVisualizer : MonoBehaviour
     void Start()
     {
         lineRenderer = GetComponent<LineRenderer>();
+        safeZoneManager=GetComponent<SafeZoneManager>();
         lineRenderer.loop = true;
         lineRenderer.useWorldSpace = true;
-        lineRenderer.positionCount = segments;
+        lineRenderer.positionCount = segments;      
+    }
 
+    private void Update()
+    {
+        radius=safeZoneManager.safeZoneRadius;
         DrawCircle();
     }
 
@@ -29,7 +34,7 @@ public class SafeZoneVisualizer : MonoBehaviour
             float angle = ((float)i / segments) * Mathf.PI * 2f;
             float x = Mathf.Cos(angle) * radius;
             float z = Mathf.Sin(angle) * radius;
-            points[i] = new Vector3(safeZoneCenter.position.x + x, lineHeight, safeZoneCenter.position.z + z);
+            points[i] = new Vector3(transform.position.x + x, lineHeight, transform.position.z + z);
         }
 
         lineRenderer.SetPositions(points);

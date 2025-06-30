@@ -228,7 +228,6 @@ public abstract class APlayerInputHandler : MonoBehaviour
     public void SetAttackPhase(int attackPhase)
     {
         this.attackPhase = attackPhase;
-        Debug.Log(attackPhase);
         OnAttackPhaseChanged?.Invoke(this.attackPhase);
     }
 

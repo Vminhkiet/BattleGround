@@ -8,6 +8,7 @@ public class SafeZoneManager : MonoBehaviour
     public Transform safeZoneCenter;
     public float safeZoneRadius = 30f;
     public float safeZoneDeactivateThreshold = 5f;
+    public float safeZoneViewOffset = 15f;
 
     [Header("Player Settings")]
     public Transform player;
@@ -89,26 +90,20 @@ public class SafeZoneManager : MonoBehaviour
 
     bool IsSafeZoneEdgeInView()
     {
-        cameraFrustum = GeometryUtility.CalculateFrustumPlanes(playerCamera);
+        Vector3 playerToCenter = (safeZoneCenter.position - player.position).normalized;
+        Vector3 edgePoint = safeZoneCenter.position - playerToCenter * safeZoneRadius;
 
-        float height = emiiterHeight;
+        Vector3 viewportPoint = playerCamera.WorldToViewportPoint(edgePoint);
 
-        for (int i = 0; i < checkPoints; i++)
-        {
-            float angle = (i / (float)checkPoints) * Mathf.PI * 2f;
-            float x = Mathf.Cos(angle) * safeZoneRadius + safeZoneCenter.position.x;
-            float z = Mathf.Sin(angle) * safeZoneRadius + safeZoneCenter.position.z;
-            Vector3 point = new Vector3(x, height, z);
+        bool inFrontOfCamera = viewportPoint.z > 0;
+        bool inScreenBounds = viewportPoint.x >= 0f && viewportPoint.x <= 1f &&
+                              viewportPoint.y >= 0f && viewportPoint.y <= 1f;
 
-            Bounds bounds = new Bounds(point, Vector3.one * 2f);
-            if (GeometryUtility.TestPlanesAABB(cameraFrustum, bounds))
-            {
-                return true;
-            }
-        }
+        float screenDistance = Vector3.Distance(player.position, edgePoint);
 
-        return false;
+        return inFrontOfCamera && inScreenBounds && screenDistance < safeZoneViewOffset;
     }
+
 
     void DisableAllEmitters()
     {
