@@ -20,8 +20,11 @@ public class PlayerStats : MonoBehaviour
     private float speed;
     [SerializeField]
     private float damage;
+    private float pointUlti = 0f;
+    private float maxPointUlti = 100f;
     private Character _character;
 
+    private event Action<float> OnUltiPointChanged;
 
     private void Awake()
     {
@@ -42,6 +45,11 @@ public class PlayerStats : MonoBehaviour
         return spellCoolDown==0;
     }
 
+    public void setPointUlti(float pointUlti)
+    {
+        this.pointUlti = pointUlti;
+        OnUltiPointChanged?.Invoke(this.pointUlti);
+    }
     public void GetCharacter()
     {
         InfoPlayerDatabase db = Resources.Load<InfoPlayerDatabase>("Database/InfoPlayer");
@@ -49,5 +57,9 @@ public class PlayerStats : MonoBehaviour
         maxHealth = _character.health;
         speed = _character.speed;
         damage = _character.power;
+    }
+    public float GetDamage()
+    {
+        return damage;
     }
 }

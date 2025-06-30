@@ -7,6 +7,7 @@ public class GameManager : MonoBehaviourPunCallbacks
     public GameObject player;
     [Space]
     public Transform spawnPoint;
+    public Transform[] spawnPoints;
 
     // Start is called before the first frame update
     void Start()
@@ -36,5 +37,6 @@ public class GameManager : MonoBehaviourPunCallbacks
 
         string path = "Players/" + player.name;
         GameObject _player = PhotonNetwork.Instantiate(path, spawnPoint.position, Quaternion.identity);
+        _player.tag = playerTag;
     }
 }
