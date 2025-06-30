@@ -12,9 +12,8 @@ public class KaventInputHandler : APlayerInputHandler
     private GameObject predictSlash;
     private RotationEffect rotationEffect;
     private EffectAttackManager effectSlashManager;
-    protected override void Awake()
+    protected void Awake()
     {
-        base.Awake();
         rotationEffect = predictSlash.GetComponent<RotationEffect>();
         effectSlashManager = GetComponent<EffectAttackManager>();
 

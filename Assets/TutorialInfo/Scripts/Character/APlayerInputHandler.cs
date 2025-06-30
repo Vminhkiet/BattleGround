@@ -4,7 +4,7 @@ using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Unity.VisualScripting;
-using Photon.Pun;
+
 public abstract class APlayerInputHandler : MonoBehaviour
 {
  
@@ -30,11 +30,13 @@ public abstract class APlayerInputHandler : MonoBehaviour
     protected bool nextAttack = false;
     protected Vector2 nextAttackinput;
 
-    private PhotonView _photonView;
     protected ICharacterSkill characterSkill;
     protected Movement movementComponent;
     protected PlayerStats playerStats;
     protected CharacterMeshRotation cRotation;
+    protected IEffectPlayer effectPlayer;
+    protected INetworkOwnership _networkOwnership;
+    protected INetworkTransform _networkTransform;
     protected Camera playerCamera;
 
     public event Action<float> OnMoveInputChanged;
@@ -47,47 +49,31 @@ public abstract class APlayerInputHandler : MonoBehaviour
     private bool isStun = false;
     private bool isSlow = false;
 
-    protected virtual void Awake()
+    public void Initialize(IEffectPlayer effectPlayerInstance, 
+                            ICharacterSkill characterSkillInstance, 
+                            Movement movementComponentInstance, 
+                            PlayerStats playerStatsInstance, 
+                            CharacterMeshRotation cRotationInstance,
+                            INetworkOwnership networkOwnership,
+                            INetworkTransform networkTransform,
+                            Camera playerCameraInstance)
     {
-        _photonView = GetComponent<PhotonView>();
-        if (_photonView == null)
-        {
-            Debug.LogError("MyGenericScript requires a PhotonView component!");
-            this.enabled = false;
-            return;
-        }
-        if (!_photonView.IsMine)
-        {
-            this.enabled = false;
-            playerCamera = GetComponentInChildren<Camera>(true);
-            if (playerCamera != null)
-            {
-                playerCamera.gameObject.SetActive(false);
-            }
-            return;
-        }
-
-        playerStats = GetComponentInChildren<PlayerStats>();
-        characterSkill = GetComponentInChildren<ICharacterSkill>();
-        movementComponent = GetComponent<KaventMovement>();
-        cRotation = GetComponentInChildren<CharacterMeshRotation>();
-
-        playerCamera = GetComponentInChildren<Camera>(true);
-        if (playerCamera != null)
-        {
-            playerCamera.gameObject.SetActive(true);
-            if (Camera.main != null && Camera.main != playerCamera)
-            {
-                Camera.main.gameObject.SetActive(false);
-            }
-        }
+        this.effectPlayer = effectPlayerInstance;
+        this.characterSkill = characterSkillInstance;
+        this.movementComponent = movementComponentInstance;
+        this.playerStats = playerStatsInstance;
+        this.cRotation = cRotationInstance;
+        this.playerCamera = playerCameraInstance;
+        this._networkOwnership = networkOwnership;
+        this._networkTransform = networkTransform;
     }
-
 
     protected virtual void Update()
     {
-        if (!_photonView.IsMine) return;
-
+        if (_networkOwnership == null || !_networkOwnership.IsLocalPlayer)
+        {
+            return;
+        }
         characterSkill.DrawUltiPosition(GetInputUlti());
         if (nextAttack)
         {
@@ -113,7 +99,10 @@ public abstract class APlayerInputHandler : MonoBehaviour
 
     public virtual void OnMove(InputAction.CallbackContext callbackContext)
     {
-        if (!_photonView.IsMine) return;
+        if (_networkOwnership == null || !_networkOwnership.IsLocalPlayer)
+        {
+            return;
+        }
 
         Vector2 currentMoveInputValue = callbackContext.ReadValue<Vector2>();
 
@@ -135,7 +124,10 @@ public abstract class APlayerInputHandler : MonoBehaviour
 
     public virtual void OnSkill(InputAction.CallbackContext context)
     {
-        if (!_photonView.IsMine) return;
+        if (_networkOwnership == null || !_networkOwnership.IsLocalPlayer)
+        {
+            return;
+        }
 
         if (!playerStats.isEnergyFull())
             return;
@@ -165,7 +157,10 @@ public abstract class APlayerInputHandler : MonoBehaviour
 
     public virtual void OnSpell(InputAction.CallbackContext context)
     {
-        if (!_photonView.IsMine) return;
+        if (_networkOwnership == null || !_networkOwnership.IsLocalPlayer)
+        {
+            return;
+        }
 
         if (!playerStats.isSpellFull())
             return;
@@ -197,7 +192,10 @@ public abstract class APlayerInputHandler : MonoBehaviour
 
     public virtual void OnAttack(InputAction.CallbackContext context)
     {
-        if (!_photonView.IsMine) return;
+        if (_networkOwnership == null || !_networkOwnership.IsLocalPlayer)
+        {
+            return;
+        }
 
         SetRightStickInputInternal(context.ReadValue<Vector2>());
         if (context.performed)
@@ -366,6 +364,16 @@ public abstract class APlayerInputHandler : MonoBehaviour
         SetUltiInputInternal(Vector2.zero);
         lastUltiStickMagnitude = 0f;
         lastValidUltiStickInput = Vector2.zero;
+    }
+
+    private void TurnOnCamera()
+    {
+        this.enabled = false;
+        playerCamera = GetComponentInChildren<Camera>(true);
+        if (playerCamera != null)
+        {
+            playerCamera.gameObject.SetActive(false);
+        }
     }
 
     protected virtual void OnSkillPerformed(Vector2 input)

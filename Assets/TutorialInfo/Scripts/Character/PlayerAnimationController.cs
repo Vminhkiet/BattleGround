@@ -1,3 +1,4 @@
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,6 +6,7 @@ using UnityEngine.UIElements;
 
 public class PlayerAnimationController : MonoBehaviour
 {
+    protected PhotonView parentPhotonView;
     protected Animator animator;
     protected float speed = 0;
 
@@ -15,6 +17,13 @@ public class PlayerAnimationController : MonoBehaviour
         if(animator == null)
         {
             Debug.LogError("DONT HAVE ANIMATOR");
+        }
+
+        parentPhotonView = GetComponentInParent<PhotonView>();
+        if (parentPhotonView == null)
+        {
+            Debug.LogError("PlayerAnimationController: PhotonView not found in parent!", this);
+            this.enabled = false;
         }
     }
 

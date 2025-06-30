@@ -214,12 +214,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7f17466e5ba5a6741bc52c9b86018518, type: 3}
---- !u!198 &3656579946810776787 stripped
-ParticleSystem:
-  m_CorrespondingSourceObject: {fileID: 3717161736657296648, guid: 7f17466e5ba5a6741bc52c9b86018518,
-    type: 3}
-  m_PrefabInstance: {fileID: 83539730084970971}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &6138928230335029403 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6059892649641664832, guid: 7f17466e5ba5a6741bc52c9b86018518,
@@ -364,10 +358,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 97dc40fbf0026ab4eb2aebc2120c99fc,
         type: 3}
       insertIndex: -1
-      addedObject: {fileID: 5143944983045618289}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 97dc40fbf0026ab4eb2aebc2120c99fc,
-        type: 3}
-      insertIndex: -1
       addedObject: {fileID: 6206789423381940121}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 97dc40fbf0026ab4eb2aebc2120c99fc,
         type: 3}
@@ -380,19 +370,11 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 97dc40fbf0026ab4eb2aebc2120c99fc,
         type: 3}
       insertIndex: -1
-      addedObject: {fileID: 3836528895125660289}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 97dc40fbf0026ab4eb2aebc2120c99fc,
-        type: 3}
-      insertIndex: -1
       addedObject: {fileID: 2608101366039573249}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 97dc40fbf0026ab4eb2aebc2120c99fc,
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 7184291568784719351}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 97dc40fbf0026ab4eb2aebc2120c99fc,
-        type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 5933938818297274279}
   m_SourcePrefab: {fileID: 100100000, guid: 97dc40fbf0026ab4eb2aebc2120c99fc, type: 3}
 --- !u!4 &7404577673177577958 stripped
 Transform:
@@ -406,89 +388,6 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 7010100574640463373}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &5143944983045618289
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7892989927749182300}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Actions: {fileID: -944628639613478452, guid: cf490f9194ca4934d8d159af2eef630d,
-    type: 3}
-  m_NotificationBehavior: 2
-  m_UIInputModule: {fileID: 0}
-  m_DeviceLostEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  m_DeviceRegainedEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  m_ControlsChangedEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  m_ActionEvents:
-  - m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 3836528895125660289}
-        m_TargetAssemblyTypeName: KaventInputHandler, Assembly-CSharp
-        m_MethodName: OnMove
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-    m_ActionId: 7277d714-b959-4e44-acf8-eabefe9c0410
-    m_ActionName: Player/Move
-  - m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 3836528895125660289}
-        m_TargetAssemblyTypeName: KaventInputHandler, Assembly-CSharp
-        m_MethodName: OnAttack
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-    m_ActionId: bda9b26c-4bec-4c16-a53b-3c2faba6e492
-    m_ActionName: Player/Attack
-  - m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 3836528895125660289}
-        m_TargetAssemblyTypeName: KaventInputHandler, Assembly-CSharp
-        m_MethodName: OnSkill
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-    m_ActionId: bd45a033-3d98-43d2-9ad8-2f251c3e7d65
-    m_ActionName: Player/Ulti
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 1fa4a49c-c876-490d-ad3e-0baa3531e509
-    m_ActionName: Player/Spell[/Mouse/delta]
-  m_NeverAutoSwitchControlSchemes: 0
-  m_DefaultControlScheme: 
-  m_DefaultActionMap: Player
-  m_SplitScreenIndex: -1
-  m_Camera: {fileID: 0}
 --- !u!114 &6206789423381940121
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -529,19 +428,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a2b536378e1a0543b844186ba6e6cd8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &3836528895125660289
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7892989927749182300}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 904d2576b10c79941a8259547b59ab90, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  predictSlash: {fileID: 8361758690364704907}
 --- !u!114 &2608101366039573249
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -576,20 +462,3 @@ MonoBehaviour:
   spellCoolDown: 0
   speed: 0
   damage: 0
---- !u!114 &5933938818297274279
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7892989927749182300}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c3791b93b20bb064c96dd57cabe8fcbf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _normalAttack1: {fileID: 3656579946810776787}
-  _normalAttack2: {fileID: 0}
-  _normalAttack3: {fileID: 0}
-  _ultiPrefab: {fileID: 0}
-  _spell: {fileID: 0}

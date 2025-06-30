@@ -39,6 +39,12 @@ MonoBehaviour:
   - DestroySpaceship
   - Fire
   - RespawnSpaceship
+  - RPC_PlayNormalAttack1
+  - RPC_PlayNormalAttack2
+  - RPC_PlayNormalAttack3
+  - RPC_PlaySpell
+  - RPC_PlayUlti
+  - RPC_StopAllEffects
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 0
