@@ -2477,13 +2477,15 @@ GameObject:
   - component: {fileID: 1654197683360372591}
   - component: {fileID: 417433480913350541}
   - component: {fileID: 4239266245814242666}
+  - component: {fileID: 5421434501037674937}
+  - component: {fileID: 197798745735114536}
   m_Layer: 0
   m_Name: PivotCharacterMage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &6285319479520488316
 Transform:
   m_ObjectHideFlags: 0
@@ -2644,6 +2646,101 @@ CapsuleCollider:
   m_Height: 2.04
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &5421434501037674937
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7996799926412221067}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a15de867bb964704eb793b7b06205c5c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &197798745735114536
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7996799926412221067}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Actions: {fileID: -944628639613478452, guid: cf490f9194ca4934d8d159af2eef630d,
+    type: 3}
+  m_NotificationBehavior: 2
+  m_UIInputModule: {fileID: 0}
+  m_DeviceLostEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_DeviceRegainedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ControlsChangedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ActionEvents:
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: APlayerInputHandler, Assembly-CSharp
+        m_MethodName: OnMove
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 7277d714-b959-4e44-acf8-eabefe9c0410
+    m_ActionName: Player/Move
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: APlayerInputHandler, Assembly-CSharp
+        m_MethodName: OnAttack
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: bda9b26c-4bec-4c16-a53b-3c2faba6e492
+    m_ActionName: Player/Attack
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: APlayerInputHandler, Assembly-CSharp
+        m_MethodName: OnSkill
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: bd45a033-3d98-43d2-9ad8-2f251c3e7d65
+    m_ActionName: Player/Ulti
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 1fa4a49c-c876-490d-ad3e-0baa3531e509
+    m_ActionName: Player/Spell[/Mouse/delta]
+  m_NeverAutoSwitchControlSchemes: 0
+  m_DefaultControlScheme: 
+  m_DefaultActionMap: Player
+  m_SplitScreenIndex: -1
+  m_Camera: {fileID: 0}
 --- !u!1 &8338786530183523471
 GameObject:
   m_ObjectHideFlags: 0
@@ -2803,14 +2900,12 @@ GameObject:
   - component: {fileID: 7963051810284936904}
   - component: {fileID: 3981814570751249096}
   - component: {fileID: 1616317023304578335}
-  - component: {fileID: 4963782792297560184}
   - component: {fileID: 1829526261714031311}
   - component: {fileID: 5455710902615679327}
   - component: {fileID: 902197783455959983}
   - component: {fileID: 6872867259481800241}
   - component: {fileID: 7165283086799243315}
   - component: {fileID: 6547888738358282689}
-  - component: {fileID: 7217733290233958281}
   - component: {fileID: 228234729734825378}
   m_Layer: 8
   m_Name: Mage
@@ -2894,89 +2989,6 @@ MonoBehaviour:
   bushLayer:
     serializedVersion: 2
     m_Bits: 128
---- !u!114 &4963782792297560184
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9166351316526345752}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Actions: {fileID: -944628639613478452, guid: cf490f9194ca4934d8d159af2eef630d,
-    type: 3}
-  m_NotificationBehavior: 2
-  m_UIInputModule: {fileID: 0}
-  m_DeviceLostEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  m_DeviceRegainedEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  m_ControlsChangedEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  m_ActionEvents:
-  - m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 7217733290233958281}
-        m_TargetAssemblyTypeName: APlayerInputHandler, Assembly-CSharp
-        m_MethodName: OnMove
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-    m_ActionId: 7277d714-b959-4e44-acf8-eabefe9c0410
-    m_ActionName: Player/Move
-  - m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 7217733290233958281}
-        m_TargetAssemblyTypeName: APlayerInputHandler, Assembly-CSharp
-        m_MethodName: OnAttack
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-    m_ActionId: bda9b26c-4bec-4c16-a53b-3c2faba6e492
-    m_ActionName: Player/Attack
-  - m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 7217733290233958281}
-        m_TargetAssemblyTypeName: APlayerInputHandler, Assembly-CSharp
-        m_MethodName: OnSkill
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-    m_ActionId: bd45a033-3d98-43d2-9ad8-2f251c3e7d65
-    m_ActionName: Player/Ulti
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 1fa4a49c-c876-490d-ad3e-0baa3531e509
-    m_ActionName: Player/Spell[/Mouse/delta]
-  m_NeverAutoSwitchControlSchemes: 0
-  m_DefaultControlScheme: 
-  m_DefaultActionMap: Player
-  m_SplitScreenIndex: -1
-  m_Camera: {fileID: 0}
 --- !u!114 &1829526261714031311
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3169,18 +3181,6 @@ MonoBehaviour:
   spellCoolDown: 0
   speed: 0
   damage: 0
---- !u!114 &7217733290233958281
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9166351316526345752}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a15de867bb964704eb793b7b06205c5c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &228234729734825378
 MonoBehaviour:
   m_ObjectHideFlags: 0

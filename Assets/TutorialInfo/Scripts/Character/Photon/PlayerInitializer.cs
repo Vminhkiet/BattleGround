@@ -90,7 +90,6 @@ public class PlayerInitializer : MonoBehaviour
         CharacterMeshRotation cRotation = playerGameObject.GetComponentInChildren<CharacterMeshRotation>();
         INetworkOwnership networkOwnershipInstance = new PhotonOwnershipAdapter(playerPhotonView);
         INetworkTransform networkTransform = photonTransformAdapter;
-        Camera playerCamera = playerGameObject.GetComponentInChildren<Camera>(true);
 
 
         IEffectPlayer effectPlayerInstance;
@@ -101,24 +100,12 @@ public class PlayerInitializer : MonoBehaviour
             activateInputHandler = true;
             effectPlayerInstance = new PhotonEffectManagerAdapter(actualEffectManager, playerPhotonView);
 
-            if (playerCamera != null)
-            {
-                playerCamera.gameObject.SetActive(true);
-                if (Camera.main != null && Camera.main != playerCamera)
-                {
-                    Camera.main.gameObject.SetActive(false);
-                }
-            }
         }
         else
         {
             activateInputHandler = false;
             effectPlayerInstance = new NoOpEffectPlayer();
 
-            if (playerCamera != null)
-            {
-                playerCamera.gameObject.SetActive(false);
-            }
         }
 
         if (inputHandler != null)
@@ -132,8 +119,7 @@ public class PlayerInitializer : MonoBehaviour
                     playerStats,
                     cRotation,
                     networkOwnershipInstance,
-                    photonTransformAdapter,
-                    playerCamera
+                    photonTransformAdapter
                 );
                 inputHandler.enabled = true;
                 Debug.Log("PlayerInitializer: InputHandler activated for local player.");

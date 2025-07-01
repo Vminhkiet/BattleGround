@@ -37,7 +37,6 @@ public abstract class APlayerInputHandler : MonoBehaviour
     protected IEffectPlayer effectPlayer;
     protected INetworkOwnership _networkOwnership;
     protected INetworkTransform _networkTransform;
-    protected Camera playerCamera;
 
     public event Action<float> OnMoveInputChanged;
     public event Action<bool> OnAttackStateChanged;
@@ -55,15 +54,14 @@ public abstract class APlayerInputHandler : MonoBehaviour
                             PlayerStats playerStatsInstance, 
                             CharacterMeshRotation cRotationInstance,
                             INetworkOwnership networkOwnership,
-                            INetworkTransform networkTransform,
-                            Camera playerCameraInstance)
+                            INetworkTransform networkTransform
+                            )
     {
         this.effectPlayer = effectPlayerInstance;
         this.characterSkill = characterSkillInstance;
         this.movementComponent = movementComponentInstance;
         this.playerStats = playerStatsInstance;
         this.cRotation = cRotationInstance;
-        this.playerCamera = playerCameraInstance;
         this._networkOwnership = networkOwnership;
         this._networkTransform = networkTransform;
     }
@@ -202,10 +200,12 @@ public abstract class APlayerInputHandler : MonoBehaviour
         {
             lastValidRightStickInput = GetInputRight();
             lastRightStickMagnitude = lastValidRightStickInput.magnitude;
+            OnSkillPerformed(lastValidRightStickInput);
         }
         else if (context.canceled)
         {
             bool canNewAttack = !GetIsAttacking() && (lastRightStickMagnitude - attackThreshold >= 0) && !GetIsUlti();
+            OnSkillPerformed(Vector2.zero);
 
             if (canNewAttack)
             {
@@ -229,6 +229,8 @@ public abstract class APlayerInputHandler : MonoBehaviour
 
         }
     }
+
+
     public void invokeRotationCharacter(Vector2 input)
     {
         OnCharacterRotateChanged?.Invoke(input);
@@ -366,19 +368,10 @@ public abstract class APlayerInputHandler : MonoBehaviour
         lastValidUltiStickInput = Vector2.zero;
     }
 
-    private void TurnOnCamera()
-    {
-        this.enabled = false;
-        playerCamera = GetComponentInChildren<Camera>(true);
-        if (playerCamera != null)
-        {
-            playerCamera.gameObject.SetActive(false);
-        }
-    }
-
     protected virtual void OnSkillPerformed(Vector2 input)
     {
         // Debug.Log("Skill performed input received.");
         // Lớp con có thể phát âm thanh "charge" hoặc bắt đầu hiệu ứng charging
     }
+
 }

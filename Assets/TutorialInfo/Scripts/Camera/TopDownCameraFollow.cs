@@ -2,10 +2,15 @@
 
 public class TopDownCameraFollow : MonoBehaviour
 {
-    public Transform target;
+    private Transform target;
     public Vector3 offset = new Vector3(0f, 5f, -6f); // camera đứng sau và trên nhân vật
     public float followSpeed = 5f;
     public Vector3 rotationOffset = new Vector3(20f, 0f, 0f); // Góc xoay cố định
+
+    private void Start()
+    {
+        target = GameObject.FindWithTag("Enemy").transform; 
+    }
 
     void FixedUpdate()
     {

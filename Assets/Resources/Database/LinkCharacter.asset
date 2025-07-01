@@ -17,3 +17,5 @@ MonoBehaviour:
     prefabPath: Players/PivotCharacter
   - characterType: 3
     prefabPath: Players/PivotCharacterMage
+  - characterType: 0
+    prefabPath: Players/PivotCharacterKnight

@@ -144,7 +144,8 @@ public class GameManager : MonoBehaviourPunCallbacks
             string randomEnemyPrefabPath = enemyCharacterPrefabPaths[rnd.Next(0, enemyCharacterPrefabPaths.Length)];
 
             Debug.Log($"GameManager: Spawning enemy {randomEnemyPrefabPath} at {spawnPos}");
-            PhotonNetwork.Instantiate(randomEnemyPrefabPath, spawnPos, spawnRot);
+            GameObject enemy=PhotonNetwork.Instantiate(randomEnemyPrefabPath, spawnPos, spawnRot);
+            enemy.tag = "Enemy";
         }
     }
 
