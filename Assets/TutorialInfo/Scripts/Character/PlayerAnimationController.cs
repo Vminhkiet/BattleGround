@@ -6,24 +6,15 @@ using UnityEngine.UIElements;
 
 public class PlayerAnimationController : MonoBehaviour
 {
-    protected PhotonView parentPhotonView;
     protected Animator animator;
     protected float speed = 0;
 
     protected virtual void Awake()
     {
-
         animator = GetComponent<Animator>();
         if(animator == null)
         {
             Debug.LogError("DONT HAVE ANIMATOR");
-        }
-
-        parentPhotonView = GetComponentInParent<PhotonView>();
-        if (parentPhotonView == null)
-        {
-            Debug.LogError("PlayerAnimationController: PhotonView not found in parent!", this);
-            this.enabled = false;
         }
     }
 

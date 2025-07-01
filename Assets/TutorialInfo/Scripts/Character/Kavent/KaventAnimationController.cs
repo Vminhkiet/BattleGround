@@ -37,57 +37,39 @@ public class KaventAnimationController : PlayerAnimationController
 
     private void Update()
     {
-        if (parentPhotonView != null && parentPhotonView.IsMine)
+        if (animator != null)
         {
-            if (animator != null)
-            {
-                if (speed < 0.5) return;
-                float sinInput = Time.time * 0.5f * Mathf.PI * 4f;
-                float rawSinValue = Mathf.Sin(sinInput);
-                animator.SetFloat("typerun", rawSinValue);
-            }
+            if (speed < 0.5) return;
+            float sinInput = Time.time * 0.5f * Mathf.PI * 4f;
+            float rawSinValue = Mathf.Sin(sinInput);
+            animator.SetFloat("typerun", rawSinValue);
         }
     }
 
 
     private void HandleAttackPhaseChanged(int newPhase)
     {
-        if (parentPhotonView != null && parentPhotonView.IsMine)
-        {
-            SetAttackPhase(newPhase);
-        }
+        SetAttackPhase(newPhase);
     }
 
     private void HandleAttackStateChanged(bool newIsAttackingState)
     {
-        if (parentPhotonView != null && parentPhotonView.IsMine)
-        {
-            SetIsAttacking(newIsAttackingState);
-        }
+        SetIsAttacking(newIsAttackingState);
     }
 
     private void HanldeMovementChanged(float newSpeed)
     {
-        if (parentPhotonView != null && parentPhotonView.IsMine)
-        {
-            SetAnimatorMovement(newSpeed);
-        }
+        SetAnimatorMovement(newSpeed);
     }
 
     private void HanldeUltiChanged()
     {
-        if (parentPhotonView != null && parentPhotonView.IsMine)
-        {
-            SetUtil();
-        }
+        SetUtil();
     }
 
     private void HanldSpellChanged()
     {
-        if (parentPhotonView != null && parentPhotonView.IsMine)
-        {
-            SetSpell();
-        }
+        SetSpell();
     }
 }
 
