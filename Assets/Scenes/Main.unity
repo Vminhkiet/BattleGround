@@ -2662,10 +2662,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ab3e0ce057d1fe34d8803a259dc10ba7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  minPlayersToStartGame: 2
+  minPlayersToStartGame: 1
   gameVersion: 1.0
   maxPlayersPerRoom: 20
-  gameSceneName: Testscene
+  gameSceneName: Island
   playButton: {fileID: 1135138612}
   cancelMatchmakingButton: {fileID: 1389714564}
   loadingPanel: {fileID: 785706487}

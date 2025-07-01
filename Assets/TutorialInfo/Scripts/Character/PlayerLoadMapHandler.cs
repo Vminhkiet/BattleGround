@@ -4,8 +4,7 @@ using UnityEngine;
 
 public class PlayerLoadMapHandler : MonoBehaviour
 {
-    public MapSaveLoadManager mapSaveLoadManager;
-    public Transform playerTransform; // Gán transform của người chơi vào đây
+    private MapSaveLoadManager mapSaveLoadManager;
     public string mapName = "DefaultMap"; // Tên map bạn muốn tải
 
     [Header("Chunk Loading Settings")]
@@ -19,14 +18,10 @@ public class PlayerLoadMapHandler : MonoBehaviour
 
     IEnumerator Start()
     {
+        mapSaveLoadManager = FindAnyObjectByType<MapSaveLoadManager>();
         if (mapSaveLoadManager == null)
         {
             Debug.LogError("MapSaveLoadManager chưa được gán!");
-            yield break;
-        }
-        if (playerTransform == null)
-        {
-            Debug.LogError("Player Transform chưa được gán!");
             yield break;
         }
 
@@ -62,7 +57,7 @@ public class PlayerLoadMapHandler : MonoBehaviour
         {
             if (!isProcessing)
             {
-                Vector2Int newPlayerChunk = GetChunkIdFromPosition(playerTransform.position);
+                Vector2Int newPlayerChunk = GetChunkIdFromPosition(transform.position);
                 if (newPlayerChunk != currentPlayerChunk)
                 {
                     currentPlayerChunk = newPlayerChunk;

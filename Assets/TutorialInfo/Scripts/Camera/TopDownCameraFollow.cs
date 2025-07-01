@@ -9,7 +9,7 @@ public class TopDownCameraFollow : MonoBehaviour
 
     private void Start()
     {
-        target = GameObject.FindWithTag("Enemy").transform; 
+        target = GameObject.FindWithTag("Player").transform; 
     }
 
     void FixedUpdate()
