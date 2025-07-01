@@ -2797,6 +2797,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8dceca9edf0f36e4ea79856d551901d6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  skillIndicatorPrefab: {fileID: 0}
+  UltiEffect: {fileID: 0}
+  ultiRange: 4
+  targetingRange: 8
+  UltiDuration: 3
 --- !u!95 &164757919687898898
 Animator:
   serializedVersion: 5
