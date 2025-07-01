@@ -1821,10 +1821,10 @@ ModelImporter:
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
       events:
-      - time: 0.04918028
+      - time: 0.68524593
         functionName: ResetIsUlti
         data: 
-        objectReferenceParameter: {fileID: 919132149155446097, guid: e4907ebc97019ff4f82f2829e51e8b5b,
+        objectReferenceParameter: {fileID: 11500000, guid: 9ca1245a5e4d94c418551645d4148edd,
           type: 3}
         floatParameter: 0
         intParameter: 0
