@@ -68,19 +68,7 @@ public abstract class APlayerInputHandler : MonoBehaviour
         this._networkOwnership = networkOwnership;
         this._networkTransform = networkTransform;
         this.resetAnimationEvent = resetAnimationEvent;
-    }
 
-    private void OnDisable()
-    {
-        if (this.resetAnimationEvent != null)
-        {
-            this.resetAnimationEvent.OnIsAttackingChanged -= ResetAttackState;
-            this.resetAnimationEvent.OnIsUltiChanged -= ResetUltiState;
-        }
-    }
-
-    protected virtual void Start()
-    {
         if (_networkOwnership.IsLocalPlayer)
         {
             gameObject.tag = "Player";
@@ -96,6 +84,15 @@ public abstract class APlayerInputHandler : MonoBehaviour
             this.resetAnimationEvent.OnIsUltiChanged -= ResetUltiState;
             this.resetAnimationEvent.OnIsAttackingChanged += ResetAttackState;
             this.resetAnimationEvent.OnIsUltiChanged += ResetUltiState;
+        }
+    }
+
+    private void OnDisable()
+    {
+        if (this.resetAnimationEvent != null)
+        {
+            this.resetAnimationEvent.OnIsAttackingChanged -= ResetAttackState;
+            this.resetAnimationEvent.OnIsUltiChanged -= ResetUltiState;
         }
     }
 
