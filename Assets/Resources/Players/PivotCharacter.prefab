@@ -20,6 +20,7 @@ GameObject:
   - component: {fileID: 8730402894560013289}
   - component: {fileID: 8400868981382460174}
   - component: {fileID: 175253406860439702}
+  - component: {fileID: 8740801624917999475}
   m_Layer: 8
   m_Name: PivotCharacter
   m_TagString: Player
@@ -308,6 +309,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerSpawns:
   - {fileID: 0}
+--- !u!114 &8740801624917999475
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1811712304232251511}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0db88bec5064a024f9859c82e847b311, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2368847849364582427
 GameObject:
   m_ObjectHideFlags: 0

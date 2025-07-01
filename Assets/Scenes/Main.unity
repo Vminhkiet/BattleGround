@@ -2662,7 +2662,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ab3e0ce057d1fe34d8803a259dc10ba7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  minPlayersToStartGame: 1
+  minPlayersToStartGame: 2
   gameVersion: 1.0
   maxPlayersPerRoom: 20
   gameSceneName: Island
