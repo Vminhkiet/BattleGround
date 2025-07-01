@@ -15808,9 +15808,9 @@ AnimationClip:
   m_HasMotionFloatCurves: 1
   m_Events:
   - time: 0.8333333
-    functionName: ResetAttackState
+    functionName: ResetIsAttacking
     data: 
-    objectReferenceParameter: {fileID: 11500000, guid: 904d2576b10c79941a8259547b59ab90,
+    objectReferenceParameter: {fileID: 11500000, guid: 9ca1245a5e4d94c418551645d4148edd,
       type: 3}
     floatParameter: 0
     intParameter: 0
