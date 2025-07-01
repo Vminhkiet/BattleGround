@@ -20,6 +20,7 @@ public class KaventScript : MonoBehaviour, ICharacterSkill
     void Start()
     {
         InputHandler = GetComponentInParent<KaventInputHandler>();
+        activeIndicator.SetActive(false);
     }
 
     public void NormalAttack(Vector2 inputright)
