@@ -37,6 +37,7 @@ public abstract class APlayerInputHandler : MonoBehaviour
     protected IEffectPlayer effectPlayer;
     protected INetworkOwnership _networkOwnership;
     protected INetworkTransform _networkTransform;
+    protected ResetAnimationEvent resetAnimationEvent;
 
     public event Action<float> OnMoveInputChanged;
     public event Action<bool> OnAttackStateChanged;
@@ -54,7 +55,8 @@ public abstract class APlayerInputHandler : MonoBehaviour
                             PlayerStats playerStatsInstance, 
                             CharacterMeshRotation cRotationInstance,
                             INetworkOwnership networkOwnership,
-                            INetworkTransform networkTransform
+                            INetworkTransform networkTransform,
+                            ResetAnimationEvent resetAnimationEvent
                             )
     {
         this.effectPlayer = effectPlayerInstance;
@@ -64,6 +66,24 @@ public abstract class APlayerInputHandler : MonoBehaviour
         this.cRotation = cRotationInstance;
         this._networkOwnership = networkOwnership;
         this._networkTransform = networkTransform;
+        this.resetAnimationEvent = resetAnimationEvent;
+    }
+
+    private void OnEnable()
+    {
+        if (this.resetAnimationEvent != null)
+        {
+            this.resetAnimationEvent.OnIsAttackingChanged -= ResetAttackState;
+            this.resetAnimationEvent.OnIsAttackingChanged += ResetAttackState;
+        }
+    }
+
+    private void OnDisable()
+    {
+        if (this.resetAnimationEvent != null)
+        {
+            this.resetAnimationEvent.OnIsAttackingChanged -= ResetAttackState;
+        }
     }
 
     protected virtual void Update()

@@ -552,6 +552,11 @@ PrefabInstance:
       propertyPath: m_TagString
       value: Untagged
       objectReference: {fileID: 0}
+    - target: {fileID: 8361758690364704907, guid: 39d253bfc75450941bf3056bb4c0e706,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
@@ -572,6 +577,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 4842148285212521956}
+    - targetCorrespondingSourceObject: {fileID: 7892989927749182300, guid: 39d253bfc75450941bf3056bb4c0e706,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 5984791803764527527}
   m_SourcePrefab: {fileID: 100100000, guid: 39d253bfc75450941bf3056bb4c0e706, type: 3}
 --- !u!198 &767627675529985941 stripped
 ParticleSystem:
@@ -633,6 +642,18 @@ MonoBehaviour:
   mapName: Island
   loadRadius: 2
   checkInterval: 1
+--- !u!114 &5984791803764527527
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6165544293868617754}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9ca1245a5e4d94c418551645d4148edd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &6835260762773625504 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7404577673177577958, guid: 39d253bfc75450941bf3056bb4c0e706,
