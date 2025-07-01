@@ -14,7 +14,7 @@ public class MinimapController : MonoBehaviour
     private bool minimapVisible = true;
 
     [Header("References")]
-    public Transform playerTransform;
+    private Transform playerTransform;
     public HexGrid hexGrid;
     public GameObject panel;
     public RectTransform eyeOpen;
@@ -28,6 +28,11 @@ public class MinimapController : MonoBehaviour
     public GameObject minimapDotPrefab;
     private GameObject minimapDotInstance;
     private Quaternion iconBaseRotation;
+
+    public void SetPlayerTransform(Transform playerTransform)
+    {
+        this.playerTransform = playerTransform;
+    }
 
     void Start()
     {

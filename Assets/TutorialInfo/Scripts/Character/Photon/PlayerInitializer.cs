@@ -93,16 +93,27 @@ public class PlayerInitializer : MonoBehaviour
         ResetAnimationEvent resetAnimationEvent = playerGameObject.GetComponentInChildren<ResetAnimationEvent>();
 
         IEffectPlayer effectPlayerInstance;
+
         bool activateInputHandler = false;
 
         if (playerPhotonView.IsMine)
         {
+            TopDownCameraFollow topdown = Camera.main.GetComponent<TopDownCameraFollow>();
+            MinimapController minimapController = GameObject.FindAnyObjectByType<MinimapController>();
+            SafeZoneManager safezone = GameObject.FindAnyObjectByType<SafeZoneManager>();
+            topdown.SetTransform(playerGameObject.transform);
+            minimapController.SetPlayerTransform(playerGameObject.transform);
+            safezone.SetPlayerTransform(playerGameObject.transform);
+            gameObject.tag = "Player";
+
             activateInputHandler = true;
             effectPlayerInstance = new PhotonEffectManagerAdapter(actualEffectManager, playerPhotonView);
 
         }
         else
         {
+            gameObject.tag = "Enemy";
+
             activateInputHandler = false;
             effectPlayerInstance = new NoOpEffectPlayer();
 

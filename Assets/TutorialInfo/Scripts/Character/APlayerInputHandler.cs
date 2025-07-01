@@ -69,15 +69,7 @@ public abstract class APlayerInputHandler : MonoBehaviour
         this._networkTransform = networkTransform;
         this.resetAnimationEvent = resetAnimationEvent;
 
-        if (_networkOwnership.IsLocalPlayer)
-        {
-            gameObject.tag = "Player";
-        }
-        else
-        {
-            gameObject.tag = "Enemy";
-        }
-
+        this.characterSkill.SetEffectSkill(this.effectPlayer);
         if (this.resetAnimationEvent != null)
         {
             this.resetAnimationEvent.OnIsAttackingChanged -= ResetAttackState;

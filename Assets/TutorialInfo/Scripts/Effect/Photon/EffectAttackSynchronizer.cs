@@ -8,9 +8,9 @@ public class EffectAttackSynchronizer : MonoBehaviourPunCallbacks
     private void Awake()
     {
         _attackManager = GetComponent<EffectAttackManager>();
-        if ( _attackManager != null)
+        if (_attackManager == null)
         {
-            this.enabled = false;
+            Debug.LogError("EffectAttackManager not found on " + gameObject.name);
         }
     }
 

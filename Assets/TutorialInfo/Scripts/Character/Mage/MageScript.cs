@@ -13,7 +13,10 @@ public class MageScript : MonoBehaviour, ICharacterSkill
     public float ultiRange = 4f;
     private Vector3 currentTargetPosition;
     public float targetingRange = 8f;
+    public void SetEffectSkill(IEffectPlayer effectPlayer)
+    {
 
+    }
     public void NormalAttack(Vector2 inputright)
     {
         StartCoroutine(DelayedShoot());     

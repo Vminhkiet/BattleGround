@@ -11,8 +11,8 @@ public class SafeZoneManager : MonoBehaviour
     public float safeZoneViewOffset = 15f;
 
     [Header("Player Settings")]
-    public Transform player;
-    public Camera playerCamera;
+    private Transform player;
+    private Camera playerCamera;
 
     [Header("Emitter Settings")]
     public GameObject emitterPrefab;
@@ -31,9 +31,14 @@ public class SafeZoneManager : MonoBehaviour
     private bool isPlayingSound;
     private AudioSource audioSource;
 
+    public void SetPlayerTransform(Transform transform) {
+        this.player = transform;
+    }
+
     void Start()
     {
-        isPlayingSound=false;
+        playerCamera = Camera.main;
+        isPlayingSound =false;
         emitters = new GameObject[emitterCount];
         audioSource = GetComponent<AudioSource>();
         for (int i = 0; i < emitterCount; i++)
