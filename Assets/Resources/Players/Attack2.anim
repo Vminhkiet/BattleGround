@@ -15810,7 +15810,8 @@ AnimationClip:
   - time: 0.8333333
     functionName: ResetAttackState
     data: 
-    objectReferenceParameter: {fileID: 0}
+    objectReferenceParameter: {fileID: 11500000, guid: 904d2576b10c79941a8259547b59ab90,
+      type: 3}
     floatParameter: 0
     intParameter: 0
     messageOptions: 0

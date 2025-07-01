@@ -2479,13 +2479,14 @@ GameObject:
   - component: {fileID: 4239266245814242666}
   - component: {fileID: 5421434501037674937}
   - component: {fileID: 197798745735114536}
+  - component: {fileID: 6322187387001522623}
   m_Layer: 0
   m_Name: PivotCharacterMage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &6285319479520488316
 Transform:
   m_ObjectHideFlags: 0
@@ -2537,7 +2538,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ObservedComponentsFoldoutOpen: 0
+  ObservedComponentsFoldoutOpen: 1
   Group: 0
   prefixField: -1
   Synchronization: 3
@@ -2546,6 +2547,7 @@ MonoBehaviour:
   ObservedComponents:
   - {fileID: 7572414704438808112}
   - {fileID: 1654197683360372591}
+  - {fileID: 5188779781120786091}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
@@ -2605,7 +2607,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_SynchronizePosition: 1
-  m_SynchronizeRotation: 1
+  m_SynchronizeRotation: 0
   m_SynchronizeScale: 0
   m_UseLocal: 1
 --- !u!114 &417433480913350541
@@ -2686,7 +2688,7 @@ MonoBehaviour:
   m_ActionEvents:
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 5421434501037674937}
         m_TargetAssemblyTypeName: APlayerInputHandler, Assembly-CSharp
         m_MethodName: OnMove
         m_Mode: 0
@@ -2702,8 +2704,8 @@ MonoBehaviour:
     m_ActionName: Player/Move
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: APlayerInputHandler, Assembly-CSharp
+      - m_Target: {fileID: 5421434501037674937}
+        m_TargetAssemblyTypeName: MageInputHandler, Assembly-CSharp
         m_MethodName: OnAttack
         m_Mode: 0
         m_Arguments:
@@ -2718,7 +2720,7 @@ MonoBehaviour:
     m_ActionName: Player/Attack
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 5421434501037674937}
         m_TargetAssemblyTypeName: APlayerInputHandler, Assembly-CSharp
         m_MethodName: OnSkill
         m_Mode: 0
@@ -2733,7 +2735,19 @@ MonoBehaviour:
     m_ActionId: bd45a033-3d98-43d2-9ad8-2f251c3e7d65
     m_ActionName: Player/Ulti
   - m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 5421434501037674937}
+        m_TargetAssemblyTypeName: APlayerInputHandler, Assembly-CSharp
+        m_MethodName: OnSpell
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: 1fa4a49c-c876-490d-ad3e-0baa3531e509
     m_ActionName: Player/Spell[/Mouse/delta]
   m_NeverAutoSwitchControlSchemes: 0
@@ -2741,6 +2755,19 @@ MonoBehaviour:
   m_DefaultActionMap: Player
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
+--- !u!114 &6322187387001522623
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7996799926412221067}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b7d927506a278bb43ab6fb6c067041dc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerSpawns: []
 --- !u!1 &8338786530183523471
 GameObject:
   m_ObjectHideFlags: 0
@@ -2907,6 +2934,7 @@ GameObject:
   - component: {fileID: 7165283086799243315}
   - component: {fileID: 6547888738358282689}
   - component: {fileID: 228234729734825378}
+  - component: {fileID: 5188779781120786091}
   m_Layer: 8
   m_Name: Mage
   m_TagString: Player
@@ -2969,8 +2997,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 841772cb2892a964bb92da0669fac90a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mapSaveLoadManager: {fileID: 0}
-  playerTransform: {fileID: 7387084477953787670}
   mapName: Island
   loadRadius: 2
   checkInterval: 1
@@ -3042,7 +3068,7 @@ LineRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9166351316526345752}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -3195,3 +3221,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speedRotation: 10
   rotationThreshold: 0.1
+--- !u!114 &5188779781120786091
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9166351316526345752}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 42836189ed332d84d89f06f2395738e7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _smoothingFactor: 10

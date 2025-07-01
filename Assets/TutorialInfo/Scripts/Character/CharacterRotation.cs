@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class CharacterRotation : MonoBehaviour
 {
-    public Transform pivotPoint; // Điểm xoay (có thể là điểm cố định trong không gian hoặc đối tượng khác)
     public float rotationSpeed = 5f; // Tốc độ xoay
 
     private Vector3 previousMousePosition;
@@ -31,7 +30,7 @@ public class CharacterRotation : MonoBehaviour
             float horizontalRotation = deltaMouse.x * rotationSpeed * Time.deltaTime;
 
             // Xoay đối tượng quanh trục Y (xoay trên trục ngang)
-            transform.RotateAround(pivotPoint.position, Vector3.up, horizontalRotation);
+            transform.RotateAround(transform.position, Vector3.up, horizontalRotation);
 
             previousMousePosition = Input.mousePosition; // Cập nhật vị trí chuột hiện tại
         }
