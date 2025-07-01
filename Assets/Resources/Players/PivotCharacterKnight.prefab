@@ -1922,6 +1922,8 @@ GameObject:
   - component: {fileID: 4159953370608292296}
   - component: {fileID: 2651512649132424734}
   - component: {fileID: 2438733223599693456}
+  - component: {fileID: 1893797973189020080}
+  - component: {fileID: 7172137753889018828}
   m_Layer: 8
   m_Name: PivotCharacterKnight
   m_TagString: Player
@@ -2089,6 +2091,114 @@ CapsuleCollider:
   m_Height: 2.04
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &1893797973189020080
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5889981222048973956}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Actions: {fileID: -944628639613478452, guid: cf490f9194ca4934d8d159af2eef630d,
+    type: 3}
+  m_NotificationBehavior: 2
+  m_UIInputModule: {fileID: 0}
+  m_DeviceLostEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_DeviceRegainedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ControlsChangedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ActionEvents:
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 7172137753889018828}
+        m_TargetAssemblyTypeName: APlayerInputHandler, Assembly-CSharp
+        m_MethodName: OnMove
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 7277d714-b959-4e44-acf8-eabefe9c0410
+    m_ActionName: Player/Move
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 7172137753889018828}
+        m_TargetAssemblyTypeName: KaventInputHandler, Assembly-CSharp
+        m_MethodName: OnAttack
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: bda9b26c-4bec-4c16-a53b-3c2faba6e492
+    m_ActionName: Player/Attack
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 7172137753889018828}
+        m_TargetAssemblyTypeName: APlayerInputHandler, Assembly-CSharp
+        m_MethodName: OnSkill
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: bd45a033-3d98-43d2-9ad8-2f251c3e7d65
+    m_ActionName: Player/Ulti
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 7172137753889018828}
+        m_TargetAssemblyTypeName: APlayerInputHandler, Assembly-CSharp
+        m_MethodName: OnSpell
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 1fa4a49c-c876-490d-ad3e-0baa3531e509
+    m_ActionName: Player/Spell[/Mouse/delta]
+  m_NeverAutoSwitchControlSchemes: 0
+  m_DefaultControlScheme: 
+  m_DefaultActionMap: Player
+  m_SplitScreenIndex: -1
+  m_Camera: {fileID: 0}
+--- !u!114 &7172137753889018828
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5889981222048973956}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 904d2576b10c79941a8259547b59ab90, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  predictSlash: {fileID: 1087205240683600403}
 --- !u!1 &6000342834473979793
 GameObject:
   m_ObjectHideFlags: 0
@@ -2454,14 +2564,12 @@ GameObject:
   - component: {fileID: 3631806531164201678}
   - component: {fileID: 1850694456608095994}
   - component: {fileID: 949146470540636886}
-  - component: {fileID: 5063518790018667167}
   - component: {fileID: 7316116637789891188}
   - component: {fileID: 4448442135143049039}
   - component: {fileID: 3473240843751385949}
   - component: {fileID: 7644973994445425604}
   - component: {fileID: 8317537903421079188}
   - component: {fileID: 164757919687898898}
-  - component: {fileID: 7041620753370867833}
   - component: {fileID: 1694038513697443720}
   - component: {fileID: 6389979043357232043}
   - component: {fileID: 1382450226581930736}
@@ -2531,102 +2639,6 @@ MonoBehaviour:
   bushLayer:
     serializedVersion: 2
     m_Bits: 128
---- !u!114 &5063518790018667167
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 7456603431408535745, guid: 6b06bfd2b45cd284a96e0bf519610dc7,
-    type: 3}
-  m_PrefabInstance: {fileID: 3143391250366909347}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7068297669061935061}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Actions: {fileID: -944628639613478452, guid: cf490f9194ca4934d8d159af2eef630d,
-    type: 3}
-  m_NotificationBehavior: 2
-  m_UIInputModule: {fileID: 0}
-  m_DeviceLostEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  m_DeviceRegainedEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  m_ControlsChangedEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  m_ActionEvents:
-  - m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 7041620753370867833}
-        m_TargetAssemblyTypeName: APlayerInputHandler, Assembly-CSharp
-        m_MethodName: OnMove
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-    m_ActionId: 7277d714-b959-4e44-acf8-eabefe9c0410
-    m_ActionName: Player/Move
-  - m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 7041620753370867833}
-        m_TargetAssemblyTypeName: KaventInputHandler, Assembly-CSharp
-        m_MethodName: OnAttack
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-    m_ActionId: bda9b26c-4bec-4c16-a53b-3c2faba6e492
-    m_ActionName: Player/Attack
-  - m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 7041620753370867833}
-        m_TargetAssemblyTypeName: APlayerInputHandler, Assembly-CSharp
-        m_MethodName: OnSkill
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-    m_ActionId: bd45a033-3d98-43d2-9ad8-2f251c3e7d65
-    m_ActionName: Player/Ulti
-  - m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 7041620753370867833}
-        m_TargetAssemblyTypeName: APlayerInputHandler, Assembly-CSharp
-        m_MethodName: OnSpell
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-    m_ActionId: 1fa4a49c-c876-490d-ad3e-0baa3531e509
-    m_ActionName: Player/Spell[/Mouse/delta]
-  m_NeverAutoSwitchControlSchemes: 0
-  m_DefaultControlScheme: 
-  m_DefaultActionMap: Player
-  m_SplitScreenIndex: -1
-  m_Camera: {fileID: 0}
 --- !u!114 &7316116637789891188
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2825,20 +2837,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &7041620753370867833
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 3301304228513239500, guid: 6b06bfd2b45cd284a96e0bf519610dc7,
-    type: 3}
-  m_PrefabInstance: {fileID: 3143391250366909347}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7068297669061935061}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 904d2576b10c79941a8259547b59ab90, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  predictSlash: {fileID: 1087205240683600403}
 --- !u!1 &7093385126369623610
 GameObject:
   m_ObjectHideFlags: 0
@@ -8561,26 +8559,6 @@ PrefabInstance:
       propertyPath: m_ActionEvents.Array.data[3].m_PersistentCalls.m_Calls.Array.data[0].m_Mode
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7456603431408535745, guid: 6b06bfd2b45cd284a96e0bf519610dc7,
-        type: 3}
-      propertyPath: m_ActionEvents.Array.data[0].m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 7041620753370867833}
-    - target: {fileID: 7456603431408535745, guid: 6b06bfd2b45cd284a96e0bf519610dc7,
-        type: 3}
-      propertyPath: m_ActionEvents.Array.data[1].m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 7041620753370867833}
-    - target: {fileID: 7456603431408535745, guid: 6b06bfd2b45cd284a96e0bf519610dc7,
-        type: 3}
-      propertyPath: m_ActionEvents.Array.data[2].m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 7041620753370867833}
-    - target: {fileID: 7456603431408535745, guid: 6b06bfd2b45cd284a96e0bf519610dc7,
-        type: 3}
-      propertyPath: m_ActionEvents.Array.data[3].m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 7041620753370867833}
     - target: {fileID: 7456603431408535745, guid: 6b06bfd2b45cd284a96e0bf519610dc7,
         type: 3}
       propertyPath: m_ActionEvents.Array.data[0].m_PersistentCalls.m_Calls.Array.data[0].m_CallState

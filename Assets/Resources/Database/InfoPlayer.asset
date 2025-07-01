@@ -15,4 +15,4 @@ MonoBehaviour:
   playerName: MinhKiet
   Score: 3000
   Money: 60000
-  characterType: 3
+  characterType: 0
