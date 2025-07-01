@@ -379,6 +379,7 @@ public abstract class APlayerInputHandler : MonoBehaviour
     public virtual void ResetAttackState()
     {
         SetIsAttacking(false);
+        Debug.Log("reset attack");
     }
 
     public virtual void ResetUltiState()

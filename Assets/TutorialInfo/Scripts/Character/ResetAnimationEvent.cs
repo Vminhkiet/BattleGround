@@ -11,6 +11,7 @@ public class ResetAnimationEvent : MonoBehaviour
     }
     public void ResetIsUlti()
     {
+        Debug.Log("reset skill");
         OnIsUltiChanged?.Invoke();
     }
 }
