@@ -2480,6 +2480,8 @@ GameObject:
   - component: {fileID: 5421434501037674937}
   - component: {fileID: 197798745735114536}
   - component: {fileID: 6322187387001522623}
+  - component: {fileID: 6408038123958431105}
+  - component: {fileID: 3943535072728341036}
   m_Layer: 0
   m_Name: PivotCharacterMage
   m_TagString: Untagged
@@ -2769,6 +2771,34 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerSpawns: []
+--- !u!114 &6408038123958431105
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7996799926412221067}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1d30b9f8d1bc91748ab3e75b10b2d7d5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shootDelay: 0.3
+  targetingRange: 8
+  ultiRange: 4
+  attackRange: 15
+--- !u!114 &3943535072728341036
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7996799926412221067}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0db88bec5064a024f9859c82e847b311, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8338786530183523471
 GameObject:
   m_ObjectHideFlags: 0

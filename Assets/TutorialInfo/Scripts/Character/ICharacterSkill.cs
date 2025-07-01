@@ -12,4 +12,5 @@ public interface ICharacterSkill
     void DrawUltiPosition(Vector2 input);
 
     void SetEffectSkill(IEffectPlayer effectPlayer);
+    void SetNetworkOwnership(INetworkOwnership ownership);
 }

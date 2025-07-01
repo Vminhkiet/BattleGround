@@ -73,5 +73,10 @@ public class KaventScript : MonoBehaviour, ICharacterSkill
     {
 
     }
+
+    public void SetNetworkOwnership(INetworkOwnership ownership)
+    {
+
+    }
 }
 

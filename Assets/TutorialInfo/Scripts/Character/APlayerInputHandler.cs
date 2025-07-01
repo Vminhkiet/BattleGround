@@ -70,6 +70,7 @@ public abstract class APlayerInputHandler : MonoBehaviour
         this.resetAnimationEvent = resetAnimationEvent;
 
         this.characterSkill.SetEffectSkill(this.effectPlayer);
+        this.characterSkill.SetNetworkOwnership(this._networkOwnership);
         if (this.resetAnimationEvent != null)
         {
             this.resetAnimationEvent.OnIsAttackingChanged -= ResetAttackState;

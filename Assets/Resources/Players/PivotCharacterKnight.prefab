@@ -2571,7 +2571,6 @@ GameObject:
   - component: {fileID: 8317537903421079188}
   - component: {fileID: 164757919687898898}
   - component: {fileID: 1694038513697443720}
-  - component: {fileID: 6389979043357232043}
   - component: {fileID: 1382450226581930736}
   - component: {fileID: 7779464075616876424}
   m_Layer: 8
@@ -8642,10 +8641,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 3562941700155662764, guid: 6b06bfd2b45cd284a96e0bf519610dc7,
         type: 3}
       insertIndex: -1
-      addedObject: {fileID: 6389979043357232043}
-    - targetCorrespondingSourceObject: {fileID: 3562941700155662764, guid: 6b06bfd2b45cd284a96e0bf519610dc7,
-        type: 3}
-      insertIndex: -1
       addedObject: {fileID: 1382450226581930736}
     - targetCorrespondingSourceObject: {fileID: 3562941700155662764, guid: 6b06bfd2b45cd284a96e0bf519610dc7,
         type: 3}
@@ -8671,24 +8666,6 @@ MonoBehaviour:
   spellCoolDown: 0
   speed: 0
   damage: 0
---- !u!114 &6389979043357232043
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7068297669061935061}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c3791b93b20bb064c96dd57cabe8fcbf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _normalAttack1: {fileID: 5740758545770897032}
-  _normalAttack2: {fileID: 0}
-  _normalAttack3: {fileID: 0}
-  _ultiPrefab: {fileID: 2426060627697987296, guid: a39d63c4fa39b854caadfd3616fed986,
-    type: 3}
-  _spell: {fileID: 0}
 --- !u!114 &1382450226581930736
 MonoBehaviour:
   m_ObjectHideFlags: 0

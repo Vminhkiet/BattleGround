@@ -3,11 +3,11 @@ using Photon.Pun;
 
 public class PhotonEffectManagerAdapter : IEffectPlayer
 {
-    private EffectAttackManager _actualEffectManager;
+    private IEffectAttackManager _actualEffectManager;
     private PhotonView _photonView;
     private EffectAttackSynchronizer _synchronizer;
 
-    public PhotonEffectManagerAdapter(EffectAttackManager _actualEffectManager, PhotonView photonView)
+    public PhotonEffectManagerAdapter(IEffectAttackManager _actualEffectManager, PhotonView photonView)
     {
         this._actualEffectManager = _actualEffectManager;
         this._photonView = photonView;

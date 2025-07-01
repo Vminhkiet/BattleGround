@@ -83,7 +83,7 @@ public class PlayerInitializer : MonoBehaviour
 
 
         APlayerInputHandler inputHandler = playerGameObject.GetComponent<APlayerInputHandler>();
-        EffectAttackManager actualEffectManager = playerGameObject.GetComponent<EffectAttackManager>();
+        IEffectAttackManager actualEffectManager = playerGameObject.GetComponent<IEffectAttackManager>();
         ICharacterSkill characterSkill = playerGameObject.GetComponentInChildren<ICharacterSkill>();
         Movement movementComponent = playerGameObject.GetComponent<KaventMovement>();
         PlayerStats playerStats = playerGameObject.GetComponentInChildren<PlayerStats>();

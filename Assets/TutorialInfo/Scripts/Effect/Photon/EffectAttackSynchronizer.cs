@@ -3,11 +3,11 @@ using Photon.Pun;
 
 public class EffectAttackSynchronizer : MonoBehaviourPunCallbacks
 {
-    private EffectAttackManager _attackManager;
+    private IEffectAttackManager _attackManager;
 
     private void Awake()
     {
-        _attackManager = GetComponent<EffectAttackManager>();
+        _attackManager = GetComponent<IEffectAttackManager>();
         if (_attackManager == null)
         {
             Debug.LogError("EffectAttackManager not found on " + gameObject.name);

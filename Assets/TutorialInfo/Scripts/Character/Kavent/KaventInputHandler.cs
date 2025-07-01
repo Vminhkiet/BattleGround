@@ -11,11 +11,11 @@ public class KaventInputHandler : APlayerInputHandler
     [SerializeField]
     private GameObject predictSlash;
     private RotationEffect rotationEffect;
-    private EffectAttackManager effectSlashManager;
+    private IEffectAttackManager effectSlashManager;
     protected void Awake()
     {
         rotationEffect = predictSlash.GetComponent<RotationEffect>();
-        effectSlashManager = GetComponent<EffectAttackManager>();
+        effectSlashManager = GetComponent<IEffectAttackManager>();
 
     }
 

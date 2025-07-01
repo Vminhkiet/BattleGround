@@ -16,7 +16,7 @@ class KnightScript : MonoBehaviour, ICharacterSkill
     public float targetingRange = 8f;
     public float UltiDuration=3;
 
-    private EffectAttackManager effectAttackManager;
+    private IEffectAttackManager effectAttackManager;
     public void SetEffectSkill(IEffectPlayer effectPlayer)
     {
 
@@ -24,7 +24,7 @@ class KnightScript : MonoBehaviour, ICharacterSkill
     void Start()
     {
         InputHandler = GetComponent<KaventInputHandler>();
-        effectAttackManager = GetComponent<EffectAttackManager>();
+        effectAttackManager = GetComponent<IEffectAttackManager>();
     }
 
     public void NormalAttack(Vector2 inputright)
@@ -77,6 +77,11 @@ class KnightScript : MonoBehaviour, ICharacterSkill
         }
     }
     public void UseSpell(Vector2 inputspell)
+    {
+
+    }
+
+    public void SetNetworkOwnership(INetworkOwnership ownership)
     {
 
     }
