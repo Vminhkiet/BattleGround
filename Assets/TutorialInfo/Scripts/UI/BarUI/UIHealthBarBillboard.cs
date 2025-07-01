@@ -60,6 +60,6 @@ public class UIHealthBarBillboard : MonoBehaviour
             fillImage.fillAmount = healthRatio;
         }
 
-        gameObject.SetActive(currentHealth >= 0 && currentHealth < maxHealth);
+        gameObject.SetActive(currentHealth >= 0 && currentHealth <= maxHealth);
     }
 }

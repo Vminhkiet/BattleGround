@@ -17,6 +17,7 @@ public class MageScript : MonoBehaviour, ICharacterSkill
 
     private INetworkOwnership _owner;
     private IEffectPlayer effectPlayer;
+    public void Init() { }
     public void SetEffectSkill(IEffectPlayer effectPlayer)
     {
         this.effectPlayer = effectPlayer;

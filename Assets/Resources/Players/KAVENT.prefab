@@ -441,6 +441,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   skillIndicatorPrefab: {fileID: 0}
+  colliderSlash: {fileID: 0}
   ultiRange: 4
   targetingRange: 8
 --- !u!114 &7184291568784719351

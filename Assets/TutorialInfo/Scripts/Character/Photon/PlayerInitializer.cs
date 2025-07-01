@@ -85,7 +85,7 @@ public class PlayerInitializer : MonoBehaviour
         APlayerInputHandler inputHandler = playerGameObject.GetComponent<APlayerInputHandler>();
         IEffectAttackManager actualEffectManager = playerGameObject.GetComponent<IEffectAttackManager>();
         ICharacterSkill characterSkill = playerGameObject.GetComponentInChildren<ICharacterSkill>();
-        Movement movementComponent = playerGameObject.GetComponent<KaventMovement>();
+        IMovable movementComponent = playerGameObject.GetComponent<IMovable>();
         PlayerStats playerStats = playerGameObject.GetComponentInChildren<PlayerStats>();
         CharacterMeshRotation cRotation = playerGameObject.GetComponentInChildren<CharacterMeshRotation>();
         INetworkOwnership networkOwnershipInstance = new PhotonOwnershipAdapter(playerPhotonView);

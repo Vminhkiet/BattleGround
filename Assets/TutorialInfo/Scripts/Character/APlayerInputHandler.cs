@@ -32,7 +32,7 @@ public abstract class APlayerInputHandler : MonoBehaviour
     protected Vector2 nextAttackinput;
 
     protected ICharacterSkill characterSkill;
-    protected Movement movementComponent;
+    protected IMovable movementComponent;
     protected PlayerStats playerStats;
     protected CharacterMeshRotation cRotation;
     protected IEffectPlayer effectPlayer;
@@ -51,8 +51,8 @@ public abstract class APlayerInputHandler : MonoBehaviour
     private bool isSlow = false;
 
     public void Initialize(IEffectPlayer effectPlayerInstance, 
-                            ICharacterSkill characterSkillInstance, 
-                            Movement movementComponentInstance, 
+                            ICharacterSkill characterSkillInstance,
+                            IMovable movementComponentInstance, 
                             PlayerStats playerStatsInstance, 
                             CharacterMeshRotation cRotationInstance,
                             INetworkOwnership networkOwnership,
@@ -69,6 +69,7 @@ public abstract class APlayerInputHandler : MonoBehaviour
         this._networkTransform = networkTransform;
         this.resetAnimationEvent = resetAnimationEvent;
 
+        this.characterSkill.Init();
         this.characterSkill.SetEffectSkill(this.effectPlayer);
         this.characterSkill.SetNetworkOwnership(this._networkOwnership);
         if (this.resetAnimationEvent != null)
@@ -117,6 +118,15 @@ public abstract class APlayerInputHandler : MonoBehaviour
             nextAttackinput = Vector2.zero;
             nextAttack = !nextAttack;
         }
+    }
+
+    private void FixedUpdate()
+    {
+        if (_networkOwnership == null || !_networkOwnership.IsLocalPlayer)
+        {
+            return;
+        }
+        movementComponent.Move();
     }
 
     public virtual void OnMove(InputAction.CallbackContext callbackContext)

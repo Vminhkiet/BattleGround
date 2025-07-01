@@ -2482,9 +2482,9 @@ GameObject:
   - component: {fileID: 6322187387001522623}
   - component: {fileID: 6408038123958431105}
   - component: {fileID: 3943535072728341036}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: PivotCharacterMage
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2563,7 +2563,7 @@ Rigidbody:
   m_GameObject: {fileID: 7996799926412221067}
   serializedVersion: 4
   m_Mass: 1
-  m_Drag: 0
+  m_Drag: 1
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
@@ -2627,7 +2627,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   walkSpeed: 4
   maxVelocityChange: 10
-  rotationSpeed: 10
 --- !u!136 &4239266245814242666
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -2968,9 +2967,9 @@ GameObject:
   - component: {fileID: 5188779781120786091}
   - component: {fileID: 3876744657388956140}
   - component: {fileID: 6396415827141417097}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: Mage
-  m_TagString: Player
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

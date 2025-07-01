@@ -17,6 +17,7 @@ class KnightScript : MonoBehaviour, ICharacterSkill
     public float UltiDuration=3;
 
     private IEffectAttackManager effectAttackManager;
+    public void Init() { }
     public void SetEffectSkill(IEffectPlayer effectPlayer)
     {
 

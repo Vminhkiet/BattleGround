@@ -18,8 +18,12 @@ public class KaventEffectManager : MonoBehaviour, IEffectAttackManager
     private bool isTurnOnUlti = false;
     private void Start()
     {
+        _normalAttack1?.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+        _normalAttack1?.Clear(true);
         _ulti = Instantiate(_ultiPrefab);
         _pUlti = _ulti.GetComponentInChildren<ParticleSystem>();
+        BlackHoleSkill blackHoleSkill = _ulti.GetComponentInChildren<BlackHoleSkill>();
+        blackHoleSkill.SetCaster(this.gameObject);
         TurnOffUlti();
     }
 
@@ -30,10 +34,18 @@ public class KaventEffectManager : MonoBehaviour, IEffectAttackManager
         {
             return;
         }
-        if (isTurnOnUlti) TurnOffUlti();
+        if (isTurnOnUlti)
+        {
+            TurnOffUlti();
+        }
     }
 
-    public void PlayNormalAttack1() => _normalAttack1?.Play();
+    public void PlayNormalAttack1()
+    {
+        _normalAttack1.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+        _normalAttack1.Clear(true);
+        _normalAttack1?.Play();
+    }
 
     public void PlayNormalAttack2(Vector2 direction)
     {
