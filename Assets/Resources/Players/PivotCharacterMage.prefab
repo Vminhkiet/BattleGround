@@ -2548,6 +2548,7 @@ MonoBehaviour:
   - {fileID: 7572414704438808112}
   - {fileID: 1654197683360372591}
   - {fileID: 5188779781120786091}
+  - {fileID: 3876744657388956140}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
@@ -2935,6 +2936,8 @@ GameObject:
   - component: {fileID: 6547888738358282689}
   - component: {fileID: 228234729734825378}
   - component: {fileID: 5188779781120786091}
+  - component: {fileID: 3876744657388956140}
+  - component: {fileID: 6396415827141417097}
   m_Layer: 8
   m_Name: Mage
   m_TagString: Player
@@ -3234,3 +3237,66 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _smoothingFactor: 10
+--- !u!114 &3876744657388956140
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9166351316526345752}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b8c4a61274f60b4ea5fb4299cfdbf14, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowLayerWeightsInspector: 1
+  ShowParameterInspector: 1
+  m_SynchronizeParameters:
+  - Type: 4
+    SynchronizeType: 1
+    Name: IsAttacking
+  - Type: 3
+    SynchronizeType: 1
+    Name: AttackPhase
+  - Type: 1
+    SynchronizeType: 2
+    Name: typerun
+  - Type: 9
+    SynchronizeType: 1
+    Name: T-Pose
+  - Type: 9
+    SynchronizeType: 1
+    Name: Ulti
+  - Type: 9
+    SynchronizeType: 1
+    Name: UseItem
+  - Type: 9
+    SynchronizeType: 0
+    Name: Revive
+  - Type: 4
+    SynchronizeType: 0
+    Name: StayTimeExceeded
+  - Type: 4
+    SynchronizeType: 1
+    Name: IsDead
+  - Type: 1
+    SynchronizeType: 2
+    Name: speed
+  - Type: 9
+    SynchronizeType: 0
+    Name: Spell
+  m_SynchronizeLayers:
+  - SynchronizeType: 0
+    LayerIndex: 0
+--- !u!114 &6396415827141417097
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9166351316526345752}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9ca1245a5e4d94c418551645d4148edd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
