@@ -70,17 +70,6 @@ public abstract class APlayerInputHandler : MonoBehaviour
         this.resetAnimationEvent = resetAnimationEvent;
     }
 
-    private void OnEnable()
-    {
-        if (this.resetAnimationEvent != null)
-        {
-            this.resetAnimationEvent.OnIsAttackingChanged -= ResetAttackState;
-            this.resetAnimationEvent.OnIsUltiChanged -= ResetUltiState;
-            this.resetAnimationEvent.OnIsAttackingChanged += ResetAttackState;
-            this.resetAnimationEvent.OnIsUltiChanged += ResetUltiState;
-        }
-    }
-
     private void OnDisable()
     {
         if (this.resetAnimationEvent != null)
@@ -99,6 +88,14 @@ public abstract class APlayerInputHandler : MonoBehaviour
         else
         {
             gameObject.tag = "Enemy";
+        }
+
+        if (this.resetAnimationEvent != null)
+        {
+            this.resetAnimationEvent.OnIsAttackingChanged -= ResetAttackState;
+            this.resetAnimationEvent.OnIsUltiChanged -= ResetUltiState;
+            this.resetAnimationEvent.OnIsAttackingChanged += ResetAttackState;
+            this.resetAnimationEvent.OnIsUltiChanged += ResetUltiState;
         }
     }
 
