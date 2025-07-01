@@ -7,10 +7,10 @@ class MageInputHandler : APlayerInputHandler
 {
     private LineRenderer lineRenderer;
 
-    protected override void Start()
+    protected void Start()
     {
-        base.Start();
         lineRenderer = GetComponentInChildren<LineRenderer>();
+        lineRenderer.enabled = false;
     }
 
     public override void OnAttack(InputAction.CallbackContext context)
