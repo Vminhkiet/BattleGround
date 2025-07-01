@@ -10,7 +10,6 @@ public class EffectAttackManager : MonoBehaviour
     private ParticleSystem _pUlti;
     [SerializeField] private ParticleSystem _spell;
 
-
     private bool isTurnOnUlti = false;
     private void Start()
     {

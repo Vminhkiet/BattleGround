@@ -75,7 +75,9 @@ public abstract class APlayerInputHandler : MonoBehaviour
         if (this.resetAnimationEvent != null)
         {
             this.resetAnimationEvent.OnIsAttackingChanged -= ResetAttackState;
+            this.resetAnimationEvent.OnIsUltiChanged -= ResetUltiState;
             this.resetAnimationEvent.OnIsAttackingChanged += ResetAttackState;
+            this.resetAnimationEvent.OnIsUltiChanged += ResetUltiState;
         }
     }
 
@@ -84,6 +86,7 @@ public abstract class APlayerInputHandler : MonoBehaviour
         if (this.resetAnimationEvent != null)
         {
             this.resetAnimationEvent.OnIsAttackingChanged -= ResetAttackState;
+            this.resetAnimationEvent.OnIsUltiChanged -= ResetUltiState;
         }
     }
 
