@@ -7,9 +7,9 @@ public class TopDownCameraFollow : MonoBehaviour
     public float followSpeed = 5f;
     public Vector3 rotationOffset = new Vector3(20f, 0f, 0f); // Góc xoay cố định
 
-    private void Start()
+    public void SetTransform(Transform transform)
     {
-        target = GameObject.FindWithTag("Player").transform; 
+        this.target = transform;
     }
 
     void FixedUpdate()
@@ -20,7 +20,6 @@ public class TopDownCameraFollow : MonoBehaviour
             return;
         }
 
-        // Giữ góc nhìn cố định
         Quaternion fixedRotation = Quaternion.Euler(rotationOffset);
         Vector3 desiredPosition = target.position + fixedRotation * offset;
 
