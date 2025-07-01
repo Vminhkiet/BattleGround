@@ -12,10 +12,14 @@ public class KaventScript : MonoBehaviour, ICharacterSkill
     public float targetingRange = 8f;
 
     private IEffectPlayer effectPlayer;
+    public void SetEffectSkill(IEffectPlayer effectPlayer)
+    {
+        this.effectPlayer = effectPlayer;
+    }
+
     void Start()
     {
         InputHandler = GetComponentInParent<KaventInputHandler>();
-        effectPlayer = GetComponentInParent<IEffectPlayer>();
     }
 
     public void NormalAttack(Vector2 inputright)

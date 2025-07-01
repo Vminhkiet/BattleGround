@@ -10,4 +10,6 @@ public interface ICharacterSkill
     void UseSpell(Vector2 inputright);
 
     void DrawUltiPosition(Vector2 input);
+
+    void SetEffectSkill(IEffectPlayer effectPlayer);
 }

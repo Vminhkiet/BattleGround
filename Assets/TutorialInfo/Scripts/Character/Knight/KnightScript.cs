@@ -17,6 +17,10 @@ class KnightScript : MonoBehaviour, ICharacterSkill
     public float UltiDuration=3;
 
     private EffectAttackManager effectAttackManager;
+    public void SetEffectSkill(IEffectPlayer effectPlayer)
+    {
+
+    }
     void Start()
     {
         InputHandler = GetComponent<KaventInputHandler>();

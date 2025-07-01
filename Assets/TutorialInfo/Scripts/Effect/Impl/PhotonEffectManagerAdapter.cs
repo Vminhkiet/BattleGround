@@ -9,8 +9,8 @@ public class PhotonEffectManagerAdapter : IEffectPlayer
 
     public PhotonEffectManagerAdapter(EffectAttackManager _actualEffectManager, PhotonView photonView)
     {
-        _actualEffectManager = _actualEffectManager;
-        _photonView = photonView;
+        this._actualEffectManager = _actualEffectManager;
+        this._photonView = photonView;
         if (_actualEffectManager == null) Debug.LogError("PhotonEffectManagerAdapter: EffectAttackManager is null!");
         if (_photonView == null) Debug.LogError("PhotonEffectManagerAdapter: PhotonView is null!");
 
@@ -24,52 +24,58 @@ public class PhotonEffectManagerAdapter : IEffectPlayer
 
     public void PlayNormalAttackEffect(int attackPhase, Vector2 direction)
     {
-        if (_actualEffectManager != null)
+        switch (attackPhase)
         {
-            switch (attackPhase)
-            {
-                case 1: _actualEffectManager.PlayNormalAttack1(); break;
-                case 2: _actualEffectManager.PlayNormalAttack2(direction); break;
-                case 3: _actualEffectManager.PlayNormalAttack3(direction); break;
-                default: Debug.LogWarning($"PhotonEffectManagerAdapter: Invalid attack phase {attackPhase}"); break;
-            }
+            case 1: _actualEffectManager?.PlayNormalAttack1(); break;
+            case 2: _actualEffectManager?.PlayNormalAttack2(direction); break;
+            case 3: _actualEffectManager?.PlayNormalAttack3(direction); break;
+            default: Debug.LogWarning($"Invalid attack phase: {attackPhase}"); break;
         }
 
-        if (_synchronizer != null && _photonView != null && _photonView.IsMine)
+        if (_photonView != null && _photonView.IsMine)
         {
             switch (attackPhase)
             {
-                case 1: _synchronizer.RPC_PlayNormalAttack1(); break;
-                case 2: _synchronizer.RPC_PlayNormalAttack2(direction.x, direction.y); break;
-                case 3: _synchronizer.RPC_PlayNormalAttack3(direction.x, direction.y); break;
+                case 1:
+                    _photonView.RPC(nameof(EffectAttackSynchronizer.RPC_PlayNormalAttack1), RpcTarget.Others);
+                    break;
+                case 2:
+                    _photonView.RPC(nameof(EffectAttackSynchronizer.RPC_PlayNormalAttack2), RpcTarget.Others, direction.x, direction.y);
+                    break;
+                case 3:
+                    _photonView.RPC(nameof(EffectAttackSynchronizer.RPC_PlayNormalAttack3), RpcTarget.Others, direction.x, direction.y);
+                    break;
             }
         }
     }
 
     public void PlayUltiEffect(Vector2 position)
     {
-        if (_actualEffectManager != null) _actualEffectManager.PlayUlti(position);
-        if (_synchronizer != null && _photonView != null && _photonView.IsMine)
+        _actualEffectManager?.PlayUlti(position);
+
+        if (_photonView != null && _photonView.IsMine)
         {
-            _synchronizer.RPC_PlayUlti(position.x, position.y);
+            _photonView.RPC(nameof(EffectAttackSynchronizer.RPC_PlayUlti), RpcTarget.Others, position.x, position.y);
         }
     }
 
     public void PlaySpellEffect(Vector2 direction)
     {
-        if (_actualEffectManager != null) _actualEffectManager.PlaySpell(direction);
-        if (_synchronizer != null && _photonView != null && _photonView.IsMine)
+        _actualEffectManager?.PlaySpell(direction);
+
+        if (_photonView != null && _photonView.IsMine)
         {
-            _synchronizer.RPC_PlaySpell(direction.x, direction.y);
+            _photonView.RPC(nameof(EffectAttackSynchronizer.RPC_PlaySpell), RpcTarget.Others, direction.x, direction.y);
         }
     }
 
     public void StopAllEffects()
     {
-        if (_actualEffectManager != null) _actualEffectManager.StopAllEffects();
-        if (_synchronizer != null && _photonView != null && _photonView.IsMine)
+        _actualEffectManager?.StopAllEffects();
+
+        if (_photonView != null && _photonView.IsMine)
         {
-            _synchronizer.RPC_StopAllEffects();
+            _photonView.RPC(nameof(EffectAttackSynchronizer.RPC_StopAllEffects), RpcTarget.Others);
         }
     }
 }

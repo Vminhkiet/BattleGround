@@ -20,7 +20,7 @@ public class PlayerStats : MonoBehaviour
     private float speed;
     [SerializeField]
     private float damage;
-    private float pointUlti = 0f;
+    private float pointUlti = 100f;
     private float maxPointUlti = 100f;
     private Character _character;
 

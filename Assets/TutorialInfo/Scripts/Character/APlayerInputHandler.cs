@@ -69,6 +69,7 @@ public abstract class APlayerInputHandler : MonoBehaviour
         this._networkTransform = networkTransform;
         this.resetAnimationEvent = resetAnimationEvent;
 
+        this.characterSkill.SetEffectSkill(this.effectPlayer);
         if (this.resetAnimationEvent != null)
         {
             this.resetAnimationEvent.OnIsAttackingChanged -= ResetAttackState;
