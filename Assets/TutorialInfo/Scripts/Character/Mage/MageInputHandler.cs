@@ -7,8 +7,9 @@ class MageInputHandler : APlayerInputHandler
 {
     private LineRenderer lineRenderer;
 
-    private void Start()
+    protected override void Start()
     {
+        base.Start();
         lineRenderer = GetComponentInChildren<LineRenderer>();
     }
 

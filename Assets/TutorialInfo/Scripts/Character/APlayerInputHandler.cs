@@ -1,9 +1,10 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using Photon.Pun;
 using System;
+using System.Collections;
+using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using Unity.VisualScripting;
 
 public abstract class APlayerInputHandler : MonoBehaviour
 {
@@ -85,6 +86,19 @@ public abstract class APlayerInputHandler : MonoBehaviour
             this.resetAnimationEvent.OnIsAttackingChanged -= ResetAttackState;
         }
     }
+
+    protected virtual void Start()
+    {
+        if (_networkOwnership.IsLocalPlayer)
+        {
+            gameObject.tag = "Player";
+        }
+        else
+        {
+            gameObject.tag = "Enemy";
+        }
+    }
+
 
     protected virtual void Update()
     {
