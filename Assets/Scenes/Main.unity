@@ -2665,7 +2665,7 @@ MonoBehaviour:
   minPlayersToStartGame: 1
   gameVersion: 1.0
   maxPlayersPerRoom: 20
-  gameSceneName: Island
+  gameSceneName: Testscene
   playButton: {fileID: 1135138612}
   cancelMatchmakingButton: {fileID: 1389714564}
   loadingPanel: {fileID: 785706487}
