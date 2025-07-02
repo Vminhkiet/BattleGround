@@ -1,14 +1,26 @@
-﻿using System;
+﻿using Photon.Pun;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SafeZoneManager : MonoBehaviour
+public class SafeZoneManager : MonoBehaviour, IPunObservable
 {
+
+    private PhotonView photonView;
+
     [Header("Safe Zone Settings")]
     public Transform safeZoneCenter;
     public float safeZoneRadius = 30f;
     public float safeZoneDeactivateThreshold = 5f;
     public float safeZoneViewOffset = 15f;
+
+    [Header("Zone Shrinking Settings")]
+    public float shrinkRate = 2f;
+    public float shrinkInterval = 10f;
+    public float minSafeZoneRadius = 5f;
+
+    private float shrinkTimer = 0f;
+
 
     [Header("Player Settings")]
     private Transform player;
@@ -31,12 +43,21 @@ public class SafeZoneManager : MonoBehaviour
     private bool isPlayingSound;
     private AudioSource audioSource;
 
+
+    [Header("Damage Settings")]
+    public float[] damagePerStage = { 5f, 10f, 15f, 25f, 40f };
+    public float damageTickRate = 1f;
+
+    private float damageTickTimer = 0f;
+    private int currentStage = 0;
+
     public void SetPlayerTransform(Transform transform) {
         this.player = transform;
     }
 
     void Start()
     {
+        photonView = GetComponent<PhotonView>();
         playerCamera = Camera.main;
         isPlayingSound =false;
         emitters = new GameObject[emitterCount];
@@ -50,16 +71,18 @@ public class SafeZoneManager : MonoBehaviour
 
     void Update()
     {
-        float distanceFromSafeZone = Vector3.Distance(player.position, safeZoneCenter.position);
-        bool playerInsideSafeZone = distanceFromSafeZone < safeZoneRadius;
-        bool safeZoneEdgeVisible = IsSafeZoneEdgeInView();
+        if (player == null || safeZoneCenter == null) return;
 
-        if (playerInsideSafeZone && !safeZoneEdgeVisible && distanceFromSafeZone < safeZoneRadius - safeZoneDeactivateThreshold)
+        float distance = Vector3.Distance(player.position, safeZoneCenter.position);
+        bool inside = distance < safeZoneRadius;
+        bool edgeVisible = IsSafeZoneEdgeInView();
+
+        if (inside && !edgeVisible && distance < safeZoneRadius - safeZoneDeactivateThreshold)
         {
             SetUpSound(false);
             DisableAllEmitters();
         }
-        else if (!playerInsideSafeZone && !safeZoneEdgeVisible)
+        else if (!inside && !edgeVisible)
         {
             SetUpSound(true);
             PlaceEmittersAroundPlayer();
@@ -69,7 +92,25 @@ public class SafeZoneManager : MonoBehaviour
             SetUpSound(true);
             PlaceEmittersAlongSafeZoneEdge();
         }
+
+        if (PhotonNetwork.IsMasterClient)
+        {
+            shrinkTimer += Time.deltaTime;
+            if (shrinkTimer >= shrinkInterval && safeZoneRadius > minSafeZoneRadius)
+            {
+                safeZoneRadius -= shrinkRate;
+                safeZoneRadius = Mathf.Max(safeZoneRadius, minSafeZoneRadius);
+                shrinkTimer = 0f;
+
+                if (currentStage < damagePerStage.Length - 1)
+                    currentStage++;
+            }
+        }
+
+        HandleSelfDamageIfOutside();
     }
+
+
 
     void SetUpSound(bool play)
     {
@@ -189,4 +230,46 @@ public class SafeZoneManager : MonoBehaviour
             Gizmos.DrawWireSphere(safeZoneCenter.position, safeZoneRadius);
         }
     }
+
+    void HandleSelfDamageIfOutside()
+    {
+        float distance = Vector3.Distance(player.position, safeZoneCenter.position);
+        bool outside = distance > safeZoneRadius;
+
+        if (!outside)
+        {
+            damageTickTimer = 0f;
+            return;
+        }
+
+        damageTickTimer += Time.deltaTime;
+        if (damageTickTimer >= damageTickRate)
+        {
+            PhotonView view = player.GetComponent<PhotonView>();
+            if (view != null && view.IsMine)
+            {
+                float damage = damagePerStage[currentStage];
+                view.RPC("TakeDamageNetwork", RpcTarget.AllBuffered, damage);
+            }
+            damageTickTimer = 0f;
+        }
+    }
+
+
+    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
+        if (stream.IsWriting)
+        {
+            stream.SendNext(safeZoneRadius);
+            stream.SendNext(currentStage);
+            stream.SendNext(safeZoneCenter.position);
+        }
+        else
+        {
+            safeZoneRadius = (float)stream.ReceiveNext();
+            currentStage = (int)stream.ReceiveNext();
+            safeZoneCenter.position = (Vector3)stream.ReceiveNext();
+        }
+    }
+
 }
