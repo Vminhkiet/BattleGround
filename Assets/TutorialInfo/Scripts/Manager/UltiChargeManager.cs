@@ -10,7 +10,7 @@ public class UltiChargeManager : MonoBehaviour
 
     public void Init()
     {
-        UltiUI ultiUI = FindObjectOfType<UltiUI>();
+        _ultiUI = FindObjectOfType<UltiUI>();
         if (_ultiUI != null)
         {
             _ultiUI.UpdateMaxPointUlti(maxUltiPoint);
