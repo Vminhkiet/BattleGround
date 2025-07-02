@@ -189,6 +189,7 @@ public class MatchmakingManager : MonoBehaviourPunCallbacks
             if (PhotonNetwork.CurrentRoom.PlayerCount >= minPlayersToStartGame)
             {
                 Debug.Log($"Master Client: ?? ng??i ch?i ({PhotonNetwork.CurrentRoom.PlayerCount}/{minPlayersToStartGame}). ?ang t?i Scene Battle Royale...");
+                UserSession.Instance.UnsubscribeAll();
                 PhotonNetwork.LoadLevel(gameSceneName);
                 if (loadingPanel != null)
                 {

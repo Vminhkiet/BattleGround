@@ -18,10 +18,17 @@ public class PlayerHealthUI : MonoBehaviour
     [Header("Debug")]
     public bool showDebugButtons = false;
 
+    private PhotonView photonView;
     public bool IsDead => currentHealth <= 0;
 
     void Start()
     {
+        photonView = GetComponent<PhotonView>();
+        if (photonView == null)
+        {
+            this.enabled = false;
+            return;
+        }
         currentHealth = maxHealth;
 
         if (healthBarUIBillboard != null)
@@ -44,10 +51,10 @@ public class PlayerHealthUI : MonoBehaviour
             healthBarUIBillboard.UpdateHealth(currentHealth, maxHealth);
         }
 
-        if (IsDead)
+        if (photonView.IsMine && IsDead)
         {
             Debug.Log($"{gameObject.name} died.");
-            onDeath?.Invoke();
+            GameManager.instance.LeaveMatch();
         }
     }
 

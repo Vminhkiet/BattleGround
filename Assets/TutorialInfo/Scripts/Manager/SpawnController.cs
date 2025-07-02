@@ -17,7 +17,8 @@ public class SpawnController : MonoBehaviour
     }
     private void Start()
     {
-        UserSession.Instance.OnUserDataLoaded += LoadSelectedPlayer;
+        UserSession.Instance.StartCoroutineFetchData();
+        UserSession.Instance.Subscribe(LoadSelectedPlayer);
     }
 
     void LoadSelectedPlayer()

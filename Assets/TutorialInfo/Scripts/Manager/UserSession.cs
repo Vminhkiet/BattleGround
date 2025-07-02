@@ -9,11 +9,25 @@ public class UserSession : MonoBehaviour
 {
     public static UserSession Instance { get; private set; }
     public UserData userData;
-    public event Action OnUserDataLoaded;
+    private event Action OnUserDataLoaded;
 
     private FirebaseFirestore db;
     private string uid;
 
+    private List<Action> subscribers = new List<Action>();
+
+    public void Subscribe(Action action)
+    {
+        OnUserDataLoaded += action;
+        subscribers.Add(action);
+    }
+    public void UnsubscribeAll()
+    {
+        foreach (var s in subscribers)
+            OnUserDataLoaded -= s;
+
+        subscribers.Clear();
+    }
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -52,9 +66,13 @@ public class UserSession : MonoBehaviour
 
         userData = UserData.FromDictionary(fakeData);
         Debug.Log("🧪 Đang sử dụng dữ liệu giả: " + userData.username);
+        StartCoroutineFetchData();
+    }
+    
+    public void StartCoroutineFetchData()
+    {
         StartCoroutine(fetchdt());
     }
-
     IEnumerator fetchdt()
     {
         yield return new WaitForSeconds(1f);
