@@ -25,33 +25,14 @@ public class UIHealthBarBillboard : MonoBehaviour
             Debug.LogWarning("UIHealthBarBillboard: 'fillImage' is not assigned! Health bar visualization will not function correctly.", this);
         }
     }
-    private void Start()
-    {
-        Vector3 cameraPosition = mainCamera.transform.position;
-        Vector3 healthBarPosition = transform.position;
 
-        lookDirection = new Vector3(
-            cameraPosition.x - healthBarPosition.x,
-            0f,
-            cameraPosition.z - healthBarPosition.z
-        ).normalized;
-    }
-    void LateUpdate()
-    {
-        if (mainCamera != null)
-        {
-            if (lookDirection != Vector3.zero)
-            {
-                transform.rotation = Quaternion.LookRotation(lookDirection);
-            }
-        }
-    }
 
 
     public void UpdateHealth(float newCurrentHealth, float newMaxHealth)
     {
         currentHealth = newCurrentHealth;
         maxHealth = newMaxHealth;
+        
 
         float healthRatio = Mathf.Clamp01(currentHealth / maxHealth);
 
@@ -60,6 +41,6 @@ public class UIHealthBarBillboard : MonoBehaviour
             fillImage.fillAmount = healthRatio;
         }
 
-        gameObject.SetActive(currentHealth >= 0 && currentHealth <= maxHealth);
+        gameObject.SetActive(currentHealth >= 0 );
     }
 }

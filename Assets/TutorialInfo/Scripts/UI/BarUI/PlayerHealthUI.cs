@@ -51,6 +51,9 @@ public class PlayerHealthUI : MonoBehaviour
             healthBarUIBillboard.UpdateHealth(currentHealth, maxHealth);
         }
 
+        if(currentHealth>maxHealth) 
+            currentHealth = maxHealth;
+
         if (photonView.IsMine && IsDead)
         {
             Debug.Log($"{gameObject.name} died.");

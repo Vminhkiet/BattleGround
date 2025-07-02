@@ -64,8 +64,10 @@ public class GameManager : MonoBehaviourPunCallbacks
         }
 
         playerInitializer.SetPlayerPrefabPath(linkPlayer);
-        playerInitializer.SetPlayerSpawns(playerSpawns);
-
+        if(PhotonNetwork.IsMasterClient)
+            playerInitializer.SetPlayerSpawns(playerSpawns);
+        else
+            playerInitializer.SetPlayerSpawns(enemySpawnPoints);
         if (PhotonNetwork.IsConnectedAndReady && PhotonNetwork.InRoom && !hasSpawnedLocalPlayer)
         {
             Debug.Log("GameManager.Awake(): Photon already connected and in room. Spawning local player.");

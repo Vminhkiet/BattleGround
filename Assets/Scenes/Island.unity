@@ -528,7 +528,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &304235427
 Transform:
   m_ObjectHideFlags: 0
@@ -538,7 +538,7 @@ Transform:
   m_GameObject: {fileID: 304235426}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 12, y: 10, z: 32}
+  m_LocalPosition: {x: 120.7, y: 8.6, z: 73.1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -971,7 +971,7 @@ MonoBehaviour:
   sceneViewId: 3
   InstantiationId: 0
   isRuntimeInstantiated: 0
---- !u!43 &1287166750
+--- !u!43 &1258385041
 Mesh:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1257,7 +1257,7 @@ PrefabInstance:
     - target: {fileID: 6501875341009827006, guid: 7c5515cd4cc03b2479a1e9e7676a9dec,
         type: 3}
       propertyPath: m_FillAmount
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1762,12 +1762,12 @@ PrefabInstance:
         type: 3}
       propertyPath: playerSpawns.Array.data[0]
       value: 
-      objectReference: {fileID: 1408696118}
+      objectReference: {fileID: 304235427}
     - target: {fileID: 971503600283199892, guid: 0cc69417929bd6347baa6428eaeab08a,
         type: 3}
       propertyPath: enemySpawnPoints.Array.data[0]
       value: 
-      objectReference: {fileID: 304235427}
+      objectReference: {fileID: 1408696118}
     - target: {fileID: 4577804341539879719, guid: 0cc69417929bd6347baa6428eaeab08a,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -2412,17 +2412,17 @@ PrefabInstance:
     - target: {fileID: 2634201024507770399, guid: 0fa02de8b1d1efd49adcd877a74616e6,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 22.74
+      value: 74.3
       objectReference: {fileID: 0}
     - target: {fileID: 2634201024507770399, guid: 0fa02de8b1d1efd49adcd877a74616e6,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 2.9
       objectReference: {fileID: 0}
     - target: {fileID: 2634201024507770399, guid: 0fa02de8b1d1efd49adcd877a74616e6,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 67.7
+      value: 77.2
       objectReference: {fileID: 0}
     - target: {fileID: 2634201024507770399, guid: 0fa02de8b1d1efd49adcd877a74616e6,
         type: 3}
@@ -2459,6 +2459,31 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4683229756972796501, guid: 0fa02de8b1d1efd49adcd877a74616e6,
+        type: 3}
+      propertyPath: safeZoneManager
+      value: 
+      objectReference: {fileID: 4627561935703124581}
+    - target: {fileID: 5538418487399345613, guid: 0fa02de8b1d1efd49adcd877a74616e6,
+        type: 3}
+      propertyPath: sceneViewId
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7575448324366045714, guid: 0fa02de8b1d1efd49adcd877a74616e6,
+        type: 3}
+      propertyPath: m_UseWorldSpace
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7575448324366045714, guid: 0fa02de8b1d1efd49adcd877a74616e6,
+        type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7575448324366045714, guid: 0fa02de8b1d1efd49adcd877a74616e6,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
     - target: {fileID: 8936995143918075025, guid: 0fa02de8b1d1efd49adcd877a74616e6,
         type: 3}
       propertyPath: player
@@ -2469,6 +2494,11 @@ PrefabInstance:
       propertyPath: playerCamera
       value: 
       objectReference: {fileID: 939044335}
+    - target: {fileID: 8936995143918075025, guid: 0fa02de8b1d1efd49adcd877a74616e6,
+        type: 3}
+      propertyPath: safeZoneRadius
+      value: 100
+      objectReference: {fileID: 0}
     - target: {fileID: 8936995143918075025, guid: 0fa02de8b1d1efd49adcd877a74616e6,
         type: 3}
       propertyPath: emitterOuterOffset

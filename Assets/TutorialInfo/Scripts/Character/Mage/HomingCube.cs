@@ -90,8 +90,7 @@ public class HomingCube : MonoBehaviour
             }
             if (other.transform == target)
             {
-                ExplosionPooler.Instance.SpawnExplosion(transform.position);
-                ReturnToPool();
+                ExplosionPooler.Instance.SpawnExplosion(transform.position);       
                 if (other.TryGetComponent(out PlayerHealthUI targetHealth))
                 {
                     PhotonView view = targetHealth.GetComponent<PhotonView>();
@@ -107,12 +106,13 @@ public class HomingCube : MonoBehaviour
 
                     onDamageDealt.Invoke(this.damage);
                 }
+                ReturnToPool();
                 return;
             }
-            if(other.tag.Equals("Player") && !other.gameObject.Equals(caster))
+
+        /*    if(other.tag.Equals("Player") && !other.gameObject.Equals(caster))
             {
                 ExplosionPooler.Instance.SpawnExplosion(transform.position);
-                ReturnToPool();
                 if (other.TryGetComponent(out PlayerHealthUI targetHealth))
                 {
                     PhotonView view = targetHealth.GetComponent<PhotonView>();
@@ -128,8 +128,9 @@ public class HomingCube : MonoBehaviour
 
                     onDamageDealt.Invoke(this.damage);
                 }
+                ReturnToPool();
                 return;
-            }
+            }*/
     }
 
     void ReturnToPool()

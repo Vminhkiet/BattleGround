@@ -8,6 +8,7 @@ public class MageEffectAttackManager : MonoBehaviour, IEffectAttackManager
     public float targetingRange = 8f;
     public float ultiRange = 4f;
     public float attackRange = 8f;
+    public float healAmount = -500;
 
     private Transform _transform;
     private PhotonView photonView;
@@ -103,8 +104,8 @@ public class MageEffectAttackManager : MonoBehaviour, IEffectAttackManager
     private IEnumerator SpawnSkillProjectiles(Vector2 input)
     {
         if (!photonView.IsMine) yield break;
-
-        yield return new WaitForSeconds(shootDelay);
+        Heal();
+      /*  yield return new WaitForSeconds(shootDelay);
 
         int amount = 8;
         float duration = 2f;
@@ -126,8 +127,15 @@ public class MageEffectAttackManager : MonoBehaviour, IEffectAttackManager
             ObjectPooler.Instance.SpawnProjectile(spawnPosition, Quaternion.identity); 
 
             yield return new WaitForSeconds(interval);
-        }
+        }*/
     }
 
-
+    void Heal()
+    {
+        PhotonView view = GetComponent<PhotonView>();
+        if (view != null)
+        {
+            view.RPC("TakeDamageNetwork", RpcTarget.AllBuffered, healAmount);
+        }
+    }
 }
