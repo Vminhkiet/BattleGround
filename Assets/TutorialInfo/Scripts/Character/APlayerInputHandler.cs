@@ -39,6 +39,8 @@ public abstract class APlayerInputHandler : MonoBehaviour
     protected INetworkOwnership _networkOwnership;
     protected INetworkTransform _networkTransform;
     protected ResetAnimationEvent resetAnimationEvent;
+    [SerializeField] private AttackChargeSystem attackChargeSystem;
+    protected UltiChargeManager _ultiChargeManager;
 
     public event Action<float> OnMoveInputChanged;
     public event Action<bool> OnAttackStateChanged;
@@ -57,6 +59,7 @@ public abstract class APlayerInputHandler : MonoBehaviour
                             CharacterMeshRotation cRotationInstance,
                             INetworkOwnership networkOwnership,
                             INetworkTransform networkTransform,
+                            UltiChargeManager _ultiChargeManager,
                             ResetAnimationEvent resetAnimationEvent
                             )
     {
@@ -67,8 +70,10 @@ public abstract class APlayerInputHandler : MonoBehaviour
         this.cRotation = cRotationInstance;
         this._networkOwnership = networkOwnership;
         this._networkTransform = networkTransform;
+        this._ultiChargeManager = _ultiChargeManager;
         this.resetAnimationEvent = resetAnimationEvent;
 
+        this._ultiChargeManager.Init();
         this.characterSkill.Init();
         this.characterSkill.SetEffectSkill(this.effectPlayer);
         this.characterSkill.SetNetworkOwnership(this._networkOwnership);
@@ -161,9 +166,6 @@ public abstract class APlayerInputHandler : MonoBehaviour
             return;
         }
 
-        if (!playerStats.isEnergyFull())
-            return;
-
         SetUltiInputInternal(context.ReadValue<Vector2>());
         if (context.performed)
         {
@@ -172,7 +174,7 @@ public abstract class APlayerInputHandler : MonoBehaviour
         }
         else if (context.canceled)
         {
-            bool canUlti = !GetIsAttacking() && lastUltiStickMagnitude - attackThreshold > 0;
+            bool canUlti = !GetIsAttacking() && lastUltiStickMagnitude - attackThreshold > 0 && _ultiChargeManager.IsUltiFull();
 
             if (canUlti)
             {
@@ -238,7 +240,7 @@ public abstract class APlayerInputHandler : MonoBehaviour
         }
         else if (context.canceled)
         {
-            bool canNewAttack = !GetIsAttacking() && (lastRightStickMagnitude - attackThreshold >= 0) && !GetIsUlti();
+            bool canNewAttack = !GetIsAttacking() && (lastRightStickMagnitude - attackThreshold >= 0) && !GetIsUlti() && attackChargeSystem.CurrentCharges > 0;
             OnSkillPerformed(Vector2.zero);
 
             if (canNewAttack)

@@ -90,6 +90,7 @@ public class PlayerInitializer : MonoBehaviour
         CharacterMeshRotation cRotation = playerGameObject.GetComponentInChildren<CharacterMeshRotation>();
         INetworkOwnership networkOwnershipInstance = new PhotonOwnershipAdapter(playerPhotonView);
         INetworkTransform networkTransform = photonTransformAdapter;
+        UltiChargeManager _ultiChargeManager = playerGameObject.GetComponent<UltiChargeManager>();
         ResetAnimationEvent resetAnimationEvent = playerGameObject.GetComponentInChildren<ResetAnimationEvent>();
 
         IEffectPlayer effectPlayerInstance;
@@ -131,6 +132,7 @@ public class PlayerInitializer : MonoBehaviour
                     cRotation,
                     networkOwnershipInstance,
                     photonTransformAdapter,
+                    _ultiChargeManager,
                     resetAnimationEvent
                 );
                 inputHandler.enabled = true;

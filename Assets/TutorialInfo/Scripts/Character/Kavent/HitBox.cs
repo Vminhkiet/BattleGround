@@ -86,6 +86,11 @@ public class HitBox : MonoBehaviour
             {
                 view.RPC("TakeDamageNetwork", RpcTarget.AllBuffered, dmg);
             }
+            UltiChargeManager ultiCharge = caster.GetComponent<UltiChargeManager>();
+            if (ultiCharge != null)
+            {
+                ultiCharge.AddUltiPoint(dmg);
+            }
             lastDamageTime[other.gameObject] = currentTime;
 
             onDamageDealt.Invoke(dmg);

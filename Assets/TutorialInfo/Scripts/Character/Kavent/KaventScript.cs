@@ -5,6 +5,7 @@ using UnityEngine;
 public class KaventScript : MonoBehaviour, ICharacterSkill
 {
     private APlayerInputHandler InputHandler { get; set; }
+    [SerializeField] private AttackChargeSystem _attackChargeSystem;
     public GameObject skillIndicatorPrefab;
     public GameObject colliderSlash;
     private GameObject activeIndicator;
@@ -31,6 +32,7 @@ public class KaventScript : MonoBehaviour, ICharacterSkill
     {
         int atkPhase = InputHandler.GetAttackPhase();
         colliderSlash.GetComponent<HitBox>().SetHitBoxActive(true);
+        _attackChargeSystem.ConsumeCharge();
         effectPlayer?.PlayNormalAttackEffect(1, inputright);
         StartCoroutine(DisableSlashColliderAfterDelay(2f));
         
