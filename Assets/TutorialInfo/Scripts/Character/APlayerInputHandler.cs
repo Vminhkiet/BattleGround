@@ -182,6 +182,7 @@ public abstract class APlayerInputHandler : MonoBehaviour
 
                 if (characterSkill != null)
                     characterSkill.UseSkill(lastValidUltiStickInput);
+                _ultiChargeManager.ResetUlti();
             }
 
             ResetInputUlti();
