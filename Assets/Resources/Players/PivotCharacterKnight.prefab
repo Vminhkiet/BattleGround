@@ -1924,13 +1924,14 @@ GameObject:
   - component: {fileID: 2438733223599693456}
   - component: {fileID: 1893797973189020080}
   - component: {fileID: 7172137753889018828}
+  - component: {fileID: 8284784980917321468}
   m_Layer: 8
   m_Name: PivotCharacterKnight
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &4788097602915436110
 Transform:
   m_ObjectHideFlags: 0
@@ -2199,6 +2200,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   predictSlash: {fileID: 1087205240683600403}
+--- !u!114 &8284784980917321468
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5889981222048973956}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b7d927506a278bb43ab6fb6c067041dc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerSpawns: []
 --- !u!1 &6000342834473979793
 GameObject:
   m_ObjectHideFlags: 0
