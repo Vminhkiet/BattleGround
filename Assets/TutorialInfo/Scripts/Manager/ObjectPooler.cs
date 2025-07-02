@@ -57,9 +57,9 @@ public class ObjectPooler : MonoBehaviourPun
         photonView.RPC("RPC_SpawnProjectile", RpcTarget.All, position, rotation);
     }
 
-    public void SpawnProjectileWithTarget(Vector3 position, Quaternion rotation, int targetViewID, Transform playerTransform)
+    public void SpawnProjectileWithTarget(Vector3 position, Quaternion rotation, int targetViewID)
     {
-        photonView.RPC("RPC_SpawnProjectileWithTarget", RpcTarget.All, position, rotation, targetViewID, playerTransform);
+        photonView.RPC("RPC_SpawnProjectileWithTarget", RpcTarget.All, position, rotation, targetViewID);
     }
 
     [PunRPC]
@@ -72,14 +72,13 @@ public class ObjectPooler : MonoBehaviourPun
     }
 
     [PunRPC]
-    void RPC_SpawnProjectileWithTarget(Vector3 position, Quaternion rotation, int targetViewID,Transform playerTransform)
+    void RPC_SpawnProjectileWithTarget(Vector3 position, Quaternion rotation, int targetViewID)
     {
         GameObject obj = GetCube();
         obj.transform.position = position;
         obj.transform.rotation = rotation;
 
         HomingCube hc = obj.GetComponent<HomingCube>();
-        hc.player = playerTransform;
 
         if (targetViewID != -1)
         {

@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -30,7 +30,7 @@ public class CharacterShopUI : MonoBehaviour
     void Start()
     {
         AddShopEvents();
-        GenerateShopItemUI();
+        UserSession.Instance.OnUserDataLoaded += GenerateShopItemUI;
     }
 
     void GenerateShopItemUI()
@@ -57,18 +57,23 @@ public class CharacterShopUI : MonoBehaviour
             uiItem.SetCharacterPrice(character.price);
             uiItem.SetCharacterSpeed(character.speed);
 
-            if (character.isPurchased)
+            if (UserSession.Instance.userData.charactersOwned.Contains(character.name))
             {
                 uiItem.SetCharacterAsPurchase();
                 uiItem.OnItemSelect(i, character.name, OnItemSelected);
+
+                if (UserSession.Instance.userData.characterSelected == character.name)
+                {
+                    uiItem.SelectItem(); 
+                }
             }
             else
             {
                 uiItem.SetCharacterPrice(character.price);
-                uiItem.OnItemPurchase(i, character.price, character.type, OnItemPurchased);
+                uiItem.OnItemPurchase(i, character.price, character.type.ToString(), OnItemPurchased);
             }
             if ((i & 1) == 0)
-                ShopItemsContainer.GetComponent<RectTransform>().sizeDelta = Vector2.up * (itemHeight + itemSpacingRow);
+                ShopItemsContainer.GetComponent<RectTransform>().sizeDelta = Vector2.up * (itemHeight + itemSpacingRow)*2;
         }
         
     }

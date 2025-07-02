@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
@@ -67,29 +67,36 @@ public class CharacterItemUI : MonoBehaviour
         itemImage.color = itemNotSelectedColor;
     }
 
-    public void OnItemPurchase(int itemIndex, int sale, CharacterType type, UnityAction<int> action)
+    public void OnItemPurchase(int itemIndex, int price, string characterName, UnityAction<int> purchaseCallback)
     {
         characterPurchaseButton.onClick.RemoveAllListeners();
-        characterPurchaseButton.onClick.AddListener(() => { 
-            int i = CalculatorController.instance.getInstance().CalCoin(-1 * sale);
-            if (i > 0)
+        characterPurchaseButton.onClick.AddListener(async () => {
+            // Gọi hàm mua từ FirestoreManager
+            bool success = await UserSession.Instance.PurchaseCharacterAsync(characterName, price);
+
+            if (success)
             {
-                SpawnController.instance.getInstance().AddCharacter(type);
                 SetCharacterAsPurchase();
-                action.Invoke(itemIndex);
+                purchaseCallback.Invoke(itemIndex);
+
+            }
+            else
+            {
+                Debug.Log("Purchase failed!");
             }
         });
-
-        itemImage.color = itemNotSelectedColor;
     }
-    public void OnItemSelect(int itemIndex, string name, UnityAction<int> action)
+
+    public void OnItemSelect(int itemIndex, string characterName, UnityAction<int> selectCallback)
     {
         itemButton.interactable = true;
         itemButton.onClick.RemoveAllListeners();
-        itemButton.onClick.AddListener(() => 
+        itemButton.onClick.AddListener(async () =>
         {
-            SpawnController.instance.getInstance().SpawnPlayer(name);
-            action.Invoke(itemIndex);
+            await UserSession.Instance.SelectCharacterAsync(characterName);
+
+            SpawnController.instance.getInstance().SpawnPlayer(characterName);
+            selectCallback.Invoke(itemIndex);
         });
 
         itemImage.color = itemNotSelectedColor;

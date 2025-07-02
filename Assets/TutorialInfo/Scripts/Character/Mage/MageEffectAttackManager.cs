@@ -46,7 +46,7 @@ public class MageEffectAttackManager : MonoBehaviour, IEffectAttackManager
         Vector3 spawnPos = new Vector3(_transform.position.x, _transform.position.y + 0.5f, _transform.position.z);
         Quaternion rotation = _transform.rotation;
 
-        ObjectPooler.Instance.SpawnProjectileWithTarget(spawnPos, rotation, target ? target.GetComponent<PhotonView>()?.ViewID ?? -1 : -1,transform);
+        ObjectPooler.Instance.SpawnProjectileWithTarget(spawnPos, rotation, target ? target.GetComponent<PhotonView>()?.ViewID ?? -1 : -1);
     }
 
     Transform FindClosestEnemy()
