@@ -15,6 +15,7 @@ public class FetchInfoToUI : MonoBehaviour
 
     private void UpdateUI()
     {
+        Debug.Log("aaaa");
         string username = UserSession.Instance.userData.username;
         int money = UserSession.Instance.userData.money;
 
