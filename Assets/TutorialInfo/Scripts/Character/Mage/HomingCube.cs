@@ -14,6 +14,7 @@ public class HomingCube : MonoBehaviour
     private float lifeTimer;
     private float delayTimer;
     public bool isHoming = true;
+    public Transform player;
 
     public void SetTarget(Transform enemy)
     {
@@ -64,12 +65,12 @@ public class HomingCube : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-
-        if (other.CompareTag("Enemy") || other.CompareTag("DecorationObject") || other.CompareTag("Tile"))
-        {
-            ExplosionPooler.Instance.SpawnExplosion(transform.position);
-            ReturnToPool();
-        }
+        if(other.CompareTag("Player")&&other.transform!=player)
+            if ( other.CompareTag("DecorationObject") || other.CompareTag("Tile"))
+            {
+                ExplosionPooler.Instance.SpawnExplosion(transform.position);
+                ReturnToPool();
+            }
     }
 
     void ReturnToPool()

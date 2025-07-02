@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: InfoPlayer
   m_EditorClassIdentifier: 
   playerName: MinhKiet
-  Score: 3000
+  Score: 2998
   Money: 60000
   characterType: 3

@@ -35,7 +35,7 @@ public class GameManager : MonoBehaviourPunCallbacks
     private bool hasSpawnedLocalPlayer = false;
     private bool hasMasterClientSpawnedEnemies = false;
 
-    private void Awake()
+    private void Start()
     {
         if (playerInitializer == null)
         {
@@ -48,15 +48,8 @@ public class GameManager : MonoBehaviourPunCallbacks
             }
         }
 
-        InfoPlayerDatabase info = Resources.Load<InfoPlayerDatabase>(playerInfo);
         CharacterPrefabCollection collection = Resources.Load<CharacterPrefabCollection>(linkCharacter);
-        if (info == null || collection == null)
-        {
-            LeaveRoomAndGoToLobby();
-            return;
-        }
-
-        linkPlayer = collection.GetPrefabPath(info.getCharacterType());
+        linkPlayer = collection.GetPrefabPath(UserSession.Instance.userData.characterSelected);
 
         if (string.IsNullOrEmpty(linkPlayer))
         {

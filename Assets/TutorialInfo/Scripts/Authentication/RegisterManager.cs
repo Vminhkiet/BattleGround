@@ -92,22 +92,34 @@ public class RegisterManager : MonoBehaviour
 
     private void StoreUserData(string uid, string email, string username)
     {
-        // Save user info in "users"
         Dictionary<string, object> userData = new Dictionary<string, object>
-        {
-            { "email", email },
-            { "username", username },
-            { "createdAt", Timestamp.GetCurrentTimestamp() }
-        };
+    {
+        { "email", email },
+        { "username", username },
+        { "createdAt", Timestamp.GetCurrentTimestamp() },
+        { "money", 0 },
+        { "score", 0 },
+        { "charactersOwned", new List<string> { "KAVENT" } },
+        { "spellsOwned", new List<string> { "FLICKER" } },
+        { "characterSelected", "KAVENT" },
+        { "spellSelected", "FLICKER" }
+    };
 
-        db.Collection("users").Document(uid).SetAsync(userData);
-
-        // Save username mapping
-        db.Collection("usernames").Document(username).SetAsync(new Dictionary<string, object>
-        {
-            { "uid", uid }
+        db.Collection("users").Document(uid).SetAsync(userData).ContinueWithOnMainThread(task => {
+            if (task.IsCompleted)
+            {
+                Debug.Log("Full user data saved.");
+            }
+            else
+            {
+                Debug.LogError("Failed to save full user data: " + task.Exception);
+            }
         });
 
-        Debug.Log("User data saved to Firestore.");
+        // Save username mapping (simple lookup collection)
+        db.Collection("usernames").Document(username).SetAsync(new Dictionary<string, object>
+    {
+        { "uid", uid }
+    });
     }
 }

@@ -82,13 +82,13 @@ public class CharacterItemUI : MonoBehaviour
 
         itemImage.color = itemNotSelectedColor;
     }
-    public void OnItemSelect(int itemIndex, CharacterType type, UnityAction<int> action)
+    public void OnItemSelect(int itemIndex, string name, UnityAction<int> action)
     {
         itemButton.interactable = true;
         itemButton.onClick.RemoveAllListeners();
         itemButton.onClick.AddListener(() => 
         {
-            SpawnController.instance.getInstance().SpawnPlayer(type);
+            SpawnController.instance.getInstance().SpawnPlayer(name);
             action.Invoke(itemIndex);
         });
 

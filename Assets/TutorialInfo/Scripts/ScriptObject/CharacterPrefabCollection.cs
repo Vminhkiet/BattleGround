@@ -1,5 +1,6 @@
-﻿using UnityEngine;
+﻿using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 [CreateAssetMenu(fileName = "NewCharacterPrefabCollection", menuName = "Game Data/Character Prefab Collection")]
 public class CharacterPrefabCollection : ScriptableObject
@@ -43,8 +44,9 @@ public class CharacterPrefabCollection : ScriptableObject
         }
     }
 
-    public string GetPrefabPath(CharacterType type)
+    public string GetPrefabPath(string characterName)
     {
+        CharacterType type=(CharacterType)Enum.Parse(typeof(CharacterType), characterName); 
         if (GetPrefabPathsDictionary().ContainsKey(type))
         {
             return GetPrefabPathsDictionary()[type];

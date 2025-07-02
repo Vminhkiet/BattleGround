@@ -60,7 +60,7 @@ public class CharacterShopUI : MonoBehaviour
             if (character.isPurchased)
             {
                 uiItem.SetCharacterAsPurchase();
-                uiItem.OnItemSelect(i, character.type, OnItemSelected);
+                uiItem.OnItemSelect(i, character.name, OnItemSelected);
             }
             else
             {

@@ -1414,6 +1414,59 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 469749149}
   m_CullTransparentMesh: 1
+--- !u!1 &476114780
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 476114783}
+  - component: {fileID: 476114782}
+  m_Layer: 0
+  m_Name: UserInfoManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &476114782
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 476114780}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 47003ef0c267f914ab6447b8ad92000f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  userData:
+    username: 
+    email: 
+    money: 0
+    score: 0
+    charactersOwned: []
+    spellsOwned: []
+    characterSelected: 
+    spellSelected: 
+--- !u!4 &476114783
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 476114780}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 13.569611, y: 23.678707, z: 43.343014}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &483224352
 GameObject:
   m_ObjectHideFlags: 0
@@ -2383,7 +2436,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &785706488
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2615,6 +2668,7 @@ GameObject:
   - component: {fileID: 810679360}
   - component: {fileID: 810679359}
   - component: {fileID: 810679361}
+  - component: {fileID: 810679362}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -2669,6 +2723,20 @@ MonoBehaviour:
   playButton: {fileID: 1135138612}
   cancelMatchmakingButton: {fileID: 1389714564}
   loadingPanel: {fileID: 785706487}
+--- !u!114 &810679362
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 810679357}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 14926bf7a7b9a78408fe99ab771ad77c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  usernameText: {fileID: 1419960497}
+  moneyText: {fileID: 121135384}
 --- !u!1 &831074071
 GameObject:
   m_ObjectHideFlags: 0
@@ -7341,3 +7409,4 @@ SceneRoots:
   - {fileID: 1204969149}
   - {fileID: 810679360}
   - {fileID: 600547145}
+  - {fileID: 476114783}

@@ -56,6 +56,9 @@ public class LoginManager : MonoBehaviour
 
             FirebaseUser user = task.Result.User;
             Debug.Log("User logged in: " + user.UserId);
+
+            PlayerPrefs.SetString("currentUID", user.UserId);
+
             feedbackText.text = "Login successful!";
             SceneManager.LoadScene("Main");
         });

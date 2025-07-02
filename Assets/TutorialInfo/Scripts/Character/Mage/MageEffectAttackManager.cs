@@ -39,35 +39,36 @@ public class MageEffectAttackManager : MonoBehaviour, IEffectAttackManager
 
     private void FireProjectile()
     {
-        if (!photonView.IsMine) return; // chỉ máy chủ động mới gọi
+        if (!photonView.IsMine) return; 
 
         Transform target = FindClosestEnemy();
 
         Vector3 spawnPos = new Vector3(_transform.position.x, _transform.position.y + 0.5f, _transform.position.z);
         Quaternion rotation = _transform.rotation;
 
-        ObjectPooler.Instance.SpawnProjectileWithTarget(spawnPos, rotation, target ? target.GetComponent<PhotonView>()?.ViewID ?? -1 : -1);
+        ObjectPooler.Instance.SpawnProjectileWithTarget(spawnPos, rotation, target ? target.GetComponent<PhotonView>()?.ViewID ?? -1 : -1,transform);
     }
-
-
 
     Transform FindClosestEnemy()
     {
-        GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
+        GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
         float closestDistance = Mathf.Infinity;
-        Transform closestEnemy = null;
+        Transform closestPlayer = null;
 
-        foreach (GameObject enemy in enemies)
+        foreach (GameObject player in players)
         {
-            float dist = Vector3.Distance(_transform.position, enemy.transform.position);
+            if (player.transform == transform) continue;
+
+            float dist = Vector3.Distance(_transform.position, player.transform.position);
             if (dist < closestDistance && dist <= attackRange)
             {
                 closestDistance = dist;
-                closestEnemy = enemy.transform;
+                closestPlayer = player.transform;
             }
         }
-        return closestEnemy;
+        return closestPlayer;
     }
+
 
     public void PlaySpell(Vector2 direction)
     {
