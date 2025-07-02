@@ -21,7 +21,7 @@ public class SafeZoneVisualizer : MonoBehaviour
 
     private void Update()
     {
-        radius=safeZoneManager.safeZoneRadius;
+        radius = Mathf.Lerp(radius, safeZoneManager.safeZoneRadius, Time.deltaTime * 3f);
         DrawCircle();
     }
 
@@ -34,7 +34,8 @@ public class SafeZoneVisualizer : MonoBehaviour
             float angle = ((float)i / segments) * Mathf.PI * 2f;
             float x = Mathf.Cos(angle) * radius;
             float z = Mathf.Sin(angle) * radius;
-            points[i] = new Vector3(transform.position.x + x, lineHeight, transform.position.z + z);
+            Vector3 center = safeZoneManager.safeZoneCenter != null ? safeZoneManager.safeZoneCenter.position : transform.position;
+            points[i] = new Vector3(center.x + x, lineHeight, center.z + z);
         }
 
         lineRenderer.SetPositions(points);
