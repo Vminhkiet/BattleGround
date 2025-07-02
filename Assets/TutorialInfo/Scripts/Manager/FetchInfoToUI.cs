@@ -10,7 +10,7 @@ public class FetchInfoToUI : MonoBehaviour
 
     private void Start()
     {
-        UserSession.Instance.OnUserDataLoaded += UpdateUI;
+        UserSession.Instance.Subscribe(UpdateUI);
     }
 
     private void UpdateUI()
@@ -21,4 +21,5 @@ public class FetchInfoToUI : MonoBehaviour
         usernameText.text = username;
         moneyText.text = money.ToString();
     }
+
 }

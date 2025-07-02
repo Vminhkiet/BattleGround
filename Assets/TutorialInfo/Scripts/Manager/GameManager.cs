@@ -35,6 +35,12 @@ public class GameManager : MonoBehaviourPunCallbacks
     private bool hasSpawnedLocalPlayer = false;
     private bool hasMasterClientSpawnedEnemies = false;
 
+    public static GameManager instance;
+    private void Awake()
+    {
+        if (instance == null)
+            instance = this;
+    }
     private void Start()
     {
         if (playerInitializer == null)
@@ -163,11 +169,20 @@ public class GameManager : MonoBehaviourPunCallbacks
     public void LeaveMatch()
     {
         Debug.Log("Đang yêu cầu PhotonNetwork rời phòng...");
-        PhotonNetwork.LeaveRoom();
+        // Chỉ gọi LeaveRoom nếu đang trong phòng
+        if (PhotonNetwork.InRoom)
+        {
+            PhotonNetwork.LeaveRoom();
+        }
+        else
+        {
+            Debug.LogWarning("Không thể rời phòng: Không ở trong phòng. Đang chuyển cảnh về Lobby.");
+            LeaveRoomAndGoToLobby(); // Chuyển thẳng về lobby nếu không trong phòng
+        }
     }
 
     private void LeaveRoomAndGoToLobby()
     {
-        SceneManager.LoadScene(lobbySceneName);
+        SceneManager.LoadScene(lobbySceneName); // lobbySceneName của bạn là "Main"
     }
 }

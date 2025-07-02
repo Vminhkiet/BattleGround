@@ -30,7 +30,8 @@ public class CharacterShopUI : MonoBehaviour
     void Start()
     {
         AddShopEvents();
-        UserSession.Instance.OnUserDataLoaded += GenerateShopItemUI;
+
+        UserSession.Instance.Subscribe(GenerateShopItemUI);
     }
 
     void GenerateShopItemUI()
