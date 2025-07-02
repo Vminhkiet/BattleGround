@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 7314835944807278702}
   - component: {fileID: 4882338960299993165}
   - component: {fileID: 4700567385577461206}
-  m_Layer: 5
+  m_Layer: 8
   m_Name: ChargeFill
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -85,7 +85,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7305133133094019553}
-  m_Layer: 5
+  m_Layer: 8
   m_Name: ChargeSlot1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -122,7 +122,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7758969007544525354}
-  m_Layer: 5
+  m_Layer: 8
   m_Name: HealthBar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -159,7 +159,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6971154074992616990}
-  m_Layer: 5
+  m_Layer: 8
   m_Name: ChargeSlot3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -198,7 +198,7 @@ GameObject:
   - component: {fileID: 5663321139474636488}
   - component: {fileID: 1986863133425361027}
   - component: {fileID: 3111583907188103302}
-  m_Layer: 5
+  m_Layer: 8
   m_Name: HealthBarBackground
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -274,7 +274,7 @@ GameObject:
   - component: {fileID: 8500327251325569678}
   - component: {fileID: 2297092734598018424}
   - component: {fileID: 3488366348620053481}
-  m_Layer: 5
+  m_Layer: 8
   m_Name: ChargeFill
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -350,7 +350,7 @@ GameObject:
   - component: {fileID: 6171710346040242714}
   - component: {fileID: 3441379178259978187}
   - component: {fileID: 6272838681306941876}
-  m_Layer: 5
+  m_Layer: 8
   m_Name: ChargeFill
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -426,7 +426,7 @@ GameObject:
   - component: {fileID: 7535014480605611209}
   - component: {fileID: 1289820839052015974}
   - component: {fileID: 5999011798450206073}
-  m_Layer: 5
+  m_Layer: 8
   m_Name: ChargeBG
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -502,7 +502,7 @@ GameObject:
   - component: {fileID: 47501893742408774}
   - component: {fileID: 7646972539789934857}
   - component: {fileID: 2809581541313151357}
-  m_Layer: 5
+  m_Layer: 8
   m_Name: ChargeBG
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -576,7 +576,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7232494379777661734}
-  m_Layer: 5
+  m_Layer: 8
   m_Name: ChargeSlot2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -615,7 +615,8 @@ GameObject:
   - component: {fileID: 6716325428270030524}
   - component: {fileID: 6102401659865090829}
   - component: {fileID: 716593506672885616}
-  m_Layer: 5
+  - component: {fileID: 1683002471406513260}
+  m_Layer: 8
   m_Name: AttackBar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -682,11 +683,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f887a6fedd7d1224bb20ead32c0e95ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  chargeSlots: []
+  chargeSlots:
+  - background: {fileID: 5999011798450206073}
+    fill: {fileID: 3488366348620053481}
+  - background: {fileID: 2809581541313151357}
+    fill: {fileID: 6272838681306941876}
+  - background: {fileID: 5504205685667473135}
+    fill: {fileID: 4700567385577461206}
   maxCharges: 3
   rechargeTimePerCharge: 2
-  fullChargeColor: {r: 0, g: 1, b: 1, a: 1}
+  fullChargeColor: {r: 1, g: 0.61485106, b: 0, a: 1}
   emptyChargeColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+--- !u!114 &1683002471406513260
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4522345567475463446}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba8878d53ba2a47408cfc858e7faec36, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  attackBarToHide: {fileID: 4522345567475463446}
 --- !u!1 &6240727833518916807
 GameObject:
   m_ObjectHideFlags: 0
@@ -698,7 +718,7 @@ GameObject:
   - component: {fileID: 6746652145819045499}
   - component: {fileID: 379224730225699223}
   - component: {fileID: 5504205685667473135}
-  m_Layer: 5
+  m_Layer: 8
   m_Name: ChargeBG
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -774,7 +794,7 @@ GameObject:
   - component: {fileID: 882607689126011403}
   - component: {fileID: 4919911639905252391}
   - component: {fileID: 3923969403612356472}
-  m_Layer: 5
+  m_Layer: 8
   m_Name: HealthBarFill
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -852,7 +872,7 @@ GameObject:
   - component: {fileID: 828592284234666702}
   - component: {fileID: 4607131865411890354}
   - component: {fileID: 8904814511359342950}
-  m_Layer: 5
+  m_Layer: 8
   m_Name: BarCanvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -866,7 +886,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8905493759854225050}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.01, y: 0.01, z: 0.01}
   m_ConstrainProportionsScale: 0
@@ -877,7 +897,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 3.8}
+  m_AnchoredPosition: {x: 0, y: 3.7999878}
   m_SizeDelta: {x: 200, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!223 &5604674062704524271

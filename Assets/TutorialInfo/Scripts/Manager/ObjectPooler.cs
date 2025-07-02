@@ -27,6 +27,29 @@ public class ObjectPooler : MonoBehaviourPun
             cubePool.Enqueue(obj);
         }
     }
+    public void SetDamageForcubePool(float damage)
+    {
+        foreach (GameObject obj in cubePool)
+        {
+            HomingCube hc = obj.GetComponent<HomingCube>();
+            if (hc != null)
+            {
+                hc.SetPlayerStatsDamage(damage);
+            }
+        }
+    }
+
+    public void SetCasterForcubePool(GameObject caster)
+    {
+        foreach (GameObject obj in cubePool)
+        {
+            HomingCube hc = obj.GetComponent<HomingCube>();
+            if (hc != null)
+            {
+                hc.SetCaster(caster);
+            }
+        }
+    }
 
     public GameObject GetCube()
     {

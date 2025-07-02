@@ -73,7 +73,13 @@ public class SafeZoneManager : MonoBehaviour, IPunObservable
     {
         if (player == null || safeZoneCenter == null) return;
 
-        float distance = Vector3.Distance(player.position, safeZoneCenter.position);
+        Vector3 a = player.position;
+        Vector3 b = safeZoneCenter.position;
+
+        float dx = a.x - b.x;
+        float dz = a.z - b.z;
+
+        float distance = Mathf.Sqrt(dx * dx + dz * dz);
         bool inside = distance < safeZoneRadius;
         bool edgeVisible = IsSafeZoneEdgeInView();
 
@@ -221,7 +227,6 @@ public class SafeZoneManager : MonoBehaviour, IPunObservable
     }
 
 
-
     void OnDrawGizmos()
     {
         if (safeZoneCenter != null)
@@ -233,7 +238,13 @@ public class SafeZoneManager : MonoBehaviour, IPunObservable
 
     void HandleSelfDamageIfOutside()
     {
-        float distance = Vector3.Distance(player.position, safeZoneCenter.position);
+        Vector3 a = player.position;
+        Vector3 b = safeZoneCenter.position;
+
+        float dx = a.x - b.x;
+        float dz = a.z - b.z;
+
+        float distance = Mathf.Sqrt(dx * dx + dz * dz);
         bool outside = distance > safeZoneRadius;
 
         if (!outside)
