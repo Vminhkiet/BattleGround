@@ -47,6 +47,12 @@ MonoBehaviour:
   - RPC_StopAllEffects
   - RPC_UseSkill
   - TakeDamageNetwork
+  - RPC_SpawnProjectile
+  - RPC_DespawnProjectile
+  - RPC_SpawnProjectileWithTarget
+  - RPC_SyncPosRot
+  - RPC_SpawnExplosion
+  - RPC_DespawnProjectileAt
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

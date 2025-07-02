@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Photon.Pun;
+using System.Collections;
 using UnityEngine;
 
 public class MageEffectAttackManager : MonoBehaviour, IEffectAttackManager
@@ -9,10 +10,12 @@ public class MageEffectAttackManager : MonoBehaviour, IEffectAttackManager
     public float attackRange = 8f;
 
     private Transform _transform;
+    private PhotonView photonView;
 
     private void Start()
     {
         _transform = GetComponentInChildren<MageScript>().gameObject.transform;
+        photonView=GetComponent<PhotonView>();
     }
     public void PlayNormalAttack1()
     {
@@ -36,15 +39,16 @@ public class MageEffectAttackManager : MonoBehaviour, IEffectAttackManager
 
     private void FireProjectile()
     {
+        if (!photonView.IsMine) return; // chỉ máy chủ động mới gọi
+
         Transform target = FindClosestEnemy();
 
-        GameObject cube = ObjectPooler.Instance.GetCube();
-        cube.transform.position = new Vector3(_transform.position.x, _transform.position.y + 0.5f, _transform.position.z);
-        cube.transform.rotation = _transform.rotation;
+        Vector3 spawnPos = new Vector3(_transform.position.x, _transform.position.y + 0.5f, _transform.position.z);
+        Quaternion rotation = _transform.rotation;
 
-        HomingCube hc = cube.GetComponent<HomingCube>();
-        hc.SetTarget(target);
+        ObjectPooler.Instance.SpawnProjectileWithTarget(spawnPos, rotation, target ? target.GetComponent<PhotonView>()?.ViewID ?? -1 : -1);
     }
+
 
 
     Transform FindClosestEnemy()
@@ -97,6 +101,8 @@ public class MageEffectAttackManager : MonoBehaviour, IEffectAttackManager
 
     private IEnumerator SpawnSkillProjectiles(Vector2 input)
     {
+        if (!photonView.IsMine) yield break;
+
         yield return new WaitForSeconds(shootDelay);
 
         int amount = 8;
@@ -116,17 +122,11 @@ public class MageEffectAttackManager : MonoBehaviour, IEffectAttackManager
             );
 
             Vector3 spawnPosition = inputPosition + randomOffset;
-
-            GameObject cube = ObjectPooler.Instance.GetCube();
-            cube.transform.position = spawnPosition;
-            cube.transform.rotation = Quaternion.identity;
-
-            HomingCube hc = cube.GetComponent<HomingCube>();
-            hc.isHoming = false;
-            hc.SetTarget(null);
+            ObjectPooler.Instance.SpawnProjectile(spawnPosition, Quaternion.identity); 
 
             yield return new WaitForSeconds(interval);
         }
     }
+
 
 }

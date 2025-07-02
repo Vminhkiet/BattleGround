@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Photon.Pun;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -14,7 +15,6 @@ public class ExplosionPooler : MonoBehaviour
 
     private void Awake()
     {
-        // Singleton setup
         if (Instance == null)
         {
             Instance = this;
@@ -24,8 +24,6 @@ public class ExplosionPooler : MonoBehaviour
             Destroy(gameObject);
             return;
         }
-
-        // Initialize pool
         for (int i = 0; i < poolSize; i++)
         {
             GameObject obj = Instantiate(explosionPrefab);
@@ -55,5 +53,25 @@ public class ExplosionPooler : MonoBehaviour
     {
         obj.SetActive(false);
         pool.Enqueue(obj);
+    }
+
+    public void SpawnExplosion(Vector3 position)
+    {
+        PhotonView photonView = GetComponent<PhotonView>();
+        photonView.RPC("RPC_SpawnExplosion", RpcTarget.All, position);
+    }
+
+    [PunRPC]
+    void RPC_SpawnExplosion(Vector3 position)
+    {
+        GameObject explosion = Get();
+        explosion.transform.position = position;
+
+        ParticleSystem[] ps = explosion.GetComponentsInChildren<ParticleSystem>();
+        foreach (var p in ps)
+        {
+            p.Clear();
+            p.Play();
+        }
     }
 }

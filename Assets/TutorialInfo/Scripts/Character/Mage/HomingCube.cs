@@ -1,4 +1,5 @@
 ﻿using DG.Tweening;
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -27,6 +28,7 @@ public class HomingCube : MonoBehaviour
 
     void Update()
     {
+
         lifeTimer -= Time.deltaTime;
 
         if (lifeTimer <= 0f)
@@ -62,24 +64,22 @@ public class HomingCube : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Enemy")|| other.CompareTag("DecorationObject") || other.CompareTag("Tile"))
-        {
-            GameObject explosion = ExplosionPooler.Instance.Get();
-            ParticleSystem[] particleSystems = explosion.GetComponentsInChildren<ParticleSystem>();
 
-            explosion.transform.position = transform.position;
-            foreach (var ps in particleSystems)
-            {
-                ps.Clear();
-                ps.Play();
-            }
+        if (other.CompareTag("Enemy") || other.CompareTag("DecorationObject") || other.CompareTag("Tile"))
+        {
+            ExplosionPooler.Instance.SpawnExplosion(transform.position);
             ReturnToPool();
-        } 
+        }
     }
 
     void ReturnToPool()
     {
         isHoming = true;
-        ObjectPooler.Instance.ReturnCube(gameObject);
+        if(ObjectPooler.Instance==null)
+        {
+            Debug.Log("pool null");
+        }    
+        else
+            ObjectPooler.Instance.DespawnProjectile(gameObject);
     }
 }
