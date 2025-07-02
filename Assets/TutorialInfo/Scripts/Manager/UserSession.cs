@@ -45,7 +45,7 @@ public class UserSession : MonoBehaviour
          { "score", 999 },
          { "charactersOwned", new List<object> { "KAVENT", "ALIA" } },
          { "spellsOwned", new List<object> { "fireball", "heal", "dash" } },
-         { "characterSelected", "KAVENT" },
+         { "characterSelected", "ALIA" },
          { "spellSelected", "dash" },
          { "createdAt", Timestamp.GetCurrentTimestamp() }
      };

@@ -15,9 +15,13 @@ public class MageScript : MonoBehaviour, ICharacterSkill
     private Vector3 currentTargetPosition;
     public float targetingRange = 8f;
 
+    [SerializeField] private AttackChargeSystem _attackChargeSystem;
     private INetworkOwnership _owner;
     private IEffectPlayer effectPlayer;
-    public void Init() { }
+    public void Init() {
+        ObjectPooler.Instance.SetDamageForcubePool(GetComponent<PlayerStats>().GetDamage());
+        ObjectPooler.Instance.SetCasterForcubePool(GetComponentInParent<APlayerInputHandler>().gameObject);
+    }
     public void SetEffectSkill(IEffectPlayer effectPlayer)
     {
         this.effectPlayer = effectPlayer;
@@ -29,6 +33,7 @@ public class MageScript : MonoBehaviour, ICharacterSkill
     public void NormalAttack(Vector2 inputright)
     {
         int attackphase = 1;
+        _attackChargeSystem.ConsumeCharge();
         effectPlayer?.PlayNormalAttackEffect(attackphase, inputright);
     }
 

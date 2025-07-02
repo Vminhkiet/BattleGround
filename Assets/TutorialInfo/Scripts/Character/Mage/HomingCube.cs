@@ -1,8 +1,10 @@
 ﻿using DG.Tweening;
 using Photon.Pun;
+using Photon.Pun.Demo.Procedural;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class HomingCube : MonoBehaviour
 {
@@ -15,14 +17,28 @@ public class HomingCube : MonoBehaviour
     private float delayTimer;
     public bool isHoming = true;
     public Transform player;
+    private GameObject caster;
 
+    public UnityEvent<float> onDamageDealt;
+
+    private float damage;
     public void SetTarget(Transform enemy)
     {
         target = enemy;
     }
+    public void SetCaster(GameObject caster)
+    {
+        this.caster = caster;
+    }
+    public void SetPlayerStatsDamage(float damage)
+    {
+        this.damage = damage;
+    }
 
     void OnEnable()
     {
+        if (onDamageDealt == null)
+            onDamageDealt = new UnityEvent<float>();
         lifeTimer = lifetime;
         delayTimer = homingDelay;
     }
@@ -54,6 +70,8 @@ public class HomingCube : MonoBehaviour
         if (target != null)
         {
             Vector3 direction = (target.position - transform.position).normalized;
+            direction.y = 0;
+            direction.Normalize();
             transform.forward = Vector3.Lerp(transform.forward, direction, Time.deltaTime * 7f);
             transform.position += transform.forward * speed * Time.deltaTime;
         }
@@ -65,11 +83,52 @@ public class HomingCube : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        if(other.CompareTag("Player")&&other.transform!=player)
             if ( other.CompareTag("DecorationObject") || other.CompareTag("Tile"))
             {
                 ExplosionPooler.Instance.SpawnExplosion(transform.position);
                 ReturnToPool();
+            }
+            if (other.transform == target)
+            {
+                ExplosionPooler.Instance.SpawnExplosion(transform.position);
+                ReturnToPool();
+                if (other.TryGetComponent(out PlayerHealthUI targetHealth))
+                {
+                    PhotonView view = targetHealth.GetComponent<PhotonView>();
+                    if (view != null)
+                    {
+                        view.RPC("TakeDamageNetwork", RpcTarget.AllBuffered, this.damage);
+                    }
+                    UltiChargeManager ultiCharge = caster.GetComponent<UltiChargeManager>();
+                    if (ultiCharge != null)
+                    {
+                        ultiCharge.AddUltiPoint(this.damage);
+                    }
+
+                    onDamageDealt.Invoke(this.damage);
+                }
+                return;
+            }
+            if(other.tag.Equals("Player") && !other.gameObject.Equals(caster))
+            {
+                ExplosionPooler.Instance.SpawnExplosion(transform.position);
+                ReturnToPool();
+                if (other.TryGetComponent(out PlayerHealthUI targetHealth))
+                {
+                    PhotonView view = targetHealth.GetComponent<PhotonView>();
+                    if (view != null)
+                    {
+                        view.RPC("TakeDamageNetwork", RpcTarget.AllBuffered, this.damage);
+                    }
+                    UltiChargeManager ultiCharge = caster.GetComponent<UltiChargeManager>();
+                    if (ultiCharge != null)
+                    {
+                        ultiCharge.AddUltiPoint(this.damage);
+                    }
+
+                    onDamageDealt.Invoke(this.damage);
+                }
+                return;
             }
     }
 
