@@ -12,6 +12,8 @@ GameObject:
   - component: {fileID: 8936995143918075025}
   - component: {fileID: 7575448324366045714}
   - component: {fileID: 4683229756972796501}
+  - component: {fileID: 6294570591540093639}
+  - component: {fileID: 5538418487399345613}
   m_Layer: 0
   m_Name: SafeZoneManager
   m_TagString: Untagged
@@ -49,13 +51,15 @@ MonoBehaviour:
   safeZoneCenter: {fileID: 2634201024507770399}
   safeZoneRadius: 41
   safeZoneDeactivateThreshold: 20
-  player: {fileID: 0}
-  playerCamera: {fileID: 0}
+  safeZoneViewOffset: 15
+  shrinkRate: 2
+  shrinkInterval: 10
+  minSafeZoneRadius: 5
   emitterPrefab: {fileID: 1217016889698361526, guid: c4d5917cc9acbbc4f9dd4e2b372d404a,
     type: 3}
   emitterCount: 9
   emitterEdgeDistance: 5
-  emitterOuterOffset: 5
+  emitterOuterOffset: 10
   visibilityLayer:
     serializedVersion: 2
     m_Bits: 0
@@ -64,6 +68,13 @@ MonoBehaviour:
   emiiterHeight: 13
   checkPoints: 5
   edgeEmitterAngleSpacing: 347
+  damagePerStage:
+  - 5
+  - 10
+  - 15
+  - 25
+  - 40
+  damageTickRate: 1
 --- !u!120 &7575448324366045714
 LineRenderer:
   serializedVersion: 2
@@ -180,7 +191,125 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ebd3b18cab3c89a44864839d159abfbd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  safeZoneCenter: {fileID: 2634201024507770399}
-  radius: 41
+  safeZoneManager: {fileID: 0}
   segments: 60
   lineHeight: 0.1
+--- !u!82 &6294570591540093639
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1178849542084066534}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 8300000, guid: 0bf387780780a9544b1a0c3243cb3748, type: 3}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 1
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+--- !u!114 &5538418487399345613
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1178849542084066534}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents:
+  - {fileID: 8936995143918075025}
+  sceneViewId: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0

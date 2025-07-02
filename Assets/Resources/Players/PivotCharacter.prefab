@@ -500,8 +500,28 @@ PrefabInstance:
         type: 3}
     - target: {fileID: 7184291568784719351, guid: 39d253bfc75450941bf3056bb4c0e706,
         type: 3}
+      propertyPath: speed
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 7184291568784719351, guid: 39d253bfc75450941bf3056bb4c0e706,
+        type: 3}
+      propertyPath: damage
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 7184291568784719351, guid: 39d253bfc75450941bf3056bb4c0e706,
+        type: 3}
       propertyPath: maxEnergy
       value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 7184291568784719351, guid: 39d253bfc75450941bf3056bb4c0e706,
+        type: 3}
+      propertyPath: maxHealth
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 7184291568784719351, guid: 39d253bfc75450941bf3056bb4c0e706,
+        type: 3}
+      propertyPath: spellCoolDown
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 7404577673177577958, guid: 39d253bfc75450941bf3056bb4c0e706,
         type: 3}

@@ -130,7 +130,7 @@ public class UserSession : MonoBehaviour
                 { "charactersOwned", FieldValue.ArrayUnion(characterId) }
             };
 
-        //    await UpdateFieldsAsync(updates);
+        //    await UpdateFieldsAsync(updates);*/
 
             // 3. Cập nhật lại dữ liệu trên local sau khi server xác nhận thành công
        
@@ -139,7 +139,7 @@ public class UserSession : MonoBehaviour
                 userData.charactersOwned.Add(characterId);
             }
 
-            Debug.Log("Successfully purchased character: " + characterId);*/
+            Debug.Log("Successfully purchased character: " + characterId);
             OnUserDataLoaded?.Invoke();
             userData.money -= price;
             return true;
@@ -206,11 +206,12 @@ public class UserSession : MonoBehaviour
 
         try
         {
-            await UpdateFieldsAsync(new Dictionary<string, object> { { "characterSelected", characterId } });
+           // await UpdateFieldsAsync(new Dictionary<string, object> { { "characterSelected", characterId } });
 
             // Cập nhật local data
             userData.characterSelected = characterId;
-            Debug.Log("Selected character: " + characterId);
+            //  Debug.Log("Selected character: " + characterId);
+            OnUserDataLoaded?.Invoke();
         }
         catch (Exception ex)
         {

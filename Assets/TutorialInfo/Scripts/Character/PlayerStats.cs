@@ -26,10 +26,10 @@ public class PlayerStats : MonoBehaviour
 
     private event Action<float> OnUltiPointChanged;
 
-    private void Awake()
+   /* private void Awake()
     {
         GetCharacter();
-    }
+    }*/
     public void TakeDamage(int damage)
     {
         maxHealth -= damage;
