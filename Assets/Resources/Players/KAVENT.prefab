@@ -440,7 +440,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b0aaf741552df2f40961e473082afddb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _attackChargeSystem: {fileID: 0}
   skillIndicatorPrefab: {fileID: 0}
+  colliderSlash: {fileID: 0}
   ultiRange: 4
   targetingRange: 8
 --- !u!114 &7184291568784719351

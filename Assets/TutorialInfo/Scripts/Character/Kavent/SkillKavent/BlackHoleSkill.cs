@@ -1,12 +1,25 @@
-﻿using System;
-using Unity;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class BlackHoleSkill : MonoBehaviour
 {
-    
-    private void OnTriggerStay(Collider other)
+    private GameObject caster;
+    private ISkillEffect[] effects;
+
+    void Start()
     {
-        
+        effects = GetComponentsInChildren<ISkillEffect>();
+        if(caster != null)
+            foreach (var effect in effects)
+            {
+                effect.SetCaster(caster);
+            }
+    }
+    public void SetCaster(GameObject casterObj)
+    {
+        caster = casterObj;
+        foreach (var effect in effects)
+        {
+            effect.SetCaster(caster);
+        }
     }
 }

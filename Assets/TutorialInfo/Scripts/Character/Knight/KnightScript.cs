@@ -8,7 +8,6 @@ using UnityEngine;
 
 class KnightScript : MonoBehaviour, ICharacterSkill
 {
-    private APlayerInputHandler InputHandler { get; set; }
     public GameObject skillIndicatorPrefab;
     public GameObject UltiEffect;
     private GameObject activeIndicator;
@@ -16,31 +15,20 @@ class KnightScript : MonoBehaviour, ICharacterSkill
     public float targetingRange = 8f;
     public float UltiDuration=3;
 
-    private EffectAttackManager effectAttackManager;
+    public void Init() {
+    }
     public void SetEffectSkill(IEffectPlayer effectPlayer)
     {
 
     }
     void Start()
     {
-        InputHandler = GetComponent<KaventInputHandler>();
-        effectAttackManager = GetComponent<EffectAttackManager>();
+    
     }
 
     public void NormalAttack(Vector2 inputright)
     {
-        int atkPhase = InputHandler.GetAttackPhase();
 
-        switch (atkPhase)
-        {
-            case 1:
-
-                break;
-            case 2:
-                break;
-            case 3:
-                break;
-        }
     }
 
     public void UseSkill(Vector2 inputright)
@@ -77,6 +65,11 @@ class KnightScript : MonoBehaviour, ICharacterSkill
         }
     }
     public void UseSpell(Vector2 inputspell)
+    {
+
+    }
+
+    public void SetNetworkOwnership(INetworkOwnership ownership)
     {
 
     }

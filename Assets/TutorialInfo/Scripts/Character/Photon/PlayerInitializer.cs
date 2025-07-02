@@ -83,13 +83,14 @@ public class PlayerInitializer : MonoBehaviour
 
 
         APlayerInputHandler inputHandler = playerGameObject.GetComponent<APlayerInputHandler>();
-        EffectAttackManager actualEffectManager = playerGameObject.GetComponent<EffectAttackManager>();
+        IEffectAttackManager actualEffectManager = playerGameObject.GetComponent<IEffectAttackManager>();
         ICharacterSkill characterSkill = playerGameObject.GetComponentInChildren<ICharacterSkill>();
-        Movement movementComponent = playerGameObject.GetComponent<KaventMovement>();
+        IMovable movementComponent = playerGameObject.GetComponent<IMovable>();
         PlayerStats playerStats = playerGameObject.GetComponentInChildren<PlayerStats>();
         CharacterMeshRotation cRotation = playerGameObject.GetComponentInChildren<CharacterMeshRotation>();
         INetworkOwnership networkOwnershipInstance = new PhotonOwnershipAdapter(playerPhotonView);
         INetworkTransform networkTransform = photonTransformAdapter;
+        UltiChargeManager _ultiChargeManager = playerGameObject.GetComponent<UltiChargeManager>();
         ResetAnimationEvent resetAnimationEvent = playerGameObject.GetComponentInChildren<ResetAnimationEvent>();
 
         IEffectPlayer effectPlayerInstance;
@@ -131,6 +132,7 @@ public class PlayerInitializer : MonoBehaviour
                     cRotation,
                     networkOwnershipInstance,
                     photonTransformAdapter,
+                    _ultiChargeManager,
                     resetAnimationEvent
                 );
                 inputHandler.enabled = true;

@@ -1,6 +1,11 @@
-﻿using UnityEngine;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using UnityEngine;
 
-public class EffectAttackManager : MonoBehaviour
+public class KaventEffectManager : MonoBehaviour, IEffectAttackManager
 {
     [SerializeField] private ParticleSystem _normalAttack1;
     [SerializeField] private ParticleSystem _normalAttack2;
@@ -13,8 +18,12 @@ public class EffectAttackManager : MonoBehaviour
     private bool isTurnOnUlti = false;
     private void Start()
     {
+        _normalAttack1?.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+        _normalAttack1?.Clear(true);
         _ulti = Instantiate(_ultiPrefab);
         _pUlti = _ulti.GetComponentInChildren<ParticleSystem>();
+        BlackHoleSkill blackHoleSkill = _ulti.GetComponentInChildren<BlackHoleSkill>();
+        blackHoleSkill.SetCaster(this.gameObject);
         TurnOffUlti();
     }
 
@@ -25,10 +34,18 @@ public class EffectAttackManager : MonoBehaviour
         {
             return;
         }
-        if (isTurnOnUlti) TurnOffUlti();
+        if (isTurnOnUlti)
+        {
+            TurnOffUlti();
+        }
     }
 
-    public void PlayNormalAttack1() => _normalAttack1?.Play();
+    public void PlayNormalAttack1()
+    {
+        _normalAttack1.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+        _normalAttack1.Clear(true);
+        _normalAttack1?.Play();
+    }
 
     public void PlayNormalAttack2(Vector2 direction)
     {
@@ -54,7 +71,7 @@ public class EffectAttackManager : MonoBehaviour
         _spell?.Play();
     }
 
-    private void RotateEffect(ParticleSystem ps, Vector2 direction)
+    public void RotateEffect(ParticleSystem ps, Vector2 direction)
     {
         if (ps == null || direction == Vector2.zero) return;
 
@@ -62,13 +79,13 @@ public class EffectAttackManager : MonoBehaviour
 
         ps.transform.rotation = Quaternion.LookRotation(direction3D);
     }
-    private void TurnOnUlti()
+    public void TurnOnUlti()
     {
         _ulti?.SetActive(true);
         _pUlti?.Play();
         isTurnOnUlti = true;
     }
-    private void TurnOffUlti()
+    public void TurnOffUlti()
     {
         _pUlti.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
         _pUlti?.Clear(true);

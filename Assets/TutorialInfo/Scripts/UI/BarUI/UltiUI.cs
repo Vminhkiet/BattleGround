@@ -37,6 +37,6 @@ public class UltiUI : MonoBehaviour
             fillImage.fillAmount = healthRatio;
         }
 
-        gameObject.SetActive(pointUlti >= 0 && pointUlti < maxPointUlti);
+        gameObject.SetActive(pointUlti >= 0 && pointUlti <= maxPointUlti);
     }
 }

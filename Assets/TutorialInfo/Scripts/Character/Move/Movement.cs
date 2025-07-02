@@ -3,45 +3,46 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class Movement : MonoBehaviour
+public class Movement : MonoBehaviour, IMovable
 {
     public float walkSpeed = 2f;
     public float maxVelocityChange = 10f;
-    public float rotationSpeed = 10f;
-
 
     protected Vector2 input = Vector2.zero;
     private Rigidbody rb;
+
+    private float speedMultiplier = 1f;
 
     void Awake()
     {
         rb = GetComponent<Rigidbody>();
     }
 
-    void Update()
-    {
-        input.Normalize();
-        //RotateCharacter();
-    }
-
     public void SetInputLeft(Vector2 inputleft)
     {
-        this.input = inputleft;
+        input = inputleft.normalized;
     }
 
-    void RotateCharacter()
+    public void Move()
     {
-        if (input.magnitude > 0.1f)
-        {
-            float targetAngle = Mathf.Atan2(input.x, input.y) * Mathf.Rad2Deg;
-            Quaternion targetRotation = Quaternion.Euler(0, targetAngle, 0);
-            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
-        }
+        rb.AddForce(CalculateMovement(walkSpeed * speedMultiplier), ForceMode.VelocityChange);
     }
 
-    private void FixedUpdate()
+    public void ApplySpeedMultiplier(float multiplier, float duration)
     {
-        rb.AddForce(CalculateMovement(walkSpeed), ForceMode.VelocityChange);
+        speedMultiplier = multiplier;
+        StartCoroutine(ResetSpeedAfter(duration));
+    }
+
+    IEnumerator ResetSpeedAfter(float duration)
+    {
+        yield return new WaitForSeconds(duration);
+        speedMultiplier = 1f;
+    }
+
+    public void ResetSpeed()
+    {
+        speedMultiplier = 1f;
     }
 
     Vector3 CalculateMovement(float _speed)
@@ -57,5 +58,4 @@ public class Movement : MonoBehaviour
 
         return velocityChange;
     }
-
 }

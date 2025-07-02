@@ -32,13 +32,15 @@ public abstract class APlayerInputHandler : MonoBehaviour
     protected Vector2 nextAttackinput;
 
     protected ICharacterSkill characterSkill;
-    protected Movement movementComponent;
+    protected IMovable movementComponent;
     protected PlayerStats playerStats;
     protected CharacterMeshRotation cRotation;
     protected IEffectPlayer effectPlayer;
     protected INetworkOwnership _networkOwnership;
     protected INetworkTransform _networkTransform;
     protected ResetAnimationEvent resetAnimationEvent;
+    [SerializeField] private AttackChargeSystem attackChargeSystem;
+    protected UltiChargeManager _ultiChargeManager;
 
     public event Action<float> OnMoveInputChanged;
     public event Action<bool> OnAttackStateChanged;
@@ -51,12 +53,13 @@ public abstract class APlayerInputHandler : MonoBehaviour
     private bool isSlow = false;
 
     public void Initialize(IEffectPlayer effectPlayerInstance, 
-                            ICharacterSkill characterSkillInstance, 
-                            Movement movementComponentInstance, 
+                            ICharacterSkill characterSkillInstance,
+                            IMovable movementComponentInstance, 
                             PlayerStats playerStatsInstance, 
                             CharacterMeshRotation cRotationInstance,
                             INetworkOwnership networkOwnership,
                             INetworkTransform networkTransform,
+                            UltiChargeManager _ultiChargeManager,
                             ResetAnimationEvent resetAnimationEvent
                             )
     {
@@ -67,9 +70,13 @@ public abstract class APlayerInputHandler : MonoBehaviour
         this.cRotation = cRotationInstance;
         this._networkOwnership = networkOwnership;
         this._networkTransform = networkTransform;
+        this._ultiChargeManager = _ultiChargeManager;
         this.resetAnimationEvent = resetAnimationEvent;
 
+        this._ultiChargeManager.Init();
+        this.characterSkill.Init();
         this.characterSkill.SetEffectSkill(this.effectPlayer);
+        this.characterSkill.SetNetworkOwnership(this._networkOwnership);
         if (this.resetAnimationEvent != null)
         {
             this.resetAnimationEvent.OnIsAttackingChanged -= ResetAttackState;
@@ -118,6 +125,15 @@ public abstract class APlayerInputHandler : MonoBehaviour
         }
     }
 
+    private void FixedUpdate()
+    {
+        if (_networkOwnership == null || !_networkOwnership.IsLocalPlayer)
+        {
+            return;
+        }
+        movementComponent.Move();
+    }
+
     public virtual void OnMove(InputAction.CallbackContext callbackContext)
     {
         if (_networkOwnership == null || !_networkOwnership.IsLocalPlayer)
@@ -150,9 +166,6 @@ public abstract class APlayerInputHandler : MonoBehaviour
             return;
         }
 
-        if (!playerStats.isEnergyFull())
-            return;
-
         SetUltiInputInternal(context.ReadValue<Vector2>());
         if (context.performed)
         {
@@ -161,7 +174,7 @@ public abstract class APlayerInputHandler : MonoBehaviour
         }
         else if (context.canceled)
         {
-            bool canUlti = !GetIsAttacking() && lastUltiStickMagnitude - attackThreshold > 0;
+            bool canUlti = !GetIsAttacking() && lastUltiStickMagnitude - attackThreshold > 0 && _ultiChargeManager.IsUltiFull();
 
             if (canUlti)
             {
@@ -169,6 +182,7 @@ public abstract class APlayerInputHandler : MonoBehaviour
 
                 if (characterSkill != null)
                     characterSkill.UseSkill(lastValidUltiStickInput);
+                _ultiChargeManager.ResetUlti();
             }
 
             ResetInputUlti();
@@ -227,7 +241,7 @@ public abstract class APlayerInputHandler : MonoBehaviour
         }
         else if (context.canceled)
         {
-            bool canNewAttack = !GetIsAttacking() && (lastRightStickMagnitude - attackThreshold >= 0) && !GetIsUlti();
+            bool canNewAttack = !GetIsAttacking() && (lastRightStickMagnitude - attackThreshold >= 0) && !GetIsUlti() ;
             OnSkillPerformed(Vector2.zero);
 
             if (canNewAttack)

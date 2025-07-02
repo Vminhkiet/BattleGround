@@ -1,4 +1,6 @@
 using UnityEngine;
+using UnityEngine.Events;
+using Photon.Pun;
 
 public class PlayerHealthUI : MonoBehaviour
 {
@@ -10,6 +12,14 @@ public class PlayerHealthUI : MonoBehaviour
     [Tooltip("Kéo ??i t??ng Canvas 'HealthBarCanvas' (n?i có script UIHealthBarBillboard) vào ?ây.")]
     public UIHealthBarBillboard healthBarUIBillboard;
 
+    [Header("Optional Events")]
+    public UnityEvent onDeath;
+
+    [Header("Debug")]
+    public bool showDebugButtons = false;
+
+    public bool IsDead => currentHealth <= 0;
+
     void Start()
     {
         currentHealth = maxHealth;
@@ -20,40 +30,59 @@ public class PlayerHealthUI : MonoBehaviour
         }
         else
         {
-            Debug.LogError("PlayerHealthUI: 'healthBarUIBillboard' reference is not set! Health bar will not be updated.", this);
+            Debug.LogWarning("PlayerHealthUI: 'healthBarUIBillboard' reference is not set!", this);
         }
     }
 
     public void TakeDamage(float damage)
     {
         currentHealth -= damage;
-        if (currentHealth < 0)
-        {
-            currentHealth = 0;
-            Debug.Log(gameObject.name + " died!");
-        }
+        currentHealth = Mathf.Max(0, currentHealth);
+
         if (healthBarUIBillboard != null)
         {
             healthBarUIBillboard.UpdateHealth(currentHealth, maxHealth);
+        }
+
+        if (IsDead)
+        {
+            Debug.Log($"{gameObject.name} died.");
+            onDeath?.Invoke();
         }
     }
 
     public void Heal(float amount)
     {
         currentHealth += amount;
-        if (currentHealth > maxHealth)
-        {
-            currentHealth = maxHealth;
-        }
+        currentHealth = Mathf.Min(currentHealth, maxHealth);
+
         if (healthBarUIBillboard != null)
         {
             healthBarUIBillboard.UpdateHealth(currentHealth, maxHealth);
         }
     }
 
+    public void ResetHealth()
+    {
+        currentHealth = maxHealth;
+
+        if (healthBarUIBillboard != null)
+        {
+            healthBarUIBillboard.UpdateHealth(currentHealth, maxHealth);
+        }
+    }
+
+    [PunRPC]
+    public void TakeDamageNetwork(float damage)
+    {
+        TakeDamage(damage);
+    }
+
     void OnGUI()
     {
-        float buttonWidth = 120;
+        if (!showDebugButtons) return;
+
+        float buttonWidth = 140;
         float buttonHeight = 30;
         float padding = 10;
 
@@ -65,6 +94,11 @@ public class PlayerHealthUI : MonoBehaviour
         if (GUI.Button(new Rect(padding, padding * 2 + buttonHeight, buttonWidth, buttonHeight), "Heal (5)"))
         {
             Heal(5);
+        }
+
+        if (GUI.Button(new Rect(padding, padding * 3 + buttonHeight * 2, buttonWidth, buttonHeight), "Reset Health"))
+        {
+            ResetHealth();
         }
     }
 }

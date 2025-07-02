@@ -5,7 +5,9 @@ using UnityEngine;
 public class KaventScript : MonoBehaviour, ICharacterSkill
 {
     private APlayerInputHandler InputHandler { get; set; }
+    [SerializeField] private AttackChargeSystem _attackChargeSystem;
     public GameObject skillIndicatorPrefab;
+    public GameObject colliderSlash;
     private GameObject activeIndicator;
     public float ultiRange = 4f;
     private Vector3 currentTargetPosition;
@@ -17,15 +19,23 @@ public class KaventScript : MonoBehaviour, ICharacterSkill
         this.effectPlayer = effectPlayer;
     }
 
-    void Start()
+    public void Init()
     {
         InputHandler = GetComponentInParent<KaventInputHandler>();
+        colliderSlash?.SetActive(true);
+        colliderSlash?.GetComponent<HitBox>().SetCaster(InputHandler.gameObject);
+        colliderSlash?.GetComponent<HitBox>().SetHitBoxActive(false);
+        colliderSlash?.GetComponent<HitBox>().SetPlayerStats(GetComponent<PlayerStats>());
     }
 
     public void NormalAttack(Vector2 inputright)
     {
         int atkPhase = InputHandler.GetAttackPhase();
-
+        colliderSlash.GetComponent<HitBox>().SetHitBoxActive(true);
+        _attackChargeSystem.ConsumeCharge();
+        effectPlayer?.PlayNormalAttackEffect(1, inputright);
+        StartCoroutine(DisableSlashColliderAfterDelay(2f));
+        
         switch (atkPhase)
         {
             case 1:
@@ -37,7 +47,11 @@ public class KaventScript : MonoBehaviour, ICharacterSkill
                 break;
         }
     }
-
+    private IEnumerator DisableSlashColliderAfterDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        colliderSlash.GetComponent<HitBox>().SetHitBoxActive(false);
+    }
     public void UseSkill(Vector2 inputright)
     {
         effectPlayer?.PlayUltiEffect(new Vector2(activeIndicator.transform.position.x, activeIndicator.transform.position.z));
@@ -70,6 +84,11 @@ public class KaventScript : MonoBehaviour, ICharacterSkill
         }
     }
     public void UseSpell(Vector2 inputspell)
+    {
+
+    }
+
+    public void SetNetworkOwnership(INetworkOwnership ownership)
     {
 
     }

@@ -31,7 +31,7 @@ public class MinimapController : MonoBehaviour
 
     public void SetPlayerTransform(Transform playerTransform)
     {
-        this.playerTransform = playerTransform;
+        this.playerTransform = playerTransform.GetChild(0).transform;
     }
 
     void Start()

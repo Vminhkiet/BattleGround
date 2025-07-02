@@ -2480,9 +2480,13 @@ GameObject:
   - component: {fileID: 5421434501037674937}
   - component: {fileID: 197798745735114536}
   - component: {fileID: 6322187387001522623}
-  m_Layer: 0
+  - component: {fileID: 6408038123958431105}
+  - component: {fileID: 3943535072728341036}
+  - component: {fileID: 3858565512935166516}
+  - component: {fileID: 3748277323014346243}
+  m_Layer: 8
   m_Name: PivotCharacterMage
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2561,7 +2565,7 @@ Rigidbody:
   m_GameObject: {fileID: 7996799926412221067}
   serializedVersion: 4
   m_Mass: 1
-  m_Drag: 0
+  m_Drag: 1
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
@@ -2625,7 +2629,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   walkSpeed: 4
   maxVelocityChange: 10
-  rotationSpeed: 10
 --- !u!136 &4239266245814242666
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -2661,6 +2664,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a15de867bb964704eb793b7b06205c5c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  attackChargeSystem: {fileID: 3748277323014346243}
 --- !u!114 &197798745735114536
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2769,6 +2773,65 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerSpawns: []
+--- !u!114 &6408038123958431105
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7996799926412221067}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1d30b9f8d1bc91748ab3e75b10b2d7d5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shootDelay: 1
+  targetingRange: 8
+  ultiRange: 4
+  attackRange: 8
+--- !u!114 &3943535072728341036
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7996799926412221067}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0db88bec5064a024f9859c82e847b311, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &3858565512935166516
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7996799926412221067}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f3bf65555432b514394ce2d4e2127b3c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxUltiPoint: 100
+  currentUltiPoint: 100
+--- !u!114 &3748277323014346243
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7996799926412221067}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f887a6fedd7d1224bb20ead32c0e95ee, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  chargeSlots: []
+  maxCharges: 3
+  rechargeTimePerCharge: 2
+  fullChargeColor: {r: 0, g: 1, b: 1, a: 1}
+  emptyChargeColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
 --- !u!1 &8338786530183523471
 GameObject:
   m_ObjectHideFlags: 0
@@ -2938,9 +3001,9 @@ GameObject:
   - component: {fileID: 5188779781120786091}
   - component: {fileID: 3876744657388956140}
   - component: {fileID: 6396415827141417097}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: Mage
-  m_TagString: Player
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

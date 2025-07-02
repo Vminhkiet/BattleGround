@@ -1,19 +1,18 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using Photon.Pun;
 
 public class HitBox : MonoBehaviour
 {
     private PlayerStats _pStats;
+    private GameObject caster;
+    private PhotonView ownerView;
 
     public float attackInterval = 1f;
-
     public string[] targetTags;
 
-    private System.Collections.Generic.Dictionary<GameObject, float> lastDamageTime =
-        new System.Collections.Generic.Dictionary<GameObject, float>();
-
+    private Dictionary<GameObject, float> lastDamageTime = new();
     private bool canDealDamage = false;
 
     public UnityEvent<float> onDamageDealt;
@@ -21,26 +20,44 @@ public class HitBox : MonoBehaviour
     void Awake()
     {
         if (onDamageDealt == null)
-        {
             onDamageDealt = new UnityEvent<float>();
-        }
 
         Collider col = GetComponent<Collider>();
         if (col != null && !col.isTrigger)
-        {
-            Debug.LogWarning("Collider on HitBox (" + gameObject.name + ") is not set to 'Is Trigger'. OnTriggerStay will not work correctly.", this);
-        }
+            Debug.LogWarning("Collider should be set to IsTrigger", this);
+
         Rigidbody rb = GetComponent<Rigidbody>();
         if (rb == null)
-        {
-            Debug.LogWarning("Rigidbody is missing on HitBox (" + gameObject.name + "). Collision detection might not work correctly.", this);
-        }
+            Debug.LogWarning("Rigidbody is missing. Hit detection may not work properly.", this);
     }
+
+    public void SetCaster(GameObject casterObj)
+    {
+        caster = casterObj;
+        ownerView = casterObj.GetComponent<PhotonView>();
+    }
+
+    public void SetPlayerStats(PlayerStats stats)
+    {
+        _pStats = stats;
+    }
+
+    public void SetHitBoxActive(bool active)
+    {
+        canDealDamage = active;
+    }
+
     private void OnTriggerStay(Collider other)
     {
-        if (!canDealDamage)
+        if (!canDealDamage) return;
+
+        if (other.transform.root.gameObject == caster) return;
+
+        PhotonView targetView = other.GetComponent<PhotonView>();
+        if (targetView != null && ownerView != null)
         {
-            return;
+            if (targetView.OwnerActorNr == ownerView.OwnerActorNr)
+                return;
         }
 
         bool isTargetValid = false;
@@ -52,47 +69,37 @@ public class HitBox : MonoBehaviour
                 break;
             }
         }
-
-        if (!isTargetValid)
-        {
-            return;
-        }
+        if (!isTargetValid) return;
 
         float currentTime = Time.time;
-        float lastTimeHitThisTarget;
-
-        if (lastDamageTime.TryGetValue(other.gameObject, out lastTimeHitThisTarget))
+        if (lastDamageTime.TryGetValue(other.gameObject, out float lastHitTime))
         {
-            if (currentTime < lastTimeHitThisTarget + attackInterval)
-            {
+            if (currentTime < lastHitTime + attackInterval)
                 return;
-            }
-        }
-        else
-        {
-            lastTimeHitThisTarget = -attackInterval;
         }
 
         if (other.TryGetComponent(out PlayerHealthUI targetHealth))
         {
-
-            targetHealth.TakeDamage(_pStats.GetDamage());
-
+            float dmg = _pStats.GetDamage();
+            PhotonView view = targetHealth.GetComponent<PhotonView>();
+            if (view != null)
+            {
+                view.RPC("TakeDamageNetwork", RpcTarget.AllBuffered, dmg);
+            }
+            UltiChargeManager ultiCharge = caster.GetComponent<UltiChargeManager>();
+            if (ultiCharge != null)
+            {
+                ultiCharge.AddUltiPoint(dmg);
+            }
             lastDamageTime[other.gameObject] = currentTime;
 
-            onDamageDealt.Invoke(_pStats.GetDamage());
+            onDamageDealt.Invoke(dmg);
         }
     }
+
     private void OnTriggerExit(Collider other)
     {
         if (lastDamageTime.ContainsKey(other.gameObject))
-        {
             lastDamageTime.Remove(other.gameObject);
-        }
     }
-    public void SetHitBoxActive(bool active)
-    {
-        canDealDamage = active;
-    }
-
 }
