@@ -2484,6 +2484,8 @@ GameObject:
   - component: {fileID: 3943535072728341036}
   - component: {fileID: 3858565512935166516}
   - component: {fileID: 8106645772915710413}
+  - component: {fileID: 7993907364982888463}
+  - component: {fileID: 5867770988581336584}
   m_Layer: 8
   m_Name: PivotCharacterMage
   m_TagString: Player
@@ -2834,6 +2836,34 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   showDebugButtons: 0
+--- !u!114 &7993907364982888463
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7996799926412221067}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 02d20943e4d9c9244a36cc31bf999857, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  transparentAlpha: 0.7
+--- !u!114 &5867770988581336584
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7996799926412221067}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 74ff2e1aa08b9824cb413473a705f228, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bushLayer:
+    serializedVersion: 2
+    m_Bits: 128
 --- !u!1 &8338786530183523471
 GameObject:
   m_ObjectHideFlags: 0
@@ -2992,9 +3022,7 @@ GameObject:
   - component: {fileID: 7387084477953787670}
   - component: {fileID: 7963051810284936904}
   - component: {fileID: 3981814570751249096}
-  - component: {fileID: 1616317023304578335}
   - component: {fileID: 1829526261714031311}
-  - component: {fileID: 5455710902615679327}
   - component: {fileID: 902197783455959983}
   - component: {fileID: 6872867259481800241}
   - component: {fileID: 7165283086799243315}
@@ -3068,21 +3096,6 @@ MonoBehaviour:
   mapName: Island
   loadRadius: 2
   checkInterval: 1
---- !u!114 &1616317023304578335
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9166351316526345752}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 74ff2e1aa08b9824cb413473a705f228, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  bushLayer:
-    serializedVersion: 2
-    m_Bits: 128
 --- !u!114 &1829526261714031311
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3104,19 +3117,6 @@ MonoBehaviour:
   ultiRange: 3
   targetingRange: 8
   _attackChargeSystem: {fileID: 7578358791398131347}
---- !u!114 &5455710902615679327
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9166351316526345752}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 02d20943e4d9c9244a36cc31bf999857, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  transparentAlpha: 0.7
 --- !u!114 &902197783455959983
 MonoBehaviour:
   m_ObjectHideFlags: 0

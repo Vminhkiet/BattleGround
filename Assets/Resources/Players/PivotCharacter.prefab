@@ -22,6 +22,8 @@ GameObject:
   - component: {fileID: 8740801624917999475}
   - component: {fileID: 576815585247421043}
   - component: {fileID: 6463600204723608584}
+  - component: {fileID: 8545474598990328021}
+  - component: {fileID: 933507386109409843}
   m_Layer: 8
   m_Name: PivotCharacter
   m_TagString: Player
@@ -341,6 +343,34 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxUltiPoint: 100
   currentUltiPoint: 0
+--- !u!114 &8545474598990328021
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1811712304232251511}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 74ff2e1aa08b9824cb413473a705f228, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bushLayer:
+    serializedVersion: 2
+    m_Bits: 128
+--- !u!114 &933507386109409843
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1811712304232251511}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 02d20943e4d9c9244a36cc31bf999857, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  transparentAlpha: 0.7
 --- !u!1 &5447353712262269764
 GameObject:
   m_ObjectHideFlags: 0
@@ -498,6 +528,11 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 2426060627697987296, guid: a39d63c4fa39b854caadfd3616fed986,
         type: 3}
+    - target: {fileID: 6645354748942732772, guid: 39d253bfc75450941bf3056bb4c0e706,
+        type: 3}
+      propertyPath: bushLayer.m_Bits
+      value: 128
+      objectReference: {fileID: 0}
     - target: {fileID: 7184291568784719351, guid: 39d253bfc75450941bf3056bb4c0e706,
         type: 3}
       propertyPath: maxEnergy
