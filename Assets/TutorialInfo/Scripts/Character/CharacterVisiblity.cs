@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class CharacterVisiblity : MonoBehaviour
 {
@@ -9,6 +10,7 @@ public class CharacterVisiblity : MonoBehaviour
 
     private List<Material> characterMeshMaterials;
     private List<Material> characterSkinnedMeshMaterials;
+    public List<Image> images;
 
     void Awake()
     {
@@ -29,14 +31,30 @@ public class CharacterVisiblity : MonoBehaviour
     }
     public void SetVisible()
     {
+        foreach (Image image in images)
+        {
+            setImageAlpha(1f);
+        }
         SetMeshMaterialsAlpha(1.0f);
         SetSkinnedMeshMaterialsAlpha(1.0f);
     }
     public void SetInvisible()
     {
+        setImageAlpha(0f);
         SetMeshMaterialsAlpha(transparentAlpha);
         SetSkinnedMeshMaterialsAlpha(0f);
     }
+
+    public void setImageAlpha(float alpha)
+    {
+        foreach (Image image in images)
+        {
+            Color color = image.color;
+            color.a = alpha;
+            image.color = color;
+        }
+    }
+
     private void SetMeshMaterialsAlpha(float alpha)
     {
         foreach (var mat in characterMeshMaterials)
@@ -93,6 +111,19 @@ public class CharacterVisiblity : MonoBehaviour
             color.a = alpha;
             mat.SetColor("_BaseColor", color);
         }
+    }
+    public void SetAlpha(float alpha)
+    {
+        if(alpha< 1.0f)
+        {
+           setImageAlpha(0f);
+        }
+        else
+        {
+            setImageAlpha(1f);
+        }
+        SetMeshMaterialsAlpha(alpha);
+        SetSkinnedMeshMaterialsAlpha(alpha);
     }
 }
 

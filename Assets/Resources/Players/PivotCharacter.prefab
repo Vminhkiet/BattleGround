@@ -371,6 +371,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   transparentAlpha: 0.7
+  images: []
 --- !u!1 &5447353712262269764
 GameObject:
   m_ObjectHideFlags: 0
@@ -481,6 +482,21 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 5609775366052852618}
     m_Modifications:
+    - target: {fileID: 1056339752932442202, guid: 39d253bfc75450941bf3056bb4c0e706,
+        type: 3}
+      propertyPath: m_CastShadows
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2427999856977603128, guid: 39d253bfc75450941bf3056bb4c0e706,
+        type: 3}
+      propertyPath: m_CastShadows
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2516819912150863589, guid: 39d253bfc75450941bf3056bb4c0e706,
+        type: 3}
+      propertyPath: m_CastShadows
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2608101366039573249, guid: 39d253bfc75450941bf3056bb4c0e706,
         type: 3}
       propertyPath: colliderSlash
@@ -507,6 +523,11 @@ PrefabInstance:
       propertyPath: looping
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5136838684205196477, guid: 39d253bfc75450941bf3056bb4c0e706,
+        type: 3}
+      propertyPath: m_CastShadows
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5143944983045618289, guid: 39d253bfc75450941bf3056bb4c0e706,
         type: 3}
       propertyPath: m_ActionEvents.Array.data[0].m_PersistentCalls.m_Calls.Array.data[0].m_Target
@@ -521,6 +542,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_ActionEvents.Array.data[2].m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 5225059382644839464, guid: 39d253bfc75450941bf3056bb4c0e706,
+        type: 3}
+      propertyPath: m_CastShadows
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5266714112821235912, guid: 39d253bfc75450941bf3056bb4c0e706,
+        type: 3}
+      propertyPath: m_CastShadows
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5933938818297274279, guid: 39d253bfc75450941bf3056bb4c0e706,
         type: 3}
@@ -608,6 +639,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7668634019831876461, guid: 39d253bfc75450941bf3056bb4c0e706,
+        type: 3}
+      propertyPath: m_CastShadows
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7892989927749182300, guid: 39d253bfc75450941bf3056bb4c0e706,
         type: 3}
       propertyPath: m_Name
@@ -622,6 +658,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8489894259062973193, guid: 39d253bfc75450941bf3056bb4c0e706,
+        type: 3}
+      propertyPath: m_CastShadows
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

@@ -1,8 +1,9 @@
-﻿using System.Collections;
+﻿using Photon.Pun;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BushTransparency : MonoBehaviour
+public class BushTransparency : MonoBehaviourPunCallbacks
 {
     [Tooltip("Chọn layer của các bụi rậm.")]
     [SerializeField] private LayerMask bushLayer;
@@ -10,10 +11,12 @@ public class BushTransparency : MonoBehaviour
     private int overlappingBushCount = 0;
 
     private CharacterVisiblity _visiblity;
+    private PhotonView photonView;
 
     private void Start()
     {
         _visiblity = GetComponent<CharacterVisiblity>();
+        photonView =GetComponent<PhotonView>();
     }
 
     private void OnTriggerEnter(Collider other)
@@ -42,11 +45,35 @@ public class BushTransparency : MonoBehaviour
     {
         if (overlappingBushCount > 0)
         {
-            _visiblity.SetInvisible();
+            _visiblity.SetAlpha(0);
+
+            if (photonView.IsMine)
+            {
+                photonView.RPC(nameof(RPC_SetAlpha), RpcTarget.Others,0f);
+            }
         }
         else
         {
             _visiblity.SetVisible();
+
+            if (photonView.IsMine)
+            {
+                photonView.RPC(nameof(RPC_SetAlpha), RpcTarget.Others, 1.0f);
+            }
         }
     }
+
+
+    [PunRPC]
+    void RPC_SetAlpha(float alpha)
+    {
+        if(photonView==null)
+            return;
+        if (!photonView.IsMine)
+        {
+            Debug.Log("aaa");
+            _visiblity.SetAlpha(alpha);
+        }
+    }
+
 }

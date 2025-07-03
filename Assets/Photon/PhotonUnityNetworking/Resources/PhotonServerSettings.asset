@@ -53,6 +53,9 @@ MonoBehaviour:
   - RPC_SyncPosRot
   - RPC_SpawnExplosion
   - RPC_DespawnProjectileAt
+  - RPC_SetInvisibleForOthers
+  - RPC_SetVisibleForOthers
+  - RPC_SetAlpha
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1
