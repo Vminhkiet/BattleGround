@@ -2610,6 +2610,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   transparentAlpha: 0.7
+  images: []
 --- !u!114 &4448442135143049039
 MonoBehaviour:
   m_ObjectHideFlags: 0

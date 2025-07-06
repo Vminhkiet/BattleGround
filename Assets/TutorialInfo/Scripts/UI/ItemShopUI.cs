@@ -27,7 +27,7 @@ class ItemShopUI : MonoBehaviour
     void Start()
     {
         AddShopEvents();
-        GenerateShopItemUI();
+        UserSession.Instance.Subscribe(GenerateShopItemUI);
     }
 
     void GenerateShopItemUI()
@@ -51,15 +51,20 @@ class ItemShopUI : MonoBehaviour
             uiItem.SetItemImage(item.image);
             uiItem.SetItemPrice(item.price);
 
-            if (item.isPurchased)
+            if (UserSession.Instance.userData.charactersOwned.Contains(item.name))
             {
                 uiItem.SetItemAsPurchase();
-                uiItem.OnItemSelect(i, OnItemSelected);
+                uiItem.OnItemSelect(i,item.name, OnItemSelected);
+
+                if (UserSession.Instance.userData.characterSelected == item.name)
+                {
+                    uiItem.SelectItem();
+                }
             }
             else
             {
                 uiItem.SetItemPrice(item.price);
-                uiItem.OnItemPurchase(i, OnItemPurchased);
+                uiItem.OnItemPurchase(i,item.name, item.price, OnItemPurchased);
             }
             if ((i & 1) == 0)
                 ShopItemsContainer.GetComponent<RectTransform>().sizeDelta = Vector2.left * (itemWidth + itemSpacingRow);

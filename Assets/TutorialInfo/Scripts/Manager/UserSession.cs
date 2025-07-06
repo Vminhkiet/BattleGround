@@ -40,35 +40,28 @@ public class UserSession : MonoBehaviour
         DontDestroyOnLoad(gameObject);
     }
 
-    private void Start()
+    private async void Start()
     {
+        db = FirebaseFirestore.DefaultInstance;
         uid = PlayerPrefs.GetString("currentUID", null);
 
         if (string.IsNullOrEmpty(uid))
         {
-            uid = "fake_uid_001"; // Thiết lập UID giả nếu cần
-            PlayerPrefs.SetString("currentUID", uid);
+            Debug.LogError("No UID found. User probably bypassed login.");
+            return;
         }
 
-        // Tạo dữ liệu giả cho user
-        Dictionary<string, object> fakeData = new Dictionary<string, object>
-     {
-         { "username", "vo_kiet_fake" },
-         { "email", "kiet.fake@gmail.com" },
-         { "money", 9999 },
-         { "score", 999 },
-         { "charactersOwned", new List<object> { "KAVENT", "ALIA" } },
-         { "spellsOwned", new List<object> { "fireball", "heal", "dash" } },
-         { "characterSelected", "ALIA" },
-         { "spellSelected", "dash" },
-         { "createdAt", Timestamp.GetCurrentTimestamp() }
-     };
-
-        userData = UserData.FromDictionary(fakeData);
-        Debug.Log("🧪 Đang sử dụng dữ liệu giả: " + userData.username);
-        StartCoroutineFetchData();
+        try
+        {
+            await LoadUserDataAsync(uid);
+            Debug.Log("User data loaded. Welcome, " + userData.username);
+        }
+        catch (Exception ex)
+        {
+            Debug.LogError("Failed to load user data: " + ex.Message);
+        }
     }
-    
+
     public void StartCoroutineFetchData()
     {
         StartCoroutine(fetchdt());
@@ -140,7 +133,7 @@ public class UserSession : MonoBehaviour
         try
         {
             // 2. Tạo một dictionary để cập nhật các trường trên Firestore
-          /*  var updates = new Dictionary<string, object>
+            var updates = new Dictionary<string, object>
             {
                 // Dùng FieldValue.Increment để trừ tiền một cách an toàn trên server
                 { "money", FieldValue.Increment(-price) },
@@ -148,7 +141,7 @@ public class UserSession : MonoBehaviour
                 { "charactersOwned", FieldValue.ArrayUnion(characterId) }
             };
 
-        //    await UpdateFieldsAsync(updates);*/
+            await UpdateFieldsAsync(updates);
 
             // 3. Cập nhật lại dữ liệu trên local sau khi server xác nhận thành công
        
@@ -224,7 +217,7 @@ public class UserSession : MonoBehaviour
 
         try
         {
-           // await UpdateFieldsAsync(new Dictionary<string, object> { { "characterSelected", characterId } });
+            await UpdateFieldsAsync(new Dictionary<string, object> { { "characterSelected", characterId } });
 
             // Cập nhật local data
             userData.characterSelected = characterId;

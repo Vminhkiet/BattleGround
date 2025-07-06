@@ -7960,6 +7960,7 @@ GameObject:
   - component: {fileID: 920356639}
   - component: {fileID: 920356640}
   - component: {fileID: 920356641}
+  - component: {fileID: 920356642}
   m_Layer: 0
   m_Name: Manager
   m_TagString: Untagged
@@ -8033,6 +8034,18 @@ MonoBehaviour:
   emailInput: {fileID: 2103687851}
   passwordInput: {fileID: 1725669989}
   feedbackText: {fileID: 401184990}
+--- !u!114 &920356642
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 920356636}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bc32e9d44ef230946830b2230efa7b7a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &933850953
 GameObject:
   m_ObjectHideFlags: 0

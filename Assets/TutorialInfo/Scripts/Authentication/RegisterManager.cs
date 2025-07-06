@@ -20,18 +20,21 @@ public class RegisterManager : MonoBehaviour
 
     void Start()
     {
-        FirebaseApp.CheckAndFixDependenciesAsync().ContinueWithOnMainThread(task => {
-            if (task.Result == DependencyStatus.Available)
-            {
-                auth = FirebaseAuth.DefaultInstance;
-                db = FirebaseFirestore.DefaultInstance;
-                Debug.Log("Firebase initialized.");
-            }
-            else
-            {
-                Debug.LogError("Could not resolve all Firebase dependencies.");
-            }
-        });
+        if (FirebaseInitializer.Instance.IsReady)
+        {
+            InitFirebase();
+        }
+        else
+        {
+            FirebaseInitializer.Instance.OnFirebaseReady += InitFirebase;
+        }
+    }
+
+    void InitFirebase()
+    {
+        auth = FirebaseAuth.DefaultInstance;
+        db = FirebaseFirestore.DefaultInstance;
+        Debug.Log("RegisterManager: Firebase is ready");
     }
 
     public void OnRegisterButtonClicked()

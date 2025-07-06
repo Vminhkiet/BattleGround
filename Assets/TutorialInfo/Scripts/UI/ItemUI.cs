@@ -67,15 +67,35 @@ class ItemUI : MonoBehaviour
         coinImage.gameObject.SetActive(false);
     }
 
-    public void OnItemPurchase(int itemIndex, UnityAction<int> action)
+    public void OnItemPurchase(int itemIndex,string name,int price, UnityAction<int> action)
     {
         itemPurchaseButton.onClick.RemoveAllListeners();
-        itemPurchaseButton.onClick.AddListener(() => action.Invoke(itemIndex));
+        itemPurchaseButton.onClick.AddListener(async () => {
+            // Gọi hàm mua từ FirestoreManager
+            bool success = await UserSession.Instance.PurchaseSpellAsync(name, price);
+
+            if (success)
+            {
+                SetItemAsPurchase();
+                action.Invoke(itemIndex);
+
+            }
+            else
+            {
+                Debug.Log("Purchase failed!");
+            }
+        });
     }
-    public void OnItemSelect(int itemIndex, UnityAction<int> action)
+    public void OnItemSelect(int itemIndex,string name, UnityAction<int> action)
     {
         itemButton.onClick.RemoveAllListeners();
-        itemButton.onClick.AddListener(() => action.Invoke(itemIndex));
+        itemButton.onClick.AddListener(async () =>
+        {
+            await UserSession.Instance.SelectSpellAsync(name);
+
+            action.Invoke(itemIndex);
+        });
+
         itemPurchaseButton.onClick.AddListener(SelectItem);
         CalculatorController.instance.infoplayer.selectedItem = itemNameText.text;
       
